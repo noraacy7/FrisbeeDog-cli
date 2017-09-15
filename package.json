@@ -1,0 +1,43 @@
+{
+	"name": "Frisbeedog",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"crypto-js": "^3.1.9-1",
+		"lodash": "^4.17.4",
+		"lottie-react-native": "^2.2.0",
+		"moment": "^2.18.1",
+		"native-base": "^2.3.1",
+		"react": "16.0.0-alpha.12",
+		"react-native": "0.48.2",
+		"react-native-actionsheet": "^2.2.2",
+		"react-native-animatable": "^1.2.3",
+		"react-native-barcodescanner": "^3.1.1",
+		"react-native-deprecated-custom-components": "^0.1.1",
+		"react-native-easy-toast": "^1.0.6",
+		"react-native-encryption-library": "^1.0.9",
+		"react-native-gifted-listview": "0.0.15",
+		"react-native-html-render": "^1.0.5",
+		"react-native-keyboard-aware-scrollview": "^1.1.7",
+		"react-native-material-kit": "^0.4.1",
+		"react-native-message-bar": "^2.0.4",
+		"react-native-parallax-view": "^2.0.6",
+		"react-native-storage": "^0.2.2",
+		"react-native-tab-navigator": "^0.3.4",
+		"react-native-vector-icons": "^4.3.0",
+		"react-navigation": "^1.0.0-beta.11"
+	},
+	"devDependencies": {
+		"babel-jest": "21.0.2",
+		"babel-preset-react-native": "3.0.2",
+		"jest": "21.0.2",
+		"react-test-renderer": "16.0.0-alpha.12"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
+}
