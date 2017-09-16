@@ -4,7 +4,7 @@ import {
   Text,
   TextInput,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
   Dimensions,
   Image,
   ScrollView
@@ -73,6 +73,10 @@ export default class Main extends Component {
     }), 1000);
   }
 
+  handlePressQrScanner() {
+    console.log('clicked');
+  }
+
   handleActionSheet(i) {
     console.log(">>>> you select: " + i);
   }
@@ -121,6 +125,10 @@ export default class Main extends Component {
 
                 }}
               />
+              <TouchableOpacity style={{position: 'absolute', right: 20, top: 17, backgroundColor: '#fff'}}
+                onPress={this.handlePressQrScanner}>
+                <Icon name={'md-qr-scanner'} size={25} color='#ddd' />
+              </TouchableOpacity>
             </View>
             <View style={styles1.row2}>
               <TextInput style={styles1.inputbox2}
@@ -260,7 +268,7 @@ const styles1 = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     paddingLeft: 10,
-    paddingRight: 40,
+    paddingRight: 30,
     borderStyle: 'solid',
     borderColor: '#fff',
     borderWidth: 1.0,
@@ -279,5 +287,5 @@ const styles1 = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 1.0,
     borderRadius: 4,
-  }
+  },
 });
