@@ -14,6 +14,7 @@ import {
   MKColor,
   MKSpinner
 } from 'react-native-material-kit';
+import ActionSheet from 'react-native-actionsheet';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import NavigationBar from '../container/NavigationBar.js';
@@ -52,7 +53,7 @@ const RaisedButtonSend = MKButton.coloredButton()
   })
   .build();
 
-const PlainFab = MKButton.plainFab()
+const PlainButton = MKButton.plainFab()
   .withStyle({
     alignSelf: 'center',
   })
@@ -72,10 +73,14 @@ export default class Main extends Component {
     }), 1000);
   }
 
+  handleActionSheet(i) {
+    console.log(">>>> you select: " + i);
+  }
+
   render() {
     return(
       <View style={{flex: 1}}>
-        <NavigationBar lItemImage='logo' rItemImage='md-more' rItemTappedCallback={null} />
+        <NavigationBar lItemImage='logo' rItemImage='md-menu' rItemTappedCallback={null} />
         <ScrollView>
           <View style={styles1.infownd}>
             <View style={styles1.upbox}>
@@ -153,13 +158,21 @@ export default class Main extends Component {
               </RaisedButtonSend>
             </View>
           </View>
-          <PlainFab
+          <PlainButton
             onPress={() => {
-              console.log('hi');
+              this.ActionSheet.show();
             }}>
             <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
-          </PlainFab>
+          </PlainButton>
         </ScrollView>
+        <ActionSheet
+          ref={o => this.ActionSheet = o}
+          title={'Add Another Address'}
+          options={['Cancel', 'Import From My Account', 'Create New Address']}
+          cancelButtonIndex={0}
+          destructiveButtonIndex={4}
+          onPress={this.handleActionSheet}
+        />
       </View>
     );
   }
