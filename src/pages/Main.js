@@ -18,6 +18,10 @@ import ActionSheet from 'react-native-actionsheet';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import NavigationBar from '../container/NavigationBar.js';
+import DeviceInfo from 'react-native-device-info';
+import Drawer from 'react-native-drawer';
+import * as Animatable from 'react-native-animatable';
+import ControlPanel from './ControlPanel.js';
 import styles from '../../stylesheet.js';
 
 const FlatButton = MKButton.flatButton()
@@ -27,6 +31,7 @@ const FlatButton = MKButton.flatButton()
     height: 50,
     borderStyle: 'solid',
     borderColor: '#f0f0f0',
+    borderLeftWidth: 0.5,
     borderRightWidth: 0.5
   })
   .build();
@@ -63,14 +68,13 @@ export default class Main extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      isDisplaySuggestion: true,
+    }
   }
 
   componentDidMount() {
-    setTimeout((() => {
-      if (this.refs.progBar) {
-        this.refs.progBar.progress = 0.6;
-      }
-    }), 1000);
+    console.log(DeviceInfo.getUniqueID());
   }
 
   handlePressQrScanner() {
@@ -83,112 +87,158 @@ export default class Main extends Component {
 
   render() {
     return(
-      <View style={{flex: 1}}>
-        <NavigationBar lItemImage='logo' rItemImage='md-menu' rItemTappedCallback={null} />
-        <ScrollView>
-          <View style={styles1.infownd}>
-            <View style={styles1.upbox}>
-              <Image source={require('../../assets/images/green_shield.png')}
-                style={{width: 27, height: 27}}/>
-              <Text style={styles1.label}>Need an unlock gesture?</Text>
-            </View>
-            <View style={styles1.downbox}>
-              <FlatButton
-                onPress={() => {
-                  console.log('hi');
-                }}>
-                <Text pointerEvents="none"
-                  style={{color: '#3188c9', fontSize: 16, fontWeight: 'bold'}}>
-                    No, thanks
-                </Text>
-              </FlatButton>
-              <FlatButton
-                onPress={() => {
-                  console.log('hi');
-                }}>
-                <Text pointerEvents="none"
-                  style={{color: '#3188c9', fontSize: 16, fontWeight: 'bold'}}>
-                    Go ahead
-                </Text>
-              </FlatButton>
-            </View>
-          </View>
-          <View style={styles1.sendbox}>
-            <View style={styles1.row1}>
-              <Text style={styles1.title}>Make Any Transactions</Text>
-              <Text style={styles1.description}>input or scan target address:</Text>
-            </View>
-            <View style={styles1.row1}>
-              <TextInput style={styles1.inputbox1}
-                placeholder={'Address'}
-                onChangeText={() => {
+      <Drawer ref={(ref) => this._drawer = ref}
+        content={<ControlPanel />}
+        type='overlay'
+        tapToClose={true}
+        openDrawerOffset={0.5}
+        side={'right'}
+        tweenHandler={Drawer.tweenPresets.material}
+        onClose={
+          () => {
+            console.log('close');
+          }
+        }>
 
-                }}
-              />
-              <TouchableOpacity style={{position: 'absolute', right: 20, top: 17, backgroundColor: '#fff'}}
-                onPress={this.handlePressQrScanner}>
-                <Icon name={'md-qr-scanner'} size={25} color='#ddd' />
+        <View style={{flex: 1}}>
+          <NavigationBar lItemImage='logo'
+            rItemImage='md-menu'
+            rItemTappedCallback={
+              () => {
+                this._drawer.open()
+              }
+            } />
+          <ScrollView>
+            {
+              this.state.isDisplaySuggestion ?
+              <Animatable.View style={styles1.infoWnd}
+                ref='suggestion'
+                /*animation="fadeOutUp"*/>
+                <View style={styles1.suggestionBox1}>
+                  <Image source={require('../../assets/images/green_shield.png')}
+                    style={{width: 27, height: 27}}/>
+                  <Text style={styles1.suggestionText}>Need an unlock gesture?</Text>
+                </View>
+                <View style={styles1.suggestionBox2}>
+                  <FlatButton
+                    onPress={() => {
+                      this.refs.suggestion.fadeOut(1000).then((endState) => {
+                        if (endState.finished) {
+                          this.setState({
+                            isDisplaySuggestion: false,
+                          })
+                        }
+                      });
+                    }}>
+                    <Text pointerEvents="none"
+                      style={{color: '#3188c9', fontSize: 16, fontWeight: 'bold'}}>
+                        No, thanks
+                    </Text>
+                  </FlatButton>
+                  <FlatButton
+                    onPress={() => {
+                      this.refs.suggestion.fadeOut(1000).then((endState) => {
+                        if (endState.finished) {
+                          this.setState({
+                            isDisplaySuggestion: false,
+                          })
+                        }
+                      });
+                    }}>
+                    <Text pointerEvents="none"
+                      style={{color: '#3188c9', fontSize: 16, fontWeight: 'bold'}}>
+                        Go ahead
+                    </Text>
+                  </FlatButton>
+                </View>
+              </Animatable.View> : null
+            }
+            <View style={styles1.transferwnd}>
+              <View style={styles1.row1}>
+                <Text style={styles1.title}>Transfer</Text>
+                <Text style={styles1.description}>input or scan target address:</Text>
+              </View>
+              <View style={styles1.row1}>
+                <TextInput style={styles1.inputbox1}
+                  placeholder={'Address'}
+                  onChangeText={() => {
+
+                  }}
+                />
+                <TouchableOpacity style={{position: 'absolute', right: 20, top: 17, backgroundColor: '#fff'}}
+                  onPress={this.handlePressQrScanner}>
+                  <Icon name={'md-qr-scanner'} size={25} color='#ddd' />
+                </TouchableOpacity>
+              </View>
+              <View style={styles1.row2}>
+                <TextInput style={styles1.inputbox2}
+                  placeholder={'Amount'}
+                  onChangeText={() => {
+
+                  }}
+                />
+                <TextInput style={styles1.inputbox2}
+                  editable={false}
+                  value={"0.001"}
+                  onChangeText={() => {
+
+                  }}
+                />
+              </View>
+              <View style={styles1.row2}>
+                <RaisedButtonReceive
+                  onPress={() => {
+                    console.log('hi');
+                  }}>
+                  <Text pointerEvents="none"
+                    style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
+                      Receive
+                  </Text>
+                </RaisedButtonReceive>
+                <RaisedButtonSend
+                  onPress={() => {
+                    console.log('hi');
+                  }}>
+                  <Text pointerEvents="none"
+                    style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
+                      Send
+                  </Text>
+                </RaisedButtonSend>
+              </View>
+            </View>
+            <View style={styles.outline}>
+              <Text style={{fontSize: 16, fontWeight: 'bold', color: '#999'}}>Addresses</Text>
+              <TouchableOpacity>
+                <Text style={{fontSize: 14, fontWeight: 'bold', color: '#e0482f'}}>see all</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles1.row2}>
-              <TextInput style={styles1.inputbox2}
-                placeholder={'Amount'}
-                onChangeText={() => {
+            <View style={styles.addressbox}>
 
-                }}
-              />
-              <TextInput style={styles1.inputbox2}
-                editable={false}
-                value={"0.001"}
-                onChangeText={() => {
-
-                }}
-              />
             </View>
-            <View style={styles1.row2}>
-              <RaisedButtonReceive
-                onPress={() => {
-                  console.log('hi');
-                }}>
-                <Text pointerEvents="none"
-                  style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
-                    Receive
-                </Text>
-              </RaisedButtonReceive>
-              <RaisedButtonSend
-                onPress={() => {
-                  console.log('hi');
-                }}>
-                <Text pointerEvents="none"
-                  style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
-                    Send
-                </Text>
-              </RaisedButtonSend>
-            </View>
-          </View>
-          <PlainButton
-            onPress={() => {
-              this.ActionSheet.show();
-            }}>
-            <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
-          </PlainButton>
-        </ScrollView>
-        <ActionSheet
-          ref={o => this.ActionSheet = o}
-          title={'Add Another Address'}
-          options={['Cancel', 'Import From My Account', 'Create New Address']}
-          cancelButtonIndex={0}
-          destructiveButtonIndex={4}
-          onPress={this.handleActionSheet}
-        />
-      </View>
+            <PlainButton
+              onPress={() => {
+                this.ActionSheet.show();
+              }}>
+              <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
+            </PlainButton>
+          </ScrollView>
+          <ActionSheet
+            ref={o => this.ActionSheet = o}
+            title={'Add another address'}
+            options={['Cancel', 'import from my account', 'create address']}
+            cancelButtonIndex={0}
+            destructiveButtonIndex={4}
+            onPress={this.handleActionSheet}
+          />
+        </View>
+      </Drawer>
     );
   }
 }
 
 const {width, height} = Dimensions.get('window');
 const styles1 = StyleSheet.create({
-  infownd: {
+  infoWnd: {
     backgroundColor: '#fff',
     marginTop: 16,
     marginBottom: 16,
@@ -202,7 +252,7 @@ const styles1 = StyleSheet.create({
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
   },
-  upbox: {
+  suggestionBox1: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -213,7 +263,13 @@ const styles1 = StyleSheet.create({
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
   },
-  downbox: {
+  suggestionText: {
+    marginLeft: 5,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#999'
+  },
+  suggestionBox2: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -224,16 +280,10 @@ const styles1 = StyleSheet.create({
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
   },
-  label: {
-    marginLeft: 5,
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#999999'
-  },
-  sendbox: {
+  transferwnd: {
     backgroundColor: '#f49422',
     marginTop: 0,
-    marginBottom: 16,
+    marginBottom: 10,
     width: width,
     height: 240,
     flex: 1,

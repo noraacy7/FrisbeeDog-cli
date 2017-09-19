@@ -18,6 +18,8 @@
 		"react-native-animatable": "^1.2.3",
 		"react-native-barcodescanner": "^3.1.1",
 		"react-native-deprecated-custom-components": "^0.1.1",
+		"react-native-device-info": "^0.11.0",
+		"react-native-drawer": "^2.5.0",
 		"react-native-easy-toast": "^1.0.6",
 		"react-native-encryption-library": "^1.0.9",
 		"react-native-gifted-listview": "0.0.15",
