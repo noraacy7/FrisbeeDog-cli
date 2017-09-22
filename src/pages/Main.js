@@ -14,15 +14,17 @@ import {
   MKColor,
   MKSpinner
 } from 'react-native-material-kit';
-import ActionSheet from 'react-native-actionsheet';
+import DeviceInfo from 'react-native-device-info';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
-import NavigationBar from '../container/NavigationBar.js';
-import DeviceInfo from 'react-native-device-info';
 import Drawer from 'react-native-drawer';
+import ActionSheet from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
+import NavigationBar from '../container/NavigationBar.js';
 import ControlPanel from './ControlPanel.js';
 import ScrollViewItem from './ScrollViewItem.js';
+import AddressList from './AddressList.js';
+import QrCodeScanner from './QrCodeScanner.js';
 import styles from '../../stylesheet.js';
 
 var addresses = [
@@ -42,19 +44,8 @@ const FlatButton = MKButton.flatButton()
   })
   .build();
 
-const RaisedButtonReceive = MKButton.coloredButton()
-  .withBackgroundColor('#74c948')
-  .withStyle({
-    margin: 10,
-    flex: 1,
-    height: 40,
-    borderStyle: 'solid',
-    borderRadius: 4,
-  })
-  .build();
-
 const RaisedButtonSend = MKButton.coloredButton()
-  .withBackgroundColor('#3c97e9')
+  .withBackgroundColor('#74c948')
   .withStyle({
     margin: 10,
     flex: 1,
@@ -83,26 +74,6 @@ export default class Main extends Component {
     console.log(DeviceInfo.getUniqueID());
   }
 
-  handlePressQrScanner() {
-    console.log(">>>> you select: " + "Qr scanner");
-  }
-
-  handleActionSheet(i) {
-    console.log(">>>> you select: " + i);
-  }
-
-  handleCopy(i) {
-    console.log(">>>> you select: " + i);
-  }
-
-  handleRefresh(i) {
-    console.log(">>>> you select: " + i);
-  }
-
-  handleTransactionHistory(i) {
-    console.log(">>>> you select: " + i);
-  }
-
   render() {
     // check local storage if should display suggestion box
     var isDisplaySuggestion = {};
@@ -122,13 +93,10 @@ export default class Main extends Component {
           }>
 
           <View style={{flex: 1}}>
-            <NavigationBar lItemImage='logo'
+            <NavigationBar
               rItemImage='md-menu'
-              rItemTappedCallback={
-                () => {
-                  this._drawer.open();
-                }
-              } />
+              rItemTappedCallback={this.handleDrawerOpen.bind(this)}
+            />
             <ScrollView keyboardDismissMode={'on-drag'}>
               {
                 this.state.isDisplaySuggestion ?
@@ -170,48 +138,39 @@ export default class Main extends Component {
               <View style={styles1.transferwnd}>
                 <View style={styles1.row1}>
                   <Text style={styles1.title}>Transfer</Text>
-                  <Text style={styles1.description}>input or scan target address:</Text>
+                  <Text style={styles1.description}>your current balance is: 3.06908454</Text>
                 </View>
                 <View style={styles1.row1}>
                   <TextInput style={styles1.inputbox1}
-                    placeholder={'Address'}
+                    placeholder={'Target Address'}
                     onChangeText={() => {
 
                     }}
                   />
                   <TouchableOpacity style={{position: 'absolute', right: 20, top: 17, backgroundColor: '#fff'}}
-                    onPress={this.handlePressQrScanner}>
+                    onPress={this.handlePressQrScanner.bind(this)}>
                     <Icon name={'md-qr-scanner'} size={25} color='#ddd' />
                   </TouchableOpacity>
                 </View>
                 <View style={styles1.row2}>
-                  <TextInput style={styles1.inputbox2}
+                  <TextInput style={[styles1.inputbox2, {}]}
                     placeholder={'Amount'}
                     onChangeText={() => {
 
                     }}
                   />
-                  <TextInput style={styles1.inputbox2}
+                  <TextInput style={[styles1.inputbox2, {backgroundColor: 'lightgray', color: 'darkgray'}]}
                     editable={false}
-                    value={"0.001"}
+                    value={"0.0001"}
                     onChangeText={() => {
 
                     }}
                   />
                 </View>
                 <View style={styles1.row2}>
-                  <RaisedButtonReceive
-                    onPress={() => {
-                      console.log('hi');
-                    }}>
-                    <Text pointerEvents="none"
-                      style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
-                        Receive
-                    </Text>
-                  </RaisedButtonReceive>
                   <RaisedButtonSend
                     onPress={() => {
-                      console.log('hi');
+
                     }}>
                     <Text pointerEvents="none"
                       style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
@@ -222,7 +181,7 @@ export default class Main extends Component {
               </View>
               <View style={styles.outline}>
                 <Text style={{fontSize: 16, fontWeight: 'bold', color: '#999'}}>Addresses</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.handleSeeall.bind(this)}>
                   <Text style={{fontSize: 14, fontWeight: 'bold', color: '#e0482f'}}>see all</Text>
                 </TouchableOpacity>
               </View>
@@ -257,6 +216,47 @@ export default class Main extends Component {
       </View>
     </Drawer>
     );
+  }
+
+  handleDrawerOpen() {
+    this._drawer.open();
+  }
+
+  handlePressQrScanner() {
+    if (this.props.navigator) {
+      this.props.navigator.push({
+        name: 'QrCodeScanner',
+        component: QrCodeScanner,
+      });
+    }
+  }
+
+  handleSeeall() {
+    if (this.props.navigator) {
+      this.props.navigator.push({
+        name: 'AddressList',
+        component: AddressList,
+        params: {
+          cointype: 'BTC'
+        },
+      });
+    }
+  }
+
+  handleActionSheet(i) {
+    console.log(">>>> you select: " + i);
+  }
+
+  handleCopy(i) {
+    console.log(">>>> you select: " + i);
+  }
+
+  handleRefresh(i) {
+    console.log(">>>> you select: " + i);
+  }
+
+  handleTransactionHistory(i) {
+    console.log(">>>> you select: " + i);
   }
 }
 

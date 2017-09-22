@@ -103,16 +103,15 @@ export default class NavigationBar extends Component {
           <View style={styles.itemView}>
             {
               !isLNothing ?
-              <TouchableOpacity style={styles.lItem} onPress={this.props.lItemTappedCallabck}>
+              <TouchableOpacity style={styles.lItem} onPress={this.props.lItemTappedCallback}>
                 {
                   isLImageDisplayed ?
-                  <Image source={require('../../assets/images/logo.png')}
-                    style={{width: 145, height: 27}}/> :
+                  <Icon style={[styles.lItemImage]} name={this.props.lItemImage} size={25} color='#fff' /> :
                   <Text style={[styles.lItemTitle, {color: this.props.lItemTitleColor}]}>
                     {this.props.lItemTitle}
                   </Text>
                 }
-              </TouchableOpacity> : null
+              </TouchableOpacity> : this.renderLogo()
             }
           </View>
           {
@@ -145,6 +144,15 @@ export default class NavigationBar extends Component {
       </View>
     );
   }
+
+  renderLogo() {
+    return(
+      <TouchableOpacity style={styles.lItem}>
+        <Image source={require('../../assets/images/logo.png')}
+          style={{width: 145, height: 27}}/>
+      </TouchableOpacity>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -163,7 +171,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
   },
 
@@ -194,7 +202,7 @@ const styles = StyleSheet.create({
 
   lItemImage: {
     margin: 10,
-    resizeMode: 'contain',
+    //resizeMode: 'contain',
   },
 
   rItem: {

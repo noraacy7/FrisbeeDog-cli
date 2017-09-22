@@ -25,6 +25,9 @@ export default class FrisbeedogApp extends Component {
           <Navigator
             initialRoute={{name: 'Main', component: Main}}
             configureScene={(route) => {
+              if (route.sceneConfig) {
+                return route.sceneConfig;
+              }
               return Navigator.SceneConfigs.PushFromRight;
             }}
             renderScene={(route, navigator) => {

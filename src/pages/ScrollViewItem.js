@@ -15,7 +15,6 @@ import QRCode from 'react-native-qrcode';
 export default class ScrollViewItem extends Component {
 
   render() {
-    console.log(this.props.address);
     return(
       <View style={styles.addressbox}>
         <QRCode value={this.props.address.address}
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#f0f0f0',
     borderWidth: 0,
-    borderTopWidth: 0.5,
+    borderTopWidth: 1.0,
   },
   addressbox_info: {
     backgroundColor: 'transparent',
