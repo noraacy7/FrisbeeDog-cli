@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  AsyncStorage,
   StyleSheet,
   Text,
   View,
@@ -10,8 +11,34 @@ import {
 import {
   Navigator
 } from 'react-native-deprecated-custom-components';
-import {StackNavigatior} from 'react-navigation';
+import {
+  StackNavigatior
+} from 'react-navigation';
+import Storage from 'react-native-storage';
 import Main from '../pages/Main.js';
+
+var storage = new Storage({
+  // maximum capcity, default 1000
+  size: 200,
+
+  // use AsyncStorage for RN, or window.localStorage for web
+  // if not set, data would be lost after reload
+  storageBackend: AsyncStorage,
+
+  // expire time, default 1 day(1000*3600*24 millionseconds)
+  // can be null, which means never expire.
+  defaultExpires: null,
+
+  // cache data in the memory, default is true
+  enableCache: true,
+
+  // if data was not found in storage or expired,
+  // the corresponding sync method will be invoked and return
+  // the latest data.
+  sync: {
+
+  }
+});
 
 export default class FrisbeedogApp extends Component {
 

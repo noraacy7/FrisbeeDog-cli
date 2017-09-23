@@ -6,7 +6,6 @@ import com.facebook.react.ReactApplication;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.github.yamill.orientation.OrientationPackage;
-import com.eguma.barcodescanner.BarcodeScannerPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -31,7 +30,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNDeviceInfo(),
             new ReactMaterialKitPackage(),
             new OrientationPackage(),
-            new BarcodeScannerPackage(),
             new LottiePackage()
       );
     }

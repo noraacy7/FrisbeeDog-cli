@@ -14,6 +14,7 @@ import {
   MKColor,
   MKSpinner
 } from 'react-native-material-kit';
+import Storage from 'react-native-storage';
 import DeviceInfo from 'react-native-device-info';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -21,6 +22,7 @@ import Drawer from 'react-native-drawer';
 import ActionSheet from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
 import NavigationBar from '../container/NavigationBar.js';
+import Gesture from './Gesture.js';
 import ControlPanel from './ControlPanel.js';
 import ScrollViewItem from './ScrollViewItem.js';
 import AddressList from './AddressList.js';
@@ -66,181 +68,209 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isDisplaySuggestion: true,
+      suggestion_of_gesture_hide: false
     }
   }
 
   componentDidMount() {
     console.log(DeviceInfo.getUniqueID());
+    storage.load({
+      key: 'settings'
+    }).then( (ret) => {
+      console.log('suggestion_of_gesture_hide: ' + ret.suggestion_of_gesture_hide);
+      this.setState({
+        suggestion_of_gesture_hide: ret.suggestion_of_gesture_hide,
+      })
+    }).catch((err) => {
+      console.warn(err.message);
+    });
   }
 
   render() {
-    // check local storage if should display suggestion box
-    var isDisplaySuggestion = {};
+    return(
+      <Drawer ref={(ref) => this._drawer = ref}
+        content={<ControlPanel />}
+        type='overlay'
+        tapToClose={true}
+        openDrawerOffset={0.5}
+        side={'right'}
+        tweenHandler={Drawer.tweenPresets.material}
+        onClose={
+          () => {
+            console.log('close');
+          }
+        }>
 
-      return(
-        <Drawer ref={(ref) => this._drawer = ref}
-          content={<ControlPanel />}
-          type='overlay'
-          tapToClose={true}
-          openDrawerOffset={0.5}
-          side={'right'}
-          tweenHandler={Drawer.tweenPresets.material}
-          onClose={
-            () => {
-              console.log('close');
-            }
-          }>
-
-          <View style={{flex: 1}}>
-            <NavigationBar
-              rItemImage='md-menu'
-              rItemTappedCallback={this.handleDrawerOpen.bind(this)}
-            />
-            <ScrollView keyboardDismissMode={'on-drag'}>
-              {
-                this.state.isDisplaySuggestion ?
-                <Animatable.View style={styles1.infoWnd}
-                  ref='suggestion'>
-                  <View style={styles1.suggestionBox1}>
-                    <Image source={require('../../assets/images/green_shield.png')}
-                      style={{width: 27, height: 27}}/>
-                    <Text style={styles1.suggestionText}>Need an unlock gesture?</Text>
-                  </View>
-                  <View style={styles1.suggestionBox2}>
-                    <FlatButton
-                      onPress={() => {
-                        this.refs.suggestion.fadeOut(1000).then((endState) => {
-                          if (endState.finished) {
-                            this.setState({
-                              isDisplaySuggestion: false,
-                            })
-                          }
-                        });
-                      }}>
-                      <Text pointerEvents="none"
-                        style={{color: '#3188c9', fontSize: 16, fontWeight: 'bold'}}>
-                          No, thanks
-                      </Text>
-                    </FlatButton>
-                    <FlatButton
-                      onPress={() => {
-
-                      }}>
-                      <Text pointerEvents="none"
-                        style={{color: '#3188c9', fontSize: 16, fontWeight: 'bold'}}>
-                          Go ahead
-                      </Text>
-                    </FlatButton>
-                  </View>
-                </Animatable.View> : null
+        <View style={{flex: 1}}>
+          <NavigationBar
+            rItemImage='md-menu'
+            rItemTappedCallback={
+              () => {
+                storage.save({
+                  key: 'settings',
+                  data: {
+                    suggestion_of_gesture_hide: false
+                  }
+                });
+                this._drawer.open()
               }
-              <View style={styles1.transferwnd}>
-                <View style={styles1.row1}>
-                  <Text style={styles1.title}>Transfer</Text>
-                  <Text style={styles1.description}>your current balance is: 3.06908454</Text>
+            }
+          />
+          <ScrollView keyboardDismissMode={'on-drag'}>
+            {
+              !this.state.suggestion_of_gesture_hide ?
+              <Animatable.View style={styles1.infoWnd}
+                ref='suggestion'>
+                <View style={styles1.suggestionBox1}>
+                  <Image source={require('../../assets/images/green_shield.png')}
+                    style={{width: 27, height: 27}}/>
+                  <Text style={styles1.suggestionText}>Need an unlock gesture?</Text>
                 </View>
-                <View style={styles1.row1}>
-                  <TextInput style={styles1.inputbox1}
-                    placeholder={'Target Address'}
-                    onChangeText={() => {
-
-                    }}
-                  />
-                  <TouchableOpacity style={{position: 'absolute', right: 20, top: 17, backgroundColor: '#fff'}}
-                    onPress={this.handlePressQrScanner.bind(this)}>
-                    <Icon name={'md-qr-scanner'} size={25} color='#ddd' />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles1.row2}>
-                  <TextInput style={[styles1.inputbox2, {}]}
-                    placeholder={'Amount'}
-                    onChangeText={() => {
-
-                    }}
-                  />
-                  <TextInput style={[styles1.inputbox2, {backgroundColor: 'lightgray', color: 'darkgray'}]}
-                    editable={false}
-                    value={"0.0001"}
-                    onChangeText={() => {
-
-                    }}
-                  />
-                </View>
-                <View style={styles1.row2}>
-                  <RaisedButtonSend
+                <View style={styles1.suggestionBox2}>
+                  <FlatButton
                     onPress={() => {
-
+                      // hide suggestion of gesture setting forever
+                      storage.save({
+                        key: 'settings',
+                        data: {
+                          suggestion_of_gesture_hide: true
+                        }
+                      });
+                      this.refs.suggestion.fadeOut(1000).then((endState) => {
+                        if (endState.finished) {
+                          this.setState({
+                            suggestion_of_gesture_hide: true,
+                          })
+                        }
+                      });
                     }}>
                     <Text pointerEvents="none"
-                      style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
-                        Send
+                      style={{color: '#3188c9', fontSize: 16, fontWeight: 'bold'}}>
+                        No, thanks
                     </Text>
-                  </RaisedButtonSend>
+                  </FlatButton>
+                  <FlatButton
+                    onPress={() => {
+                      if (this.props.navigator) {
+                        this.props.navigator.push({
+                          name: 'Gesture',
+                          component: Gesture,
+                          params: {
+                            initpswd: true
+                          },
+                        });
+                      }
+                    }}>
+                    <Text pointerEvents="none"
+                      style={{color: '#3188c9', fontSize: 16, fontWeight: 'bold'}}>
+                        Go ahead
+                    </Text>
+                  </FlatButton>
                 </View>
+              </Animatable.View> : null
+            }
+            <View style={styles1.transferwnd}>
+              <View style={styles1.row1}>
+                <Text style={styles1.title}>Transfer</Text>
+                <Text style={styles1.description}>your current balance is: 3.06908454</Text>
               </View>
-              <View style={styles.outline}>
-                <Text style={{fontSize: 16, fontWeight: 'bold', color: '#999'}}>Addresses</Text>
-                <TouchableOpacity onPress={this.handleSeeall.bind(this)}>
-                  <Text style={{fontSize: 14, fontWeight: 'bold', color: '#e0482f'}}>see all</Text>
+              <View style={styles1.row1}>
+                <TextInput style={styles1.inputbox1}
+                  placeholder={'Target Address'}
+                  onChangeText={() => {
+
+                  }}
+                />
+                <TouchableOpacity style={{position: 'absolute', right: 20, top: 17, backgroundColor: '#fff'}}
+                  onPress={
+                    () => {
+                      if (this.props.navigator) {
+                        this.props.navigator.push({
+                          name: 'QrCodeScanner',
+                          component: QrCodeScanner,
+                        });
+                      }
+                    }
+                  }>
+                  <Icon name={'md-qr-scanner'} size={25} color='#ddd' />
                 </TouchableOpacity>
               </View>
-              {
-                addresses.map((item, i) => {
-                  return(
-                    <ScrollViewItem
-                      key={i}
-                      address={item}
-                      onCopy={() => this.handleCopy(i)}
-                      onRefresh={() => this.handleRefresh(i)}
-                      onTransactionHistory={() => this.handleTransactionHistory(i)}>
-                    </ScrollViewItem>
-                  )
-                })
-              }
-          <PlainButton
-            onPress={() => {
-              this.ActionSheet.show();
-            }}>
-            <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
-          </PlainButton>
-        </ScrollView>
-        <ActionSheet
-          ref={o => this.ActionSheet = o}
-          title={'Add another address'}
-          options={['Cancel', 'import from my account', 'create address']}
-          cancelButtonIndex={0}
-          destructiveButtonIndex={4}
-          onPress={this.handleActionSheet}
-        />
-      </View>
-    </Drawer>
-    );
-  }
+              <View style={styles1.row2}>
+                <TextInput style={[styles1.inputbox2, {}]}
+                  placeholder={'Amount'}
+                  onChangeText={() => {
 
-  handleDrawerOpen() {
-    this._drawer.open();
-  }
+                  }}
+                />
+                <TextInput style={[styles1.inputbox2, {backgroundColor: 'lightgray', color: 'darkgray'}]}
+                  editable={false}
+                  value={"0.0001"}
+                  onChangeText={() => {
 
-  handlePressQrScanner() {
-    if (this.props.navigator) {
-      this.props.navigator.push({
-        name: 'QrCodeScanner',
-        component: QrCodeScanner,
-      });
-    }
-  }
+                  }}
+                />
+              </View>
+              <View style={styles1.row2}>
+                <RaisedButtonSend
+                  onPress={() => {
 
-  handleSeeall() {
-    if (this.props.navigator) {
-      this.props.navigator.push({
-        name: 'AddressList',
-        component: AddressList,
-        params: {
-          cointype: 'BTC'
-        },
-      });
-    }
+                  }}>
+                  <Text pointerEvents="none"
+                    style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
+                      Send
+                  </Text>
+                </RaisedButtonSend>
+              </View>
+            </View>
+            <View style={styles.outline}>
+              <Text style={{fontSize: 16, fontWeight: 'bold', color: '#999'}}>Addresses</Text>
+              <TouchableOpacity onPress={
+                () => {
+                  if (this.props.navigator) {
+                    this.props.navigator.push({
+                      name: 'AddressList',
+                      component: AddressList,
+                      params: {
+                        cointype: 'BTC'
+                      },
+                    });
+                  }
+                }
+              }>
+                <Text style={{fontSize: 14, fontWeight: 'bold', color: '#e0482f'}}>see all</Text>
+              </TouchableOpacity>
+            </View>
+            {
+              addresses.map((item, i) => {
+                return(
+                  <ScrollViewItem
+                    key={i}
+                    address={item}
+                    onCopy={() => this.handleCopy(i)}
+                    onRefresh={() => this.handleRefresh(i)}
+                    onTransactionHistory={() => this.handleTransactionHistory(i)}>
+                  </ScrollViewItem>
+                )
+              })
+            }
+        <PlainButton
+          onPress={() => {
+            this.ActionSheet.show();
+          }}>
+          <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
+        </PlainButton>
+      </ScrollView>
+      <ActionSheet
+        ref={o => this.ActionSheet = o}
+        title={'Add another address'}
+        options={['Cancel', 'import from my account', 'create address']}
+        cancelButtonIndex={0}
+        destructiveButtonIndex={4}
+        onPress={this.handleActionSheet}
+      />
+    </View>
+  </Drawer>
+  );
   }
 
   handleActionSheet(i) {
