@@ -6,6 +6,7 @@ import {
   View,
 } from 'react-native';
 import PasswordGesture from 'react-native-gesture-password';
+import * as Theme from '../config/Theme.js';
 
 var Password1 = '';
 
@@ -22,7 +23,7 @@ export default class Gesture extends Component {
   render() {
     return(
       <PasswordGesture ref='pg'
-        rightColor={'#3c97e9'} 
+        rightColor={Theme.defaultTheme.themeColor} 
         message={this.state.message}
         status={this.state.status}
         onStart={ () => this.handleStart() }

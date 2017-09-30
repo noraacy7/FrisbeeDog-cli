@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  ScrollView
+  ScrollView,
+  DeviceEventEmitter
 } from 'react-native';
 import {
   MKButton,
@@ -28,11 +29,17 @@ import ScrollViewItem from './ScrollViewItem.js';
 import AddressList from './AddressList.js';
 import QrCodeScanner from './QrCodeScanner.js';
 import styles from '../../stylesheet.js';
+import * as Theme from '../config/Theme.js';
 
 var addresses = [
   {address: '2N1vKCFx3gF4jYVKfuD9ViuQaHB2ujcbmV9', balance: '0.00000000', updated_time: '2017-09-18 14:28:00'},
   {address: 'mn7yHmxBpV9H5Uatfu8bRpUkqtYsauMsxW', balance: '0.00000000', updated_time: '2017-09-18 14:28:15'},
 ];
+
+const drawerStyles = {
+  drawer: {shadowColor: '#000', shadowOpacity: 0.8, shadowRadius: 15},
+  main: {paddingLeft: 3},
+}
 
 const FlatButton = MKButton.flatButton()
   .withShadowAniEnabled(false)
@@ -40,14 +47,14 @@ const FlatButton = MKButton.flatButton()
     flex: 1,
     height: 50,
     borderStyle: 'solid',
-    borderColor: '#f0f0f0',
+    borderColor: Theme.defaultTheme.borderColor,
     borderLeftWidth: 0.5,
     borderRightWidth: 0.5
   })
   .build();
 
 const RaisedButtonSend = MKButton.coloredButton()
-  .withBackgroundColor('#74c948')
+  .withBackgroundColor(Theme.defaultTheme.primaryButtonColor)
   .withStyle({
     margin: 10,
     flex: 1,
@@ -68,33 +75,47 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      suggestion_of_gesture_hide: false
+      suggestion_of_gesture_hide: false,
+      TargetAddress: ''
     }
   }
 
   componentDidMount() {
     console.log(DeviceInfo.getUniqueID());
+    DeviceEventEmitter.addListener("barcoderead",
+    (event) => {
+      this.setState({
+        TargetAddress: event
+      });
+    });
     storage.load({
-      key: 'settings'
+      key: 'suggestion'
     }).then( (ret) => {
-      console.log('suggestion_of_gesture_hide: ' + ret.suggestion_of_gesture_hide);
       this.setState({
         suggestion_of_gesture_hide: ret.suggestion_of_gesture_hide,
-      })
+      });
     }).catch((err) => {
-      console.warn(err.message);
+      storage.save({
+        key: 'suggestion',
+        data: {
+          suggestion_of_gesture_hide: false
+        }
+      });
     });
   }
 
   render() {
     return(
       <Drawer ref={(ref) => this._drawer = ref}
+        style={drawerStyles}
         content={<ControlPanel />}
         type='overlay'
         tapToClose={true}
         openDrawerOffset={0.5}
         side={'right'}
-        tweenHandler={Drawer.tweenPresets.material}
+        tweenHandler={
+          Drawer.tweenPresets.material
+        }
         onClose={
           () => {
             console.log('close');
@@ -106,12 +127,6 @@ export default class Main extends Component {
             rItemImage='md-menu'
             rItemTappedCallback={
               () => {
-                storage.save({
-                  key: 'settings',
-                  data: {
-                    suggestion_of_gesture_hide: false
-                  }
-                });
                 this._drawer.open()
               }
             }
@@ -131,7 +146,7 @@ export default class Main extends Component {
                     onPress={() => {
                       // hide suggestion of gesture setting forever
                       storage.save({
-                        key: 'settings',
+                        key: 'suggestion',
                         data: {
                           suggestion_of_gesture_hide: true
                         }
@@ -145,7 +160,7 @@ export default class Main extends Component {
                       });
                     }}>
                     <Text pointerEvents="none"
-                      style={{color: '#3188c9', fontSize: 16, fontWeight: 'bold'}}>
+                      style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'bold'}}>
                         No, thanks
                     </Text>
                   </FlatButton>
@@ -162,14 +177,14 @@ export default class Main extends Component {
                       }
                     }}>
                     <Text pointerEvents="none"
-                      style={{color: '#3188c9', fontSize: 16, fontWeight: 'bold'}}>
+                      style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'bold'}}>
                         Go ahead
                     </Text>
                   </FlatButton>
                 </View>
               </Animatable.View> : null
             }
-            <View style={styles1.transferwnd}>
+            <View style={styles1.transferWnd}>
               <View style={styles1.row1}>
                 <Text style={styles1.title}>Transfer</Text>
                 <Text style={styles1.description}>your current balance is: 3.06908454</Text>
@@ -178,8 +193,11 @@ export default class Main extends Component {
                 <TextInput style={styles1.inputbox1}
                   placeholder={'Target Address'}
                   onChangeText={() => {
-
+                    this.setState({
+                      TargetAddress: ''
+                    })
                   }}
+                  value={this.state.TargetAddress}
                 />
                 <TouchableOpacity style={{position: 'absolute', right: 20, top: 17, backgroundColor: '#fff'}}
                   onPress={
@@ -202,7 +220,7 @@ export default class Main extends Component {
 
                   }}
                 />
-                <TextInput style={[styles1.inputbox2, {backgroundColor: 'lightgray', color: 'darkgray'}]}
+                <TextInput style={[styles1.inputbox2, {backgroundColor: Theme.defaultTheme.inputDisableBackgroundColor, color: 'darkgray'}]}
                   editable={false}
                   value={"0.0001"}
                   onChangeText={() => {
@@ -231,13 +249,13 @@ export default class Main extends Component {
                       name: 'AddressList',
                       component: AddressList,
                       params: {
-                        cointype: 'BTC'
+                        cointype: 'Bitcoin'
                       },
                     });
                   }
                 }
               }>
-                <Text style={{fontSize: 14, fontWeight: 'bold', color: '#e0482f'}}>see all</Text>
+                <Text style={{fontSize: 14, fontWeight: 'bold', color: Theme.defaultTheme.dangerColor}}>see all</Text>
               </TouchableOpacity>
             </View>
             {
@@ -293,7 +311,7 @@ export default class Main extends Component {
 const {width, height} = Dimensions.get('window');
 const styles1 = StyleSheet.create({
   infoWnd: {
-    backgroundColor: '#fff',
+    backgroundColor: Theme.defaultTheme.infoWndColor,
     marginTop: 16,
     marginBottom: 16,
     width: width,
@@ -312,7 +330,7 @@ const styles1 = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderStyle: 'solid',
-    borderColor: '#f0f0f0',
+    borderColor: Theme.defaultTheme.borderColor,
     borderWidth: 0,
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
@@ -329,13 +347,13 @@ const styles1 = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     borderStyle: 'solid',
-    borderColor: '#f0f0f0',
+    borderColor: Theme.defaultTheme.borderColor,
     borderWidth: 0,
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
   },
-  transferwnd: {
-    backgroundColor: '#f49422',
+  transferWnd: {
+    backgroundColor: Theme.defaultTheme.transferWndColor,
     marginTop: 0,
     marginBottom: 10,
     width: width,
@@ -358,14 +376,14 @@ const styles1 = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#3b5b6a'
+    color: Theme.defaultTheme.transferColor,
   },
   description: {
     fontSize: 14,
-    color: '#3188c9'
+    color: Theme.defaultTheme.descriptionColor,
   },
   inputbox1: {
-    backgroundColor: '#fff',
+    backgroundColor: Theme.defaultTheme.inputEnableBackgroundColor,
     flex: 1,
     width: width - 20,
     height: 40,
@@ -379,7 +397,7 @@ const styles1 = StyleSheet.create({
     borderRadius: 4,
   },
   inputbox2: {
-    backgroundColor: '#fff',
+    backgroundColor: Theme.defaultTheme.inputEnableBackgroundColor,
     flex: 1,
     width: width / 2.0 - 20,
     height: 40,

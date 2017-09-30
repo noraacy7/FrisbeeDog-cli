@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
+import * as Theme from '../config/Theme.js';
 
 const HEIGHT_STATUSBAR = 20;
 const HEIGHT_NAVIGATIONBAR = 50;
@@ -22,10 +23,10 @@ export default class NavigationBar extends Component {
     titleTappedCallback() {
 
     },
-    navbarBackgroundColor: '#3c97e9',
+    navbarBackgroundColor: Theme.defaultTheme.themeColor,
     navbarOpacity: 1,
     navbarStyle: 0,
-    navbarBorderBottomColor: '#d4d4d4',
+    navbarBorderBottomColor: Theme.defaultTheme.borderColor,
     navbarBorderBottomWidth: 0.8,
 
     lItemTitle: '',

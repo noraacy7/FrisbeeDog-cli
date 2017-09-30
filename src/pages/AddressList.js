@@ -61,12 +61,6 @@ export default class AddressList extends Component {
                 )
               })
             }
-            <PlainButton
-              onPress={() => {
-                this.ActionSheet.show();
-              }}>
-              <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
-            </PlainButton>
           </ScrollView>
         </View>
         <ActionSheet

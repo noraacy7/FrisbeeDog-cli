@@ -11,9 +11,6 @@ import {
 import {
   Navigator
 } from 'react-native-deprecated-custom-components';
-import {
-  StackNavigatior
-} from 'react-navigation';
 import Storage from 'react-native-storage';
 import Main from '../pages/Main.js';
 
@@ -39,6 +36,8 @@ var storage = new Storage({
 
   }
 });
+
+global.storage = storage;
 
 export default class FrisbeedogApp extends Component {
 

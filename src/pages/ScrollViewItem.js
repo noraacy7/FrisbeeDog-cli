@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#f0f0f0',
     borderWidth: 0,
-    borderTopWidth: 1.0,
+    borderTopWidth: 1.5,
   },
   addressbox_info: {
     backgroundColor: 'transparent',
