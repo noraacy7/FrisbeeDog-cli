@@ -12,6 +12,7 @@ import {
   Navigator
 } from 'react-native-deprecated-custom-components';
 import Storage from 'react-native-storage';
+import DeviceInfo from 'react-native-device-info';
 import Main from '../pages/Main.js';
 
 var storage = new Storage({
@@ -41,17 +42,33 @@ global.storage = storage;
 
 storage.load({
   key: 'l0calsettings'
-}).then( (settings) => {
+}).then((settings) => {
   console.log(settings);
+
+  if (settings['unique_id'] == undefined) {
+    saveL0calsettingsAsDefault();
+  }
 }).catch((err) => {
+  saveL0calsettingsAsDefault();
+});
+// setup default value for variables
+storage.save({
+  key: 'user',
+  data: {
+    verify_login: false
+  }
+});
+
+function saveL0calsettingsAsDefault() {
   storage.save({
     key: 'l0calsettings',
     data: {
       suggestion_of_gesture_hide: false,
-      background: 'black'
+      gesture: '',
+      unique_id: DeviceInfo.getUniqueID(),
     }
   });
-});
+}
 
 export default class FrisbeedogApp extends Component {
 

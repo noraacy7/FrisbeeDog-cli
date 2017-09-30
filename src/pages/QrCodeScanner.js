@@ -43,8 +43,7 @@ export default class QrCodeScanner extends Component {
             if (this.props.navigator) {
               this.props.navigator.pop();
             }
-          }
-        }>
+          }}>
           <Text style={styles.cancelText}>Cancel</Text>
         </TouchableOpacity>
       </View>

@@ -16,7 +16,6 @@ import {
   MKSpinner
 } from 'react-native-material-kit';
 import Storage from 'react-native-storage';
-import DeviceInfo from 'react-native-device-info';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Drawer from 'react-native-drawer';
@@ -24,6 +23,7 @@ import ActionSheet from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
 import NavigationBar from '../container/NavigationBar.js';
 import Gesture from './Gesture.js';
+import GestureLocker from '../pages/GestureLocker.js';
 import ControlPanel from './ControlPanel.js';
 import ScrollViewItem from './ScrollViewItem.js';
 import AddressList from './AddressList.js';
@@ -81,7 +81,6 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
-    console.log(DeviceInfo.getUniqueID());
     // add observer
     DeviceEventEmitter.addListener("barcoderead",
     (data) => {
@@ -92,7 +91,21 @@ export default class Main extends Component {
     // get settings and update state properties
     storage.load({
       key: 'l0calsettings'
-    }).then( (settings) => {
+    }).then((settings) => {
+      if (settings.gesture != '' && settings.gesture.length > 0) {
+        storage.load({
+          key: 'user'
+        }).then((user) => {
+          if (!user.verify_login) {
+            if (this.props.navigator) {
+              this.props.navigator.resetTo({
+                name: 'GestureLocker',
+                component: GestureLocker
+              });
+            }
+          }
+        });
+      }
       this.setState({l0calsettings: settings});
     }).catch((err) => {});
   }
@@ -102,7 +115,7 @@ export default class Main extends Component {
       <Drawer ref={(ref) => this._drawer = ref}
         style={drawerStyles}
         content={<ControlPanel />}
-        type='overlay'
+        type='displace'
         tapToClose={true}
         openDrawerOffset={0.5}
         side={'right'}
@@ -158,13 +171,15 @@ export default class Main extends Component {
                   </FlatButton>
                   <FlatButton
                     onPress={() => {
+                      var settings = this.state.l0calsettings;
+                      settings['suggestion_of_gesture_hide'] = true;
+                      this.setState({
+                        l0calsettings: settings,
+                      });
                       if (this.props.navigator) {
                         this.props.navigator.push({
                           name: 'Gesture',
-                          component: Gesture,
-                          params: {
-                            initpswd: true
-                          },
+                          component: Gesture
                         });
                       }
                     }}>
