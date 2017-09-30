@@ -39,6 +39,20 @@ var storage = new Storage({
 
 global.storage = storage;
 
+storage.load({
+  key: 'l0calsettings'
+}).then( (settings) => {
+  console.log(settings);
+}).catch((err) => {
+  storage.save({
+    key: 'l0calsettings',
+    data: {
+      suggestion_of_gesture_hide: false,
+      background: 'black'
+    }
+  });
+});
+
 export default class FrisbeedogApp extends Component {
 
     constructor(props) {

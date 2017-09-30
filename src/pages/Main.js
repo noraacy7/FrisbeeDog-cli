@@ -75,33 +75,26 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      suggestion_of_gesture_hide: false,
+      l0calsettings: {},
       TargetAddress: ''
     }
   }
 
   componentDidMount() {
     console.log(DeviceInfo.getUniqueID());
+    // add observer
     DeviceEventEmitter.addListener("barcoderead",
-    (event) => {
+    (data) => {
       this.setState({
-        TargetAddress: event
+        TargetAddress: data
       });
     });
+    // get settings and update state properties
     storage.load({
-      key: 'suggestion'
-    }).then( (ret) => {
-      this.setState({
-        suggestion_of_gesture_hide: ret.suggestion_of_gesture_hide,
-      });
-    }).catch((err) => {
-      storage.save({
-        key: 'suggestion',
-        data: {
-          suggestion_of_gesture_hide: false
-        }
-      });
-    });
+      key: 'l0calsettings'
+    }).then( (settings) => {
+      this.setState({l0calsettings: settings});
+    }).catch((err) => {});
   }
 
   render() {
@@ -133,7 +126,7 @@ export default class Main extends Component {
           />
           <ScrollView keyboardDismissMode={'on-drag'}>
             {
-              !this.state.suggestion_of_gesture_hide ?
+              !this.state.l0calsettings['suggestion_of_gesture_hide'] ?
               <Animatable.View style={styles1.infoWnd}
                 ref='suggestion'>
                 <View style={styles1.suggestionBox1}>
@@ -144,18 +137,17 @@ export default class Main extends Component {
                 <View style={styles1.suggestionBox2}>
                   <FlatButton
                     onPress={() => {
-                      // hide suggestion of gesture setting forever
-                      storage.save({
-                        key: 'suggestion',
-                        data: {
-                          suggestion_of_gesture_hide: true
-                        }
-                      });
                       this.refs.suggestion.fadeOut(1000).then((endState) => {
                         if (endState.finished) {
+                          var settings = this.state.l0calsettings;
+                          settings['suggestion_of_gesture_hide'] = true;
                           this.setState({
-                            suggestion_of_gesture_hide: true,
-                          })
+                            l0calsettings: settings,
+                          });
+                          storage.save({
+                            key: 'l0calsettings',
+                            data: settings
+                          });
                         }
                       });
                     }}>
