@@ -246,56 +246,61 @@ export default class Main extends Component {
     )
   }
 
+  renderMask() {
+    if (this.state.showConfirmation) {
+      return(
+        <View style={styles1.mask}></View>
+      )
+    } else {
+      return null
+    }
+  }
+
   renderConfirmation() {
     if (this.state.showConfirmation) {
       return(
-        <View>
-          <View style={styles1.mask}>
-
+        <Animatable.View ref='confirmationbox' style={styles1.confirmWnd}>
+          <View style={styles1.line}>
+            <Text style={styles1.text}>SEND CONFIRMATION</Text>
           </View>
-          <Animatable.View ref='confirmationbox' style={styles1.confirmWnd}>
-            <View style={styles1.line}>
-              <Text style={styles1.text}>SEND CONFIRMATION</Text>
+          <View style={styles1.line}>
+            <Text style={styles1.text}>Send 0.11458679 BTC</Text>
+          </View>
+          <View style={styles1.line}>
+            <Text style={styles1.text}>Receiving Address</Text>
+            <Text style={styles1.smalltext}>mn7yHmxBpV9H5Uatfu8bRpUkqtYsauMsxW</Text>
+          </View>
+          <View style={styles1.line}>
+            <Text style={styles1.text}>Mining Fee: 0.0034126 BTC</Text>
+            <Text style={styles1.smalltext}>BTC mining fee can be adjusted in personal settings menu</Text>
+          </View>
+          <View style={styles1.line}>
+            <View style={[styles1.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5}]}>
+              <TouchableOpacity onPress={() => {
+                this.refs.confirmationbox.fadeOut(100).then((endState) => {
+                  if (endState.finished) {
+                    this.setState({
+                      showConfirmation: false
+                    });
+                  }
+                });
+              }}>
+                <Text style={styles1.boldtext}>CANCEL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                this.refs.confirmationbox.fadeOut(100).then((endState) => {
+                  if (endState.finished) {
+                    this.setState({
+                      showConfirmation: false
+                    });
+                  }
+                });
+              }}>
+                <Text style={styles1.boldtext}>CONFIRM</Text>
+              </TouchableOpacity>
             </View>
-            <View style={styles1.line}>
-              <Text style={styles1.text}>Send 0.11458679 BTC</Text>
-            </View>
-            <View style={styles1.line}>
-              <Text style={styles1.text}>Receiving Address</Text>
-              <Text style={styles1.smalltext}>mn7yHmxBpV9H5Uatfu8bRpUkqtYsauMsxW</Text>
-            </View>
-            <View style={styles1.line}>
-              <Text style={styles1.text}>Mining Fee: 0.0034126 BTC</Text>
-              <Text style={styles1.smalltext}>BTC mining fee can be adjusted in personal settings menu</Text>
-            </View>
-            <View style={styles1.line}>
-              <View style={[styles1.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5}]}>
-                <TouchableOpacity onPress={() => {
-                  this.refs.confirmationbox.fadeOut(100).then((endState) => {
-                    if (endState.finished) {
-                      this.setState({
-                        showConfirmation: false
-                      });
-                    }
-                  });
-                }}>
-                  <Text style={styles1.boldtext}>CANCEL</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                  this.refs.confirmationbox.fadeOut(100).then((endState) => {
-                    if (endState.finished) {
-                      this.setState({
-                        showConfirmation: false
-                      });
-                    }
-                  });
-                }}>
-                  <Text style={styles1.boldtext}>CONFIRM</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Animatable.View>
-        </View>
+          </View>
+        </Animatable.View>
       )
     } else {
       return null
@@ -369,6 +374,7 @@ export default class Main extends Component {
                 <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
               </PlainButton>
             </ScrollView>
+            {this.renderMask()}
             {this.renderConfirmation()}
             <ActionSheet
               ref={o => this.ActionSheet = o}
