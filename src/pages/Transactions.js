@@ -31,7 +31,7 @@ const PlainButton = MKButton.plainFab()
   })
   .build();
 
-export default class AddressList extends Component {
+export default class Transactions extends Component {
 
   constructor(props) {
     super(props);
@@ -43,7 +43,7 @@ export default class AddressList extends Component {
   render() {
     return(
       <View style={{flex: 1}}>
-        <NavigationBar title={this.props.cointype}
+        <NavigationBar title={'Transactions'}
           lItemImage='md-arrow-back'
           lItemTappedCallback={this.handleNavBack.bind(this)}/>
         <View style={styles.container}>

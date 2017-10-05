@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import QRCode from 'react-native-qrcode';
+import * as Theme from '../config/Theme.js';
 
 export default class ScrollViewItem extends Component {
 
@@ -22,19 +23,17 @@ export default class ScrollViewItem extends Component {
           bgColor='transparent'
           fgColr='white' />
         <View style={styles.addressbox_info}>
-          <Text style={[styles.text, {color: '#999'}]}>{this.props.address.address}
+          <Text style={[styles.text, {color: Theme.defaultTheme.normalTextColor}]}>{this.props.address.address}
             <Text style={{color: '#fff'}}>=</Text>
-            <Icon name={'md-copy'} size={18} color='#999' onPress={() => this.onCopy()}/>
+            <Icon name={'md-copy'} size={18} color={Theme.defaultTheme.normalIconColor} onPress={() => this.onCopy()}/>
             <Text style={{color: '#fff'}}>=</Text>
-            <Icon name={'md-refresh'} size={18} color='#999' onPress={() => this.onRefresh()}/>
-            <Text style={{color: '#fff'}}>=</Text>
-            <Icon name={'md-swap'} size={18} color='#999' onPress={() => this.onTransactionHistory()}/>
+            <Icon name={'md-refresh'} size={18} color={Theme.defaultTheme.normalIconColor} onPress={() => this.onRefresh()}/>
           </Text>
-          <Text style={[styles.large_text, {marginTop: 10, color: '#000'}]}>
+          <Text style={[styles.large_text, {marginTop: 10, color: Theme.defaultTheme.importantTextColor}]}>
             {this.props.address.balance}
           </Text>
-          <Text style={[styles.text, {color: '#999'}]}>
-            ≈ <Text style={[styles.text, {color: '#999'}]}>$ 0.000</Text>
+          <Text style={[styles.text, {color: Theme.defaultTheme.normalTextColor}]}>
+            ≈ <Text style={[styles.text, {color: Theme.defaultTheme.normalTextColor}]}>$0.000</Text>
           </Text>
         </View>
       </View>
@@ -47,10 +46,6 @@ export default class ScrollViewItem extends Component {
 
   onRefresh() {
     this.props.onRefresh();
-  }
-
-  onTransactionHistory() {
-    this.props.onTransactionHistory();
   }
 }
 
@@ -84,6 +79,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   large_text: {
-    fontSize: 24,
+    fontSize: 28,
   }
 });

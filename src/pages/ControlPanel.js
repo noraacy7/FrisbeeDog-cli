@@ -74,6 +74,18 @@ export default class ControlPanel extends Component {
             }}>
             <Text pointerEvents="none"
               style={{paddingBottom: 5, color: Theme.defaultTheme.menuTextColor, fontSize: 16, fontWeight: 'normal'}}>
+                Export Private Keys
+            </Text>
+            <Icon style={{paddingRight: 149, marginBottom: 0}} name='ios-key-outline' size={30} color='#999' />
+          </FlatButton>
+        </View>
+        <View style={styles1.menubox}>
+          <FlatButton
+            onPress={() => {
+
+            }}>
+            <Text pointerEvents="none"
+              style={{paddingBottom: 5, color: Theme.defaultTheme.menuTextColor, fontSize: 16, fontWeight: 'normal'}}>
                 Report Bugs
             </Text>
             <Icon style={{paddingRight: 148, marginBottom: 0}} name='ios-bug-outline' size={30} color='#999' />
@@ -124,7 +136,10 @@ export default class ControlPanel extends Component {
       }}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
           <Image source={uri} style={{width: 27, height: 27}}/>
-          <Text style={{marginLeft: 10, color: Theme.defaultTheme.menuTextColor}}>{rowData.text}</Text>
+          <View style={{backgroundColor: 'transparent'}}>
+            <Text style={{marginLeft: 10, color: Theme.defaultTheme.menuTextColor, fontSize: 16}}>{rowData.text}</Text>
+            <Text style={{marginLeft: 10, color: Theme.defaultTheme.normalTextColor, fontSize: 10}}>$4,158.53</Text>
+          </View>
         </View>
         {
           rowData.id == this.state.selectedIndex ?

@@ -25,7 +25,7 @@ import Gesture from './Gesture.js';
 import GestureLocker from '../pages/GestureLocker.js';
 import ControlPanel from './ControlPanel.js';
 import ScrollViewItem from './ScrollViewItem.js';
-import AddressList from './AddressList.js';
+import Transactions from './Transactions.js';
 import QrCodeScanner from './QrCodeScanner.js';
 import styles from '../../stylesheet.js';
 import * as Theme from '../config/Theme.js';
@@ -76,6 +76,7 @@ export default class Main extends Component {
     this.state = {
       l0calsettings: {},
       TargetAddress: '',
+      coin: 'Bitcoin',
       loading: false
     }
   }
@@ -92,14 +93,17 @@ export default class Main extends Component {
     DeviceEventEmitter.addListener("coinchanged",
     (data) => {
       this._drawer.close();
-      this.setState({
-        loading: true
-      });
-      setTimeout(() => {
+      if (this.state.coin != data) {
         this.setState({
-          loading: false
-        })
-      }, 1000);
+          coin: data,
+          loading: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            loading: false
+          })
+        }, 1000);
+      }
     });
     // get settings and update state properties
     storage.load({
@@ -206,7 +210,7 @@ export default class Main extends Component {
             <View style={styles1.transferWnd}>
               <View style={styles1.row1}>
                 <Text style={styles1.title}>Transfer</Text>
-                <Text style={styles1.description}>current balance is: 3.06908454</Text>
+                <Text style={styles1.description}>total balance is: $386.18</Text>
               </View>
               <View style={styles1.row1}>
                 <TextInput style={styles1.inputbox1}
@@ -265,8 +269,8 @@ export default class Main extends Component {
                   () => {
                     if (this.props.navigator) {
                       this.props.navigator.push({
-                        name: 'AddressList',
-                        component: AddressList,
+                        name: 'Transactions',
+                        component: Transactions,
                         params: {
                           cointype: 'Bitcoin'
                         },
@@ -274,7 +278,7 @@ export default class Main extends Component {
                     }
                   }
                 }>
-                  <Text style={{fontSize: 14, fontWeight: 'bold', color: Theme.defaultTheme.dangerColor}}>see all</Text>
+                  <Text style={{fontSize: 14, fontWeight: 'bold', color: Theme.defaultTheme.dangerColor}}>transactions</Text>
                 </TouchableOpacity>
               </View>
               {
@@ -284,8 +288,7 @@ export default class Main extends Component {
                       key={i}
                       address={item}
                       onCopy={() => this.handleCopy(i)}
-                      onRefresh={() => this.handleRefresh(i)}
-                      onTransactionHistory={() => this.handleTransactionHistory(i)}>
+                      onRefresh={() => this.handleRefresh(i)}>
                     </ScrollViewItem>
                   )
                 })
@@ -299,8 +302,8 @@ export default class Main extends Component {
         </ScrollView>
         <ActionSheet
           ref={o => this.ActionSheet = o}
-          title={'Add another address'}
-          options={['Cancel', 'import from my account', 'create address']}
+          title={'Add more addresses'}
+          options={['cancel', 'create new address']}
           cancelButtonIndex={0}
           destructiveButtonIndex={4}
           onPress={this.handleActionSheet}
@@ -311,7 +314,7 @@ export default class Main extends Component {
     );
   }
 
-  handleLoading() {
+  handleSend() {
 
   }
 
@@ -324,10 +327,6 @@ export default class Main extends Component {
   }
 
   handleRefresh(i) {
-    console.log(">>>> you select: " + i);
-  }
-
-  handleTransactionHistory(i) {
     console.log(">>>> you select: " + i);
   }
 }
