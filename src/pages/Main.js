@@ -12,10 +12,9 @@ import {
 } from 'react-native';
 import {
   MKButton,
-  MKColor,
   MKSpinner
 } from 'react-native-material-kit';
-import Storage from 'react-native-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Drawer from 'react-native-drawer';
@@ -76,17 +75,31 @@ export default class Main extends Component {
     super(props);
     this.state = {
       l0calsettings: {},
-      TargetAddress: ''
+      TargetAddress: '',
+      loading: false
     }
   }
 
   componentDidMount() {
-    // add observer
+    // add observer 1st
     DeviceEventEmitter.addListener("barcoderead",
     (data) => {
       this.setState({
         TargetAddress: data
       });
+    });
+    // add observer 2nd
+    DeviceEventEmitter.addListener("coinchanged",
+    (data) => {
+      this._drawer.close();
+      this.setState({
+        loading: true
+      });
+      setTimeout(() => {
+        this.setState({
+          loading: false
+        })
+      }, 1000);
     });
     // get settings and update state properties
     storage.load({
@@ -117,7 +130,7 @@ export default class Main extends Component {
         content={<ControlPanel />}
         type='displace'
         tapToClose={true}
-        openDrawerOffset={0.5}
+        openDrawerOffset={0.4}
         side={'right'}
         tweenHandler={
           Drawer.tweenPresets.material
@@ -127,7 +140,6 @@ export default class Main extends Component {
             console.log('close');
           }
         }>
-
         <View style={{flex: 1}}>
           <NavigationBar
             rItemImage='md-menu'
@@ -145,7 +157,7 @@ export default class Main extends Component {
                 <View style={styles1.suggestionBox1}>
                   <Image source={require('../../assets/images/green_shield.png')}
                     style={{width: 27, height: 27}}/>
-                  <Text style={styles1.suggestionText}>Need an unlock gesture?</Text>
+                  <Text style={styles1.suggestionText}>Need an unlock gesture for safe?</Text>
                 </View>
                 <View style={styles1.suggestionBox2}>
                   <FlatButton
@@ -165,7 +177,7 @@ export default class Main extends Component {
                       });
                     }}>
                     <Text pointerEvents="none"
-                      style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'bold'}}>
+                      style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'normal'}}>
                         No, thanks
                     </Text>
                   </FlatButton>
@@ -184,7 +196,7 @@ export default class Main extends Component {
                       }
                     }}>
                     <Text pointerEvents="none"
-                      style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'bold'}}>
+                      style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'normal'}}>
                         Go ahead
                     </Text>
                   </FlatButton>
@@ -194,7 +206,7 @@ export default class Main extends Component {
             <View style={styles1.transferWnd}>
               <View style={styles1.row1}>
                 <Text style={styles1.title}>Transfer</Text>
-                <Text style={styles1.description}>your current balance is: 3.06908454</Text>
+                <Text style={styles1.description}>current balance is: 3.06908454</Text>
               </View>
               <View style={styles1.row1}>
                 <TextInput style={styles1.inputbox1}
@@ -246,56 +258,61 @@ export default class Main extends Component {
                   </Text>
                 </RaisedButtonSend>
               </View>
-            </View>
-            <View style={styles.outline}>
-              <Text style={{fontSize: 16, fontWeight: 'bold', color: '#999'}}>Addresses</Text>
-              <TouchableOpacity onPress={
-                () => {
-                  if (this.props.navigator) {
-                    this.props.navigator.push({
-                      name: 'AddressList',
-                      component: AddressList,
-                      params: {
-                        cointype: 'Bitcoin'
-                      },
-                    });
+              </View>
+              <View style={styles.outline}>
+                <Text style={{fontSize: 16, fontWeight: 'bold', color: '#999'}}>Addresses</Text>
+                <TouchableOpacity onPress={
+                  () => {
+                    if (this.props.navigator) {
+                      this.props.navigator.push({
+                        name: 'AddressList',
+                        component: AddressList,
+                        params: {
+                          cointype: 'Bitcoin'
+                        },
+                      });
+                    }
                   }
-                }
-              }>
-                <Text style={{fontSize: 14, fontWeight: 'bold', color: Theme.defaultTheme.dangerColor}}>see all</Text>
-              </TouchableOpacity>
-            </View>
-            {
-              addresses.map((item, i) => {
-                return(
-                  <ScrollViewItem
-                    key={i}
-                    address={item}
-                    onCopy={() => this.handleCopy(i)}
-                    onRefresh={() => this.handleRefresh(i)}
-                    onTransactionHistory={() => this.handleTransactionHistory(i)}>
-                  </ScrollViewItem>
-                )
-              })
-            }
-        <PlainButton
-          onPress={() => {
-            this.ActionSheet.show();
-          }}>
-          <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
-        </PlainButton>
-      </ScrollView>
-      <ActionSheet
-        ref={o => this.ActionSheet = o}
-        title={'Add another address'}
-        options={['Cancel', 'import from my account', 'create address']}
-        cancelButtonIndex={0}
-        destructiveButtonIndex={4}
-        onPress={this.handleActionSheet}
-      />
-    </View>
-  </Drawer>
-  );
+                }>
+                  <Text style={{fontSize: 14, fontWeight: 'bold', color: Theme.defaultTheme.dangerColor}}>see all</Text>
+                </TouchableOpacity>
+              </View>
+              {
+                addresses.map((item, i) => {
+                  return(
+                    <ScrollViewItem
+                      key={i}
+                      address={item}
+                      onCopy={() => this.handleCopy(i)}
+                      onRefresh={() => this.handleRefresh(i)}
+                      onTransactionHistory={() => this.handleTransactionHistory(i)}>
+                    </ScrollViewItem>
+                  )
+                })
+              }
+          <PlainButton
+            onPress={() => {
+              this.ActionSheet.show();
+            }}>
+            <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
+          </PlainButton>
+        </ScrollView>
+        <ActionSheet
+          ref={o => this.ActionSheet = o}
+          title={'Add another address'}
+          options={['Cancel', 'import from my account', 'create address']}
+          cancelButtonIndex={0}
+          destructiveButtonIndex={4}
+          onPress={this.handleActionSheet}
+        />
+        <Spinner visible={this.state.loading} />
+      </View>
+      </Drawer>
+    );
+  }
+
+  handleLoading() {
+
   }
 
   handleActionSheet(i) {
@@ -345,7 +362,7 @@ const styles1 = StyleSheet.create({
   suggestionText: {
     marginLeft: 5,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: 'normal',
     color: '#999'
   },
   suggestionBox2: {

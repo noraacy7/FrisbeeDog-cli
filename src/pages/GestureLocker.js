@@ -58,6 +58,7 @@ export default class GestureLocker extends Component {
   }
 
   handleEnd(password) {
+    console.log(">>>"+Password1);
     if (password == Password1 && Password1 != '') {
       this.setState({
         message: '\n\n\n\ncorrect!',
@@ -82,7 +83,6 @@ export default class GestureLocker extends Component {
         message: '\n\n\n\nyour gesture is wrong',
         status: 'wrong'
       });
-      Password1 = '';
     }
   }
 }

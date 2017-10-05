@@ -8,7 +8,8 @@ export const defaultTheme = {
   transferColor: '#3b5b6a',
   descriptionColor: '#3188c9',
   borderColor: '#f0f0f0',
+  menuTextColor: '#999',
   inputEnableBackgroundColor: '#fff',
   inputDisableBackgroundColor: 'lightgray',
-  cameraBorderColor: '#74c948'
+  cameraBorderColor: '#74c948',
 };
