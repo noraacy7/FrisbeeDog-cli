@@ -3,7 +3,7 @@ export const defaultTheme = {
   darkThemeColor: '#3188c9',
   primaryButtonColor: '#74c948',
   dangerColor: '#e0482f',
-  infoWndColor: '#ffffff',
+  infoWndColor: '#fff',
   transferWndColor: '#f49422',
   transferColor: '#3b5b6a',
   descriptionColor: '#3188c9',

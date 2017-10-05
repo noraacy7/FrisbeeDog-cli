@@ -109,14 +109,14 @@ export default class ControlPanel extends Component {
         </View>
         <ListView style={styles1.listview}
           dataSource={this.state.dataSource.cloneWithRows(this.data)}
-          renderRow={this.handleRenderRow.bind(this)}
+          renderRow={this.renderRow.bind(this)}
           removeClippedSubviews={false}
         />
       </View>
     )
   }
 
-  handleRenderRow(rowData, sectioID, rowID, highlightRow) {
+  renderRow(rowData, sectioID, rowID, highlightRow) {
     var uri = '';
     switch(rowData.text) {
       case 'Bitcoin':

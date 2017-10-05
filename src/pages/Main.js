@@ -5,6 +5,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Dimensions,
   Image,
   ScrollView,
@@ -77,7 +78,9 @@ export default class Main extends Component {
       l0calsettings: {},
       TargetAddress: '',
       coin: 'Bitcoin',
-      loading: false
+      loading: false,
+      showConfirmation: false,
+      bottom: -250
     }
   }
 
@@ -127,6 +130,178 @@ export default class Main extends Component {
     }).catch((err) => {});
   }
 
+  renderSuggestion() {
+    if (this.state.l0calsettings['suggestion_of_gesture_hide'] == false) {
+      return(
+        <Animatable.View ref='suggestionbox' style={styles.infoWnd}>
+          <View style={styles.suggestionBox1}>
+            <Image source={require('../../assets/images/green_shield.png')}
+              style={{width: 27, height: 27}}/>
+            <Text style={styles.suggestionText}>Need an unlock gesture for safe?</Text>
+          </View>
+          <View style={styles.suggestionBox2}>
+            <FlatButton
+              onPress={() => {
+                this.refs.suggestionbox.fadeOut(1000).then((endState) => {
+                  if (endState.finished) {
+                    var settings = this.state.l0calsettings;
+                    settings['suggestion_of_gesture_hide'] = true;
+                    this.setState({
+                      l0calsettings: settings,
+                    });
+                    storage.save({
+                      key: 'l0calsettings',
+                      data: settings
+                    });
+                  }
+                });
+              }}>
+              <Text pointerEvents="none"
+                style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'normal'}}>
+                  No, thanks
+              </Text>
+            </FlatButton>
+            <FlatButton
+              onPress={() => {
+                var settings = this.state.l0calsettings;
+                settings['suggestion_of_gesture_hide'] = true;
+                this.setState({
+                  l0calsettings: settings,
+                });
+                if (this.props.navigator) {
+                  this.props.navigator.push({
+                    name: 'Gesture',
+                    component: Gesture
+                  });
+                }
+              }}>
+              <Text pointerEvents="none"
+                style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'normal'}}>
+                  Go ahead
+              </Text>
+            </FlatButton>
+          </View>
+        </Animatable.View>
+      )
+    } else {
+      return null
+    }
+  }
+
+  renderTransfer() {
+    return(
+      <View style={styles.transferWnd}>
+        <View style={styles.row1}>
+          <Text style={styles.title}>Transfer</Text>
+          <Text style={styles.description}>total balance is: $386.18</Text>
+        </View>
+        <View style={styles.row1}>
+          <TextInput style={styles.inputbox1}
+            placeholder={'Target Address'}
+            onChangeText={() => {
+              this.setState({
+                TargetAddress: ''
+              })
+            }}
+            value={this.state.TargetAddress}
+          />
+          <TouchableOpacity style={{position: 'absolute', right: 20, top: 17, backgroundColor: '#fff'}}
+            onPress={
+              () => {
+                if (this.props.navigator) {
+                  this.props.navigator.push({
+                    name: 'QrCodeScanner',
+                    component: QrCodeScanner,
+                  });
+                }
+              }
+            }>
+            <Icon name={'md-qr-scanner'} size={25} color='#ddd' />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.row2}>
+          <TextInput style={[styles.inputbox2, {}]}
+            placeholder={'Amount'}
+            onChangeText={() => {
+
+            }}
+          />
+          <TextInput style={[styles.inputbox2, {backgroundColor: Theme.defaultTheme.inputDisableBackgroundColor, color: 'darkgray'}]}
+            editable={false}
+            value={"0.0001"}
+            onChangeText={() => {
+
+            }}
+          />
+        </View>
+        <View style={styles.row2}>
+          <RaisedButtonSend onPress={this.handleSend.bind(this)}>
+            <Text pointerEvents="none"
+              style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
+                Send
+            </Text>
+          </RaisedButtonSend>
+        </View>
+        </View>
+    )
+  }
+
+  renderConfirmation() {
+    if (this.state.showConfirmation) {
+      return(
+        <View>
+          <View style={styles1.mask}>
+
+          </View>
+          <Animatable.View ref='confirmationbox' style={styles1.confirmWnd}>
+            <View style={styles1.line}>
+              <Text style={styles1.text}>SEND CONFIRMATION</Text>
+            </View>
+            <View style={styles1.line}>
+              <Text style={styles1.text}>Send 0.11458679 BTC</Text>
+            </View>
+            <View style={styles1.line}>
+              <Text style={styles1.text}>Receiving Address</Text>
+              <Text style={styles1.smalltext}>mn7yHmxBpV9H5Uatfu8bRpUkqtYsauMsxW</Text>
+            </View>
+            <View style={styles1.line}>
+              <Text style={styles1.text}>Mining Fee: 0.0034126 BTC</Text>
+              <Text style={styles1.smalltext}>BTC mining fee can be adjusted in personal settings menu</Text>
+            </View>
+            <View style={styles1.line}>
+              <View style={[styles1.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5}]}>
+                <TouchableOpacity onPress={() => {
+                  this.refs.confirmationbox.fadeOut(100).then((endState) => {
+                    if (endState.finished) {
+                      this.setState({
+                        showConfirmation: false
+                      });
+                    }
+                  });
+                }}>
+                  <Text style={styles1.boldtext}>CANCEL</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                  this.refs.confirmationbox.fadeOut(100).then((endState) => {
+                    if (endState.finished) {
+                      this.setState({
+                        showConfirmation: false
+                      });
+                    }
+                  });
+                }}>
+                  <Text style={styles1.boldtext}>CONFIRM</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Animatable.View>
+        </View>
+      )
+    } else {
+      return null
+    }
+  }
+
   render() {
     return(
       <Drawer ref={(ref) => this._drawer = ref}
@@ -154,115 +329,8 @@ export default class Main extends Component {
             }
           />
           <ScrollView keyboardDismissMode={'on-drag'}>
-            {
-              !this.state.l0calsettings['suggestion_of_gesture_hide'] ?
-              <Animatable.View style={styles1.infoWnd}
-                ref='suggestion'>
-                <View style={styles1.suggestionBox1}>
-                  <Image source={require('../../assets/images/green_shield.png')}
-                    style={{width: 27, height: 27}}/>
-                  <Text style={styles1.suggestionText}>Need an unlock gesture for safe?</Text>
-                </View>
-                <View style={styles1.suggestionBox2}>
-                  <FlatButton
-                    onPress={() => {
-                      this.refs.suggestion.fadeOut(1000).then((endState) => {
-                        if (endState.finished) {
-                          var settings = this.state.l0calsettings;
-                          settings['suggestion_of_gesture_hide'] = true;
-                          this.setState({
-                            l0calsettings: settings,
-                          });
-                          storage.save({
-                            key: 'l0calsettings',
-                            data: settings
-                          });
-                        }
-                      });
-                    }}>
-                    <Text pointerEvents="none"
-                      style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'normal'}}>
-                        No, thanks
-                    </Text>
-                  </FlatButton>
-                  <FlatButton
-                    onPress={() => {
-                      var settings = this.state.l0calsettings;
-                      settings['suggestion_of_gesture_hide'] = true;
-                      this.setState({
-                        l0calsettings: settings,
-                      });
-                      if (this.props.navigator) {
-                        this.props.navigator.push({
-                          name: 'Gesture',
-                          component: Gesture
-                        });
-                      }
-                    }}>
-                    <Text pointerEvents="none"
-                      style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'normal'}}>
-                        Go ahead
-                    </Text>
-                  </FlatButton>
-                </View>
-              </Animatable.View> : null
-            }
-            <View style={styles1.transferWnd}>
-              <View style={styles1.row1}>
-                <Text style={styles1.title}>Transfer</Text>
-                <Text style={styles1.description}>total balance is: $386.18</Text>
-              </View>
-              <View style={styles1.row1}>
-                <TextInput style={styles1.inputbox1}
-                  placeholder={'Target Address'}
-                  onChangeText={() => {
-                    this.setState({
-                      TargetAddress: ''
-                    })
-                  }}
-                  value={this.state.TargetAddress}
-                />
-                <TouchableOpacity style={{position: 'absolute', right: 20, top: 17, backgroundColor: '#fff'}}
-                  onPress={
-                    () => {
-                      if (this.props.navigator) {
-                        this.props.navigator.push({
-                          name: 'QrCodeScanner',
-                          component: QrCodeScanner,
-                        });
-                      }
-                    }
-                  }>
-                  <Icon name={'md-qr-scanner'} size={25} color='#ddd' />
-                </TouchableOpacity>
-              </View>
-              <View style={styles1.row2}>
-                <TextInput style={[styles1.inputbox2, {}]}
-                  placeholder={'Amount'}
-                  onChangeText={() => {
-
-                  }}
-                />
-                <TextInput style={[styles1.inputbox2, {backgroundColor: Theme.defaultTheme.inputDisableBackgroundColor, color: 'darkgray'}]}
-                  editable={false}
-                  value={"0.0001"}
-                  onChangeText={() => {
-
-                  }}
-                />
-              </View>
-              <View style={styles1.row2}>
-                <RaisedButtonSend
-                  onPress={() => {
-
-                  }}>
-                  <Text pointerEvents="none"
-                    style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
-                      Send
-                  </Text>
-                </RaisedButtonSend>
-              </View>
-              </View>
+              {this.renderSuggestion()}
+              {this.renderTransfer()}
               <View style={styles.outline}>
                 <Text style={{fontSize: 16, fontWeight: 'bold', color: '#999'}}>Addresses</Text>
                 <TouchableOpacity onPress={
@@ -293,29 +361,33 @@ export default class Main extends Component {
                   )
                 })
               }
-          <PlainButton
-            onPress={() => {
-              this.ActionSheet.show();
-            }}>
-            <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
-          </PlainButton>
-        </ScrollView>
-        <ActionSheet
-          ref={o => this.ActionSheet = o}
-          title={'Add more addresses'}
-          options={['cancel', 'create new address']}
-          cancelButtonIndex={0}
-          destructiveButtonIndex={4}
-          onPress={this.handleActionSheet}
-        />
-        <Spinner visible={this.state.loading} />
-      </View>
+              <PlainButton
+                onPress={() => {
+                  console.log('click plain button');
+                  this.ActionSheet.show();
+                }}>
+                <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
+              </PlainButton>
+            </ScrollView>
+            {this.renderConfirmation()}
+            <ActionSheet
+              ref={o => this.ActionSheet = o}
+              title={'Add more addresses'}
+              options={['cancel', 'create new address']}
+              cancelButtonIndex={0}
+              destructiveButtonIndex={4}
+              onPress={this.handleActionSheet}
+            />
+            <Spinner visible={this.state.loading} />
+        </View>
       </Drawer>
     );
   }
 
   handleSend() {
-
+    this.setState({
+      showConfirmation: true
+    });
   }
 
   handleActionSheet(i) {
@@ -333,104 +405,51 @@ export default class Main extends Component {
 
 const {width, height} = Dimensions.get('window');
 const styles1 = StyleSheet.create({
-  infoWnd: {
-    backgroundColor: Theme.defaultTheme.infoWndColor,
-    marginTop: 16,
-    marginBottom: 16,
+  mask: {
+    backgroundColor: 'darkgray',
+    opacity: 0.5,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    height: height,
+    width: width
+  },
+  confirmWnd: {
+    backgroundColor: '#FCBA42',
+    opacity: 1,
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
     width: width,
-    height: 100,
+    height: 250,
     flex: 1,
     flexDirection: 'column',
-    borderStyle: 'solid',
-    borderColor: '#f5f5f5',
-    borderWidth: 0,
-    borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
-  suggestionBox1: {
-    flex: 1,
-    flexDirection: 'row',
+  line: {
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    borderStyle: 'solid',
+    width: width,
+    height: 50,
     borderColor: Theme.defaultTheme.borderColor,
-    borderWidth: 0,
-    borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
+    borderStyle: 'solid',
+    borderBottomWidth: 1.0,
   },
-  suggestionText: {
-    marginLeft: 5,
+  text: {
     fontSize: 16,
     fontWeight: 'normal',
-    color: '#999'
+    color: '#fff'
   },
-  suggestionBox2: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderStyle: 'solid',
-    borderColor: Theme.defaultTheme.borderColor,
-    borderWidth: 0,
-    borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
+  smalltext: {
+    fontSize: 12,
+    fontWeight: 'normal',
+    color: '#fff'
   },
-  transferWnd: {
-    backgroundColor: Theme.defaultTheme.transferWndColor,
-    marginTop: 0,
-    marginBottom: 10,
-    width: width,
-    height: 240,
-    flex: 1,
-    flexDirection: 'column',
-  },
-  row1: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  row2: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 20,
+  boldtext: {
+    fontSize: 16,
     fontWeight: 'bold',
-    color: Theme.defaultTheme.transferColor,
-  },
-  description: {
-    fontSize: 14,
-    color: Theme.defaultTheme.descriptionColor,
-  },
-  inputbox1: {
-    backgroundColor: Theme.defaultTheme.inputEnableBackgroundColor,
-    flex: 1,
-    width: width - 20,
-    height: 40,
-    marginTop: 10,
-    marginBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 30,
-    borderStyle: 'solid',
-    borderColor: '#fff',
-    borderWidth: 1.0,
-    borderRadius: 4,
-  },
-  inputbox2: {
-    backgroundColor: Theme.defaultTheme.inputEnableBackgroundColor,
-    flex: 1,
-    width: width / 2.0 - 20,
-    height: 40,
-    margin: 10,
-    marginBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 40,
-    borderStyle: 'solid',
-    borderColor: '#fff',
-    borderWidth: 1.0,
-    borderRadius: 4,
-  },
+    color: '#fff'
+  }
 });

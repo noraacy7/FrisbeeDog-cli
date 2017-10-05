@@ -41,10 +41,12 @@ export default class ScrollViewItem extends Component {
   }
 
   onCopy() {
+    console.log('copy');
     this.props.onCopy();
   }
 
   onRefresh() {
+    console.log('refresh');
     this.props.onRefresh();
   }
 }
