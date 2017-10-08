@@ -324,7 +324,7 @@ export default class Main extends Component {
             console.log('close');
           }
         }>
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: Theme.defaultTheme.defaultBackgroundColor}}>
           <NavigationBar
             rItemImage='md-menu'
             rItemTappedCallback={
@@ -412,8 +412,8 @@ export default class Main extends Component {
 const {width, height} = Dimensions.get('window');
 const styles1 = StyleSheet.create({
   mask: {
-    backgroundColor: 'darkgray',
-    opacity: 0.5,
+    backgroundColor: 'black',
+    opacity: 0.4,
     position: 'absolute',
     left: 0,
     top: 0,

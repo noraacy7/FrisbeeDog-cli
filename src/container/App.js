@@ -11,8 +11,10 @@ import {
 import {
   Navigator
 } from 'react-native-deprecated-custom-components';
+import codePush from 'react-native-code-push';
 import Storage from 'react-native-storage';
 import DeviceInfo from 'react-native-device-info';
+import FrontPage from '../pages/FrontPage.js';
 import Main from '../pages/Main.js';
 
 var storage = new Storage({
@@ -76,11 +78,15 @@ export default class FrisbeedogApp extends Component {
       super(props);
     }
 
+    componentDidMount() {
+      codePush.sync();
+    }
+
     render() {
       return(
         <View style={styles.bg}>
           <Navigator
-            initialRoute={{name: 'Main', component: Main}}
+            initialRoute={{name: 'FrontPage', component: FrontPage}}
             configureScene={(route) => {
               if (route.sceneConfig) {
                 return route.sceneConfig;

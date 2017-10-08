@@ -1,4 +1,5 @@
 export const defaultTheme = {
+  defaultBackgroundColor: '#fff',
   themeColor: '#3c97e9',
   darkThemeColor: '#3188c9',
   primaryButtonColor: '#74c948',

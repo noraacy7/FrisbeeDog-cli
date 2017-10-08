@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 5,
     fontSize: 14,
-    fontFamily: 'Cochin',
   },
 
   lItemImage: {

@@ -1,3 +1,4 @@
 <resources>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">vCTTZzoe9ZOzHTmZXiapXHJLN0zFa8a5ab7d-98bc-4625-86ec-714c32c4e120</string>
     <string name="app_name">Frisbeedog</string>
 </resources>
