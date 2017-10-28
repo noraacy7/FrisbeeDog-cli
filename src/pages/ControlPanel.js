@@ -7,7 +7,8 @@ import {
   Dimensions,
   Image,
   ListView,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  Platform
 } from 'react-native';
 import {
   MKButton
@@ -64,7 +65,7 @@ export default class ControlPanel extends Component {
               style={{paddingBottom: 5, color: Theme.defaultTheme.menuTextColor, fontSize: 16, fontWeight: 'normal'}}>
                 Settings
             </Text>
-            <Icon style={{paddingRight: 150, marginBottom: 0}} name='ios-settings-outline' size={30} color='#999' />
+            <Icon style={{paddingRight: Platform.OS==='ios' ? 150 : 170, marginBottom: 0}} name='ios-settings-outline' size={30} color='#999' />
           </FlatButton>
         </View>
         <View style={styles1.menubox}>
@@ -76,7 +77,7 @@ export default class ControlPanel extends Component {
               style={{paddingBottom: 5, color: Theme.defaultTheme.menuTextColor, fontSize: 16, fontWeight: 'normal'}}>
                 Export Private Keys
             </Text>
-            <Icon style={{paddingRight: 149, marginBottom: 0}} name='ios-key-outline' size={30} color='#999' />
+            <Icon style={{paddingRight: Platform.OS==='ios' ? 149 : 169, marginBottom: 0}} name='ios-key-outline' size={30} color='#999' />
           </FlatButton>
         </View>
         <View style={styles1.menubox}>
@@ -88,7 +89,7 @@ export default class ControlPanel extends Component {
               style={{paddingBottom: 5, color: Theme.defaultTheme.menuTextColor, fontSize: 16, fontWeight: 'normal'}}>
                 Report Bugs
             </Text>
-            <Icon style={{paddingRight: 148, marginBottom: 0}} name='ios-bug-outline' size={30} color='#999' />
+            <Icon style={{paddingRight: Platform.OS==='ios' ? 148 : 168, marginBottom: 0}} name='ios-bug-outline' size={30} color='#999' />
           </FlatButton>
         </View>
         <View style={styles1.menubox}>
@@ -143,7 +144,7 @@ export default class ControlPanel extends Component {
         </View>
         {
           rowData.id == this.state.selectedIndex ?
-          <Icon style={{paddingRight: 150, marginBottom: 0}} name='md-checkmark' size={30} color={Theme.defaultTheme.primaryButtonColor} /> : null
+          <Icon style={{paddingRight: Platform.OS==='ios' ? 150 : 170, marginBottom: 0}} name='md-checkmark' size={30} color={Theme.defaultTheme.primaryButtonColor} /> : null
         }
       </TouchableOpacity>
     )

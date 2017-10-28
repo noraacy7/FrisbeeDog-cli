@@ -67,6 +67,7 @@ const RaisedButtonSend = MKButton.coloredButton()
 const PlainButton = MKButton.plainFab()
   .withStyle({
     alignSelf: 'center',
+    marginBottom: 10
   })
   .build();
 
@@ -197,6 +198,7 @@ export default class Main extends Component {
         </View>
         <View style={styles.row1}>
           <TextInput style={styles.inputbox1}
+            underlineColorAndroid='transparent'
             placeholder={'Target Address'}
             onChangeText={() => {
               this.setState({
@@ -221,12 +223,14 @@ export default class Main extends Component {
         </View>
         <View style={styles.row2}>
           <TextInput style={[styles.inputbox2, {}]}
+            underlineColorAndroid='transparent'
             placeholder={'Amount'}
             onChangeText={() => {
 
             }}
           />
           <TextInput style={[styles.inputbox2, {backgroundColor: Theme.defaultTheme.inputDisableBackgroundColor, color: 'darkgray'}]}
+            underlineColorAndroid='transparent' 
             editable={false}
             value={"0.0001"}
             onChangeText={() => {
@@ -378,7 +382,7 @@ export default class Main extends Component {
             {this.renderConfirmation()}
             <ActionSheet
               ref={o => this.ActionSheet = o}
-              title={'Add more addresses'}
+              title={'I want more'}
               options={['cancel', 'create new address']}
               cancelButtonIndex={0}
               destructiveButtonIndex={4}
