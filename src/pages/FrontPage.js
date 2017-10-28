@@ -94,13 +94,13 @@ export default class FrontPage extends Component {
            }}>
             <Text pointerEvents="none"
               style={{color: '#fff', fontSize: 16, fontWeight: 'normal'}}>
-                import from mnemonic
+                import wallet from mnemonic
             </Text>
           </RaisedButtonSend1>
           <RaisedButtonSend2 onPress={() => { }}>
             <Text pointerEvents="none"
               style={{color: '#fff', fontSize: 16, fontWeight: 'normal'}}>
-                import from QR code
+                import wallet from QR code
             </Text>
           </RaisedButtonSend2>
           <Text style={styles1.textor}>-or-</Text>
