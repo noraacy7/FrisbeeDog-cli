@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  AppState,
   AsyncStorage,
   StyleSheet,
   Text,
@@ -80,6 +81,9 @@ export default class FrisbeedogApp extends Component {
 
     componentDidMount() {
       codePush.sync();
+      AppState.addEventListener("change", (newState) => {
+        newState === "active" && codePush.sync();
+      });
     }
 
     render() {

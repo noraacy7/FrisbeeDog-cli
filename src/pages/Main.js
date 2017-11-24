@@ -193,8 +193,8 @@ export default class Main extends Component {
     return(
       <View style={styles.transferWnd}>
         <View style={styles.row1}>
-          <Text style={styles.title}>Transfer</Text>
-          <Text style={styles.description}>total balance is: $386.18</Text>
+          <Text style={styles.title}>BTC Transfer</Text>
+          <Text style={styles.description}>total balance is: $586.18</Text>
         </View>
         <View style={styles.row1}>
           <TextInput style={styles.inputbox1}
@@ -230,7 +230,7 @@ export default class Main extends Component {
             }}
           />
           <TextInput style={[styles.inputbox2, {backgroundColor: Theme.defaultTheme.inputDisableBackgroundColor, color: 'darkgray'}]}
-            underlineColorAndroid='transparent' 
+            underlineColorAndroid='transparent'
             editable={false}
             value={"0.0001"}
             onChangeText={() => {
@@ -355,7 +355,7 @@ export default class Main extends Component {
                     }
                   }
                 }>
-                  <Text style={{fontSize: 14, fontWeight: 'bold', color: Theme.defaultTheme.dangerColor}}>transactions</Text>
+                  <Text style={{fontSize: 14, fontWeight: 'bold', color: Theme.defaultTheme.dangerColor}}>new</Text>
                 </TouchableOpacity>
               </View>
               {
