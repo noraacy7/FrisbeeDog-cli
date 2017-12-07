@@ -127,4 +127,42 @@ export default styles=StyleSheet.create({
     borderWidth: 1.0,
     borderRadius: 4,
   },
+  confirmWnd: {
+    backgroundColor: '#FCBA42',
+    opacity: 1,
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    width: width,
+    height: 250,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  line: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: width,
+    height: 50,
+    borderColor: Theme.defaultTheme.borderColor,
+    borderStyle: 'solid',
+    borderBottomWidth: 1.0,
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: 'normal',
+    color: '#fff'
+  },
+  smalltext: {
+    fontSize: 12,
+    fontWeight: 'normal',
+    color: '#fff'
+  },
+  boldtext: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff'
+  }
 });

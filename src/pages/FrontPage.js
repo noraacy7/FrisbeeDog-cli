@@ -15,8 +15,6 @@ import {
 } from 'react-native-material-kit';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ActionSheet from 'react-native-actionsheet';
-import * as Animatable from 'react-native-animatable';
 import Main from './Main.js';
 import QrCodeScanner from './QrCodeScanner.js';
 import styles from '../../stylesheet.js';
@@ -94,23 +92,23 @@ export default class FrontPage extends Component {
            }}>
             <Text pointerEvents="none"
               style={{color: '#fff', fontSize: 16, fontWeight: 'normal'}}>
-                import wallet from mnemonic
+                restore account from mnemonic
             </Text>
           </RaisedButtonSend1>
           <RaisedButtonSend2 onPress={() => { }}>
             <Text pointerEvents="none"
               style={{color: '#fff', fontSize: 16, fontWeight: 'normal'}}>
-                import wallet from QR code
+                restore account from QR code
             </Text>
           </RaisedButtonSend2>
           <Text style={styles1.textor}>-or-</Text>
           <RaisedButtonSend3 onPress={() => { }}>
             <Text pointerEvents="none"
               style={{color: '#fff', fontSize: 16, fontWeight: 'normal'}}>
-                create new wallet
+                create new account
             </Text>
           </RaisedButtonSend3>
-          <Text style={styles1.agreement}>By creating or importing an wallet, you are agreening with our Terms & Conditions and Privacy Statement.</Text>
+          <Text style={styles1.agreement}>By creating or restoring an account, you are agreening with our Terms & Conditions and Privacy Statement.</Text>
         </View>
       </View>
     )

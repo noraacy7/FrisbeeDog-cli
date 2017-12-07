@@ -263,23 +263,23 @@ export default class Main extends Component {
   renderConfirmation() {
     if (this.state.showConfirmation) {
       return(
-        <Animatable.View ref='confirmationbox' style={styles1.confirmWnd}>
-          <View style={styles1.line}>
-            <Text style={styles1.text}>SEND CONFIRMATION</Text>
+        <Animatable.View ref='confirmationbox' style={styles.confirmWnd}>
+          <View style={styles.line}>
+            <Text style={styles.text}>SEND CONFIRMATION</Text>
           </View>
-          <View style={styles1.line}>
-            <Text style={styles1.text}>Send 0.11458679 BTC</Text>
+          <View style={styles.line}>
+            <Text style={styles.text}>Send 0.11458679 BTC</Text>
           </View>
-          <View style={styles1.line}>
-            <Text style={styles1.text}>Receiving Address</Text>
-            <Text style={styles1.smalltext}>mn7yHmxBpV9H5Uatfu8bRpUkqtYsauMsxW</Text>
+          <View style={styles.line}>
+            <Text style={styles.text}>Receiving Address</Text>
+            <Text style={styles.smalltext}>mn7yHmxBpV9H5Uatfu8bRpUkqtYsauMsxW</Text>
           </View>
-          <View style={styles1.line}>
-            <Text style={styles1.text}>Mining Fee: 0.0034126 BTC</Text>
-            <Text style={styles1.smalltext}>BTC mining fee can be adjusted in personal settings menu</Text>
+          <View style={styles.line}>
+            <Text style={styles.text}>Mining Fee: 0.0034126 BTC</Text>
+            <Text style={styles.smalltext}>BTC mining fee can be adjusted in personal settings menu</Text>
           </View>
-          <View style={styles1.line}>
-            <View style={[styles1.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5}]}>
+          <View style={styles.line}>
+            <View style={[styles.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5}]}>
               <TouchableOpacity onPress={() => {
                 this.refs.confirmationbox.fadeOut(100).then((endState) => {
                   if (endState.finished) {
@@ -289,7 +289,7 @@ export default class Main extends Component {
                   }
                 });
               }}>
-                <Text style={styles1.boldtext}>CANCEL</Text>
+                <Text style={styles.boldtext}>CANCEL</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {
                 this.refs.confirmationbox.fadeOut(100).then((endState) => {
@@ -300,7 +300,7 @@ export default class Main extends Component {
                   }
                 });
               }}>
-                <Text style={styles1.boldtext}>CONFIRM</Text>
+                <Text style={styles.boldtext}>CONFIRM</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -423,43 +423,5 @@ const styles1 = StyleSheet.create({
     top: 0,
     height: height,
     width: width
-  },
-  confirmWnd: {
-    backgroundColor: '#FCBA42',
-    opacity: 1,
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    width: width,
-    height: 250,
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center'
-  },
-  line: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: width,
-    height: 50,
-    borderColor: Theme.defaultTheme.borderColor,
-    borderStyle: 'solid',
-    borderBottomWidth: 1.0,
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: 'normal',
-    color: '#fff'
-  },
-  smalltext: {
-    fontSize: 12,
-    fontWeight: 'normal',
-    color: '#fff'
-  },
-  boldtext: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff'
   }
 });

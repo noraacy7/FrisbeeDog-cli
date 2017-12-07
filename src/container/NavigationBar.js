@@ -99,7 +99,8 @@ export default class NavigationBar extends Component {
         <View style={[styles.navbar1, {
           backgroundColor: this.props.navbarBackgroundColor,
           height: HEIGHT_STATUSBAR+HEIGHT_NAVIGATIONBAR,
-          opacity: this.props.navbarOpacity
+          opacity: this.props.navbarOpacity,
+          alignItems: 'flex-start',
         }]}>
           <View style={styles.itemView}>
             {
@@ -172,8 +173,11 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 20,
+    fontSize: 24,
+    fontFamily: 'Entypo',
     fontWeight: 'bold',
+    flex: 1,
+    alignSelf: 'flex-start'
   },
 
   titleView: {
@@ -183,7 +187,7 @@ const styles = StyleSheet.create({
   },
 
   itemView: {
-    width: 120,
+    //width: 80,
     justifyContent: 'center',
   },
 
