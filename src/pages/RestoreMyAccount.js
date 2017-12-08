@@ -5,9 +5,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  Dimensions,
-  Image,
-  ScrollView
+  Dimensions
 } from 'react-native';
 import {
   MKButton,
@@ -47,13 +45,14 @@ export default class RestoreMyAccount extends Component {
             autoCorrect={false}
             multiline={true}
             numberOfLines = {3}
+            value='dynamic midnight lab absorb curve lizard sell expand uniform federal gym frequent'
             onChangeText={() => {
 
             }}
           />
           <Animatable.View style={[styles1.confirmWnd, {}]}>
-            <View style={styles.line}>
-              <View style={[styles.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5}]}>
+            <View>
+              <View style={[styles.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5, borderColor: 'transparent'}]}>
                 <TouchableOpacity onPress={() => {
 
                 }}>
@@ -96,7 +95,7 @@ const styles1 = StyleSheet.create({
     fontSize: 18,
     color: Theme.defaultTheme.importantTextColor,
     width: width - 20,
-    height: 60,
+    height: 80,
     marginLeft: 10,
     marginRight: 10,
     marginTop: 20,

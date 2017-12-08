@@ -4,9 +4,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Dimensions,
-  Image,
-  ScrollView
+  Dimensions
 } from 'react-native';
 import {
   MKButton,
@@ -44,8 +42,8 @@ export default class CreateNewAccount extends Component {
           <Text style={styles1.description}>Please write down your Account mnemonic in the exact sequence below. On the next screen you will be asked to re-enter them in order to ensure accuracy.</Text>
           <Text style={styles1.mnemonic}>dynamic midnight lab absorb curve lizard sell expand uniform federal gym frequent</Text>
           <Animatable.View style={[styles1.confirmWnd, {}]}>
-            <View style={styles.line}>
-              <View style={[styles.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5}]}>
+            <View>
+              <View style={[styles.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5, borderColor: 'transparent'}]}>
                 <TouchableOpacity>
                   <Text style={styles.boldtext}></Text>
                 </TouchableOpacity>

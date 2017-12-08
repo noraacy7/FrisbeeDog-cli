@@ -16,8 +16,9 @@ import codePush from 'react-native-code-push';
 import Storage from 'react-native-storage';
 import DeviceInfo from 'react-native-device-info';
 import FrontPage from '../pages/FrontPage.js';
-import RestoreMyAccount from '../pages/RestoreMyAccount.js';
+import TestPage from '../pages/TestPage.js';
 import CreateNewAccount from '../pages/CreateNewAccount.js';
+import RestoreMyAccount from '../pages/RestoreMyAccount.js';
 import Main from '../pages/Main.js';
 
 var storage = new Storage({
@@ -65,6 +66,7 @@ storage.save({
 });
 
 function saveL0calsettingsAsDefault() {
+  console.log("UniqueID:"+DeviceInfo.getUniqueID());
   storage.save({
     key: 'l0calsettings',
     data: {
@@ -92,8 +94,8 @@ export default class FrisbeedogApp extends Component {
       return(
         <View style={styles.bg}>
           <Navigator
-            initialRoute={{name: 'CreateNewAccount', component: CreateNewAccount}}
-            //initialRoute={{name: 'Main', component: Main}}
+            initialRoute={{name: 'Main', component: Main}}
+            //initialRoute={{name: 'TestPage', component: TestPage}}
             configureScene={(route) => {
               if (route.sceneConfig) {
                 return route.sceneConfig;

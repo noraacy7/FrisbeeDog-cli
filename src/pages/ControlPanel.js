@@ -105,7 +105,7 @@ export default class ControlPanel extends Component {
         </View>
         <View style={styles1.sectionheader}>
           <Text style={{marginLeft: 5, color: Theme.defaultTheme.darkThemeColor, fontSize: 14, fontWeight: 'bold'}}>
-              swith coins
+              swith exchanges
           </Text>
         </View>
         <ListView style={styles1.listview}

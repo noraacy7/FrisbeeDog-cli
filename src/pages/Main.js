@@ -64,20 +64,13 @@ const RaisedButtonSend = MKButton.coloredButton()
   })
   .build();
 
-const PlainButton = MKButton.plainFab()
-  .withStyle({
-    alignSelf: 'center',
-    marginBottom: 10
-  })
-  .build();
-
 export default class Main extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       l0calsettings: {},
-      TargetAddress: '',
+      tokenName: '',
       coin: 'Bitcoin',
       loading: false,
       showConfirmation: false,
@@ -86,29 +79,6 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
-    // add observer 1st
-    DeviceEventEmitter.addListener("barcoderead",
-    (data) => {
-      this.setState({
-        TargetAddress: data
-      });
-    });
-    // add observer 2nd
-    DeviceEventEmitter.addListener("coinchanged",
-    (data) => {
-      this._drawer.close();
-      if (this.state.coin != data) {
-        this.setState({
-          coin: data,
-          loading: true,
-        });
-        setTimeout(() => {
-          this.setState({
-            loading: false
-          })
-        }, 1000);
-      }
-    });
     // get settings and update state properties
     storage.load({
       key: 'l0calsettings'
@@ -131,118 +101,81 @@ export default class Main extends Component {
     }).catch((err) => {});
   }
 
-  renderSuggestion() {
-    if (this.state.l0calsettings['suggestion_of_gesture_hide'] == false) {
-      return(
-        <Animatable.View ref='suggestionbox' style={styles.infoWnd}>
-          <View style={styles.suggestionBox1}>
-            <Image source={require('../../assets/images/green_shield.png')}
-              style={{width: 27, height: 27}}/>
-            <Text style={styles.suggestionText}>Need an unlock gesture for safe?</Text>
-          </View>
-          <View style={styles.suggestionBox2}>
-            <FlatButton
-              onPress={() => {
-                this.refs.suggestionbox.fadeOut(1000).then((endState) => {
-                  if (endState.finished) {
-                    var settings = this.state.l0calsettings;
-                    settings['suggestion_of_gesture_hide'] = true;
-                    this.setState({
-                      l0calsettings: settings,
-                    });
-                    storage.save({
-                      key: 'l0calsettings',
-                      data: settings
-                    });
-                  }
-                });
-              }}>
-              <Text pointerEvents="none"
-                style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'normal'}}>
-                  No, thanks
-              </Text>
-            </FlatButton>
-            <FlatButton
-              onPress={() => {
-                var settings = this.state.l0calsettings;
-                settings['suggestion_of_gesture_hide'] = true;
-                this.setState({
-                  l0calsettings: settings,
-                });
-                if (this.props.navigator) {
-                  this.props.navigator.push({
-                    name: 'Gesture',
-                    component: Gesture
-                  });
-                }
-              }}>
-              <Text pointerEvents="none"
-                style={{color: Theme.defaultTheme.darkThemeColor, fontSize: 16, fontWeight: 'normal'}}>
-                  Go ahead
-              </Text>
-            </FlatButton>
-          </View>
-        </Animatable.View>
-      )
-    } else {
-      return null
-    }
-  }
-
-  renderTransfer() {
+  renderTaskBox() {
     return(
-      <View style={styles.transferWnd}>
-        <View style={styles.row1}>
-          <Text style={styles.title}>BTC Transfer</Text>
-          <Text style={styles.description}>total balance is: $586.18</Text>
+      <View style={styles1.taskWnd}>
+        <View style={styles1.row1}>
+          <Text style={styles1.title}>Bitfinex</Text>
+          <Text style={styles1.description}>exchange limit, sell, buy, otc and more...</Text>
         </View>
-        <View style={styles.row1}>
-          <TextInput style={styles.inputbox1}
+        <View style={styles1.row1}>
+          <TextInput style={styles1.inputbox1}
             underlineColorAndroid='transparent'
-            placeholder={'Target Address'}
+            autoCorrect={false}
+            multiline={false}
+            numberOfLines = {1}
+            editable={false}
+            placeholder={'Select your token'}
             onChangeText={() => {
-              this.setState({
-                TargetAddress: ''
-              })
+
             }}
-            value={this.state.TargetAddress}
+            value={this.state.tokenName}
           />
-          <TouchableOpacity style={{position: 'absolute', right: 20, top: 17, backgroundColor: '#fff'}}
+          <TouchableOpacity style={{position: 'absolute', right: 20, top: 12, backgroundColor: '#fff'}}
             onPress={
               () => {
-                if (this.props.navigator) {
-                  this.props.navigator.push({
-                    name: 'QrCodeScanner',
-                    component: QrCodeScanner,
-                  });
-                }
+
               }
             }>
-            <Icon name={'md-qr-scanner'} size={25} color='#ddd' />
+            <Icon name={'md-search'} size={25} color='#ddd' />
           </TouchableOpacity>
         </View>
-        <View style={styles.row2}>
-          <TextInput style={[styles.inputbox2, {}]}
+        <View style={styles1.row2}>
+          <TextInput style={[styles1.inputbox2, {marginRight: 5}]}
             underlineColorAndroid='transparent'
-            placeholder={'Amount'}
-            onChangeText={() => {
-
-            }}
-          />
-          <TextInput style={[styles.inputbox2, {backgroundColor: Theme.defaultTheme.inputDisableBackgroundColor, color: 'darkgray'}]}
-            underlineColorAndroid='transparent'
+            autoCorrect={false}
+            multiline={true}
+            numberOfLines = {2}
             editable={false}
-            value={"0.0001"}
             onChangeText={() => {
 
             }}
+            value={'Begin\n09-12-2017'}
+          />
+          <TextInput style={[styles1.inputbox2, {marginLeft: 5}]}
+            underlineColorAndroid='transparent'
+            autoCorrect={false}
+            multiline={true}
+            numberOfLines = {2}
+            editable={false}
+            onChangeText={() => {
+
+            }}
+            value={'End\n10-12-2017'}
           />
         </View>
-        <View style={styles.row2}>
-          <RaisedButtonSend onPress={this.handleSend.bind(this)}>
+        <View style={[styles1.row1, {height: 80}]}>
+          <Text style={styles1.description}>threshold prices</Text>
+          <View style={[styles1.whiteFrame, {height: 50}]}>
+
+          </View>
+        </View>
+        <View style={[styles1.row1, {height: 80}]}>
+          <View style={[styles1.whiteFrame, {height: 70}]}>
+            <Text style={[styles1.item, {color: '#999'}]}>Equal per     0.25</Text>
+            <View style={{backgroundColor: '#ddd', position: 'absolute', right: width*0.35, top: 20, width: 1, height: 30}}/>
+            <Text style={[styles1.item, {}]}>Equal per   0.1</Text>
+            <View style={{backgroundColor: '#ddd', position: 'absolute', left: width*0.30, top: 20, width: 1, height: 30}}/>
+            <Text style={[styles1.item, {}]}>Every time     50%</Text>
+          </View>
+        </View>
+        <View style={styles1.row2}>
+          <RaisedButtonSend onPress={() => {
+
+          }}>
             <Text pointerEvents="none"
               style={{color: '#fff', fontSize: 16, fontWeight: 'bold'}}>
-                Send
+                Submit
             </Text>
           </RaisedButtonSend>
         </View>
@@ -250,61 +183,22 @@ export default class Main extends Component {
     )
   }
 
-  renderMask() {
+  renderConfirmation() {
     if (this.state.showConfirmation) {
       return(
-        <View style={styles1.mask}></View>
+        <Animatable.View ref='confirmationbox' style={styles.confirmWnd}>
+
+        </Animatable.View>
       )
     } else {
       return null
     }
   }
 
-  renderConfirmation() {
+  renderMask() {
     if (this.state.showConfirmation) {
       return(
-        <Animatable.View ref='confirmationbox' style={styles.confirmWnd}>
-          <View style={styles.line}>
-            <Text style={styles.text}>SEND CONFIRMATION</Text>
-          </View>
-          <View style={styles.line}>
-            <Text style={styles.text}>Send 0.11458679 BTC</Text>
-          </View>
-          <View style={styles.line}>
-            <Text style={styles.text}>Receiving Address</Text>
-            <Text style={styles.smalltext}>mn7yHmxBpV9H5Uatfu8bRpUkqtYsauMsxW</Text>
-          </View>
-          <View style={styles.line}>
-            <Text style={styles.text}>Mining Fee: 0.0034126 BTC</Text>
-            <Text style={styles.smalltext}>BTC mining fee can be adjusted in personal settings menu</Text>
-          </View>
-          <View style={styles.line}>
-            <View style={[styles.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5}]}>
-              <TouchableOpacity onPress={() => {
-                this.refs.confirmationbox.fadeOut(100).then((endState) => {
-                  if (endState.finished) {
-                    this.setState({
-                      showConfirmation: false
-                    });
-                  }
-                });
-              }}>
-                <Text style={styles.boldtext}>CANCEL</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => {
-                this.refs.confirmationbox.fadeOut(100).then((endState) => {
-                  if (endState.finished) {
-                    this.setState({
-                      showConfirmation: false
-                    });
-                  }
-                });
-              }}>
-                <Text style={styles.boldtext}>CONFIRM</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Animatable.View>
+        <View style={styles1.mask}></View>
       )
     } else {
       return null
@@ -338,78 +232,14 @@ export default class Main extends Component {
             }
           />
           <ScrollView keyboardDismissMode={'on-drag'}>
-              {this.renderSuggestion()}
-              {this.renderTransfer()}
-              <View style={styles.outline}>
-                <Text style={{fontSize: 16, fontWeight: 'bold', color: '#999'}}>Addresses</Text>
-                <TouchableOpacity onPress={
-                  () => {
-                    if (this.props.navigator) {
-                      this.props.navigator.push({
-                        name: 'Transactions',
-                        component: Transactions,
-                        params: {
-                          cointype: 'Bitcoin'
-                        },
-                      });
-                    }
-                  }
-                }>
-                  <Text style={{fontSize: 14, fontWeight: 'bold', color: Theme.defaultTheme.dangerColor}}>new</Text>
-                </TouchableOpacity>
-              </View>
-              {
-                addresses.map((item, i) => {
-                  return(
-                    <ScrollViewItem
-                      key={i}
-                      address={item}
-                      onCopy={() => this.handleCopy(i)}
-                      onRefresh={() => this.handleRefresh(i)}>
-                    </ScrollViewItem>
-                  )
-                })
-              }
-              <PlainButton
-                onPress={() => {
-                  console.log('click plain button');
-                  this.ActionSheet.show();
-                }}>
-                <Image pointerEvents="none" source={require('../../assets/images/plus.png')} />
-              </PlainButton>
-            </ScrollView>
+            {this.renderTaskBox()}
+          </ScrollView>
             {this.renderMask()}
             {this.renderConfirmation()}
-            <ActionSheet
-              ref={o => this.ActionSheet = o}
-              title={'I want more'}
-              options={['cancel', 'create new address']}
-              cancelButtonIndex={0}
-              destructiveButtonIndex={4}
-              onPress={this.handleActionSheet}
-            />
-            <Spinner visible={this.state.loading} />
+          <Spinner visible={this.state.loading} />
         </View>
       </Drawer>
     );
-  }
-
-  handleSend() {
-    this.setState({
-      showConfirmation: true
-    });
-  }
-
-  handleActionSheet(i) {
-    console.log(">>>> you select: " + i);
-  }
-
-  handleCopy(i) {
-    console.log(">>>> you select: " + i);
-  }
-
-  handleRefresh(i) {
-    console.log(">>>> you select: " + i);
   }
 }
 
@@ -423,5 +253,98 @@ const styles1 = StyleSheet.create({
     top: 0,
     height: height,
     width: width
-  }
+  },
+  taskWnd: {
+    backgroundColor: Theme.defaultTheme.transferWndColor,
+    marginTop: 0,
+    marginBottom: 10,
+    paddingTop: 10,
+    width: width,
+    height: 400,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
+  },
+  row1: {
+    backgroundColor: 'transparent',
+    height: 50,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  row2: {
+    backgroundColor: 'transparent',
+    height: 60,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: Theme.defaultTheme.transferColor,
+  },
+  description: {
+    fontSize: 14,
+    color: Theme.defaultTheme.descriptionColor,
+  },
+  whiteFrame: {
+    backgroundColor: '#fff',
+    width: width - 20,
+    height: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 5,
+    padding: 10,
+    paddingTop: 8,
+    borderStyle: 'solid',
+    borderColor: '#fff',
+    borderWidth: 0.5,
+    borderRadius: 4.0
+  },
+  item: {
+    backgroundColor: 'transparent',
+    width: '33.33%',
+    fontSize: 16,
+    color: '#d9d9dc',
+    textAlign: 'left',
+    padding: 10,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  inputbox1: {
+    backgroundColor: Theme.defaultTheme.inputEnableBackgroundColor,
+    fontSize: 16,
+    color: '#999',
+    width: width - 20,
+    height: 40,
+    marginTop: 2.5,
+    marginBottom: 2.5,
+    paddingLeft: 10,
+    paddingRight: 30,
+    borderStyle: 'solid',
+    borderColor: '#fff',
+    borderWidth: 1.0,
+    borderRadius: 4,
+  },
+  inputbox2: {
+    backgroundColor: Theme.defaultTheme.inputEnableBackgroundColor,
+    fontSize: 16,
+    color: '#999',
+    flex: 1,
+    width: width / 2.0 - 10,
+    height: 50,
+    margin: 10,
+    marginTop: 2.5,
+    marginBottom: 2.5,
+    paddingLeft: 10,
+    paddingRight: 40,
+    borderStyle: 'solid',
+    borderColor: '#fff',
+    borderWidth: 1.0,
+    borderRadius: 4,
+  },
 });
