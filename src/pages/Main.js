@@ -12,7 +12,10 @@ import {
 } from 'react-native';
 import {
   MKButton,
-  MKSpinner
+  MKSpinner,
+  MKSlider,
+  MKRangeSlider,
+  setTheme
 } from 'react-native-material-kit';
 import {
   DatePickerDialog
@@ -64,6 +67,31 @@ const RaisedButtonSend = MKButton.coloredButton()
     borderRadius: 4,
   })
   .build();
+
+setTheme({
+  primaryColor: '#3c97e9',
+});
+
+class SliderValuedText extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      curValue: props.initial,
+    };
+  }
+
+  onChange(curValue) {
+    this.setState({curValue});
+  }
+
+  render() {
+    return (
+      <Text style={styles1.sliderText}>
+        {this.state.curValue}
+      </Text>
+    );
+  }
+}
 
 export default class Main extends Component {
 
@@ -136,7 +164,7 @@ export default class Main extends Component {
       <View style={styles1.taskWnd}>
         <View style={styles1.row1}>
           <Text style={styles1.title}>Bitfinex</Text>
-          <Text style={styles1.description}>exchange limit, sell, buy, otc and more...</Text>
+          <Text style={styles1.description}>exchange limit, sell, buy and more...</Text>
         </View>
         <View style={styles1.row1}>
           <TextInput style={styles1.inputbox1}
@@ -186,9 +214,18 @@ export default class Main extends Component {
           </TouchableOpacity>
         </View>
         <View style={[styles1.row1, {height: 100}]}>
-          <Text style={styles1.description}>threshold prices</Text>
-          <View style={[styles1.whiteFrame, {height: 75}]}>
-
+          <Text style={styles1.description}>current price: 16,542.000</Text>
+          <View style={[styles1.whiteFrame, {height: 75, flexDirection: 'column'}]}>
+            <SliderValuedText ref="rangeValueText" initial="minimize: 20.1847, and maximize: 80.2847" rangeText="" />
+            <MKRangeSlider
+              ref="rangeSlider"
+              min={0}
+              max={1000000}
+              minValue={200000}
+              maxValue={500000}
+              style={styles1.slider}
+              onChange={(curValue) => this.refs.rangeValueText.onChange('minimize: ' + (curValue.min/10000.0).toFixed(3) + ', and maximize: ' + (curValue.max/10000.0).toFixed(3))}
+              />
           </View>
         </View>
         <View style={[styles1.row1, {height: 75}]}>
@@ -444,4 +481,11 @@ const styles1 = StyleSheet.create({
     borderWidth: 1.0,
     borderRadius: 4,
   },
+  slider: {
+    width: width - 20,
+  },
+  sliderText: {
+    fontSize: 14,
+    color: Theme.defaultTheme.normalTextColor,
+  }
 });
