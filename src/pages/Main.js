@@ -5,7 +5,6 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   Dimensions,
   Image,
   ScrollView,
@@ -15,12 +14,16 @@ import {
   MKButton,
   MKSpinner
 } from 'react-native-material-kit';
+import {
+  DatePickerDialog
+} from 'react-native-datepicker-dialog';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Drawer from 'react-native-drawer';
 import ActionSheet from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
+import moment from 'moment';
 import NavigationBar from '../container/NavigationBar.js';
 import Gesture from './Gesture.js';
 import GestureLocker from '../pages/GestureLocker.js';
@@ -30,11 +33,6 @@ import Transactions from './Transactions.js';
 import QrCodeScanner from './QrCodeScanner.js';
 import styles from '../../stylesheet.js';
 import * as Theme from '../config/Theme.js';
-
-var addresses = [
-  {address: '2N1vKCFx3gF4jYVKfuD9ViuQaHB2ujcbmV9', balance: '0.00000000', updated_time: '2017-09-18 14:28:00'},
-  {address: 'mn7yHmxBpV9H5Uatfu8bRpUkqtYsauMsxW', balance: '0.00000000', updated_time: '2017-09-18 14:28:15'},
-];
 
 const drawerStyles = {
   drawer: {shadowColor: '#000', shadowOpacity: 0.8, shadowRadius: 15},
@@ -70,11 +68,15 @@ export default class Main extends Component {
     super(props);
     this.state = {
       l0calsettings: {},
-      tokenName: '',
+      tokenName: 'BTCUSD',
       coin: 'Bitcoin',
       loading: false,
       showConfirmation: false,
-      bottom: -250
+      bottom: -250,
+      startDate: moment(new Date()).format('DD-MM-YYYY'),
+      endDate: moment(new Date()).format('DD-MM-YYYY'),
+      startDateHolder: null,
+      endDateHolder: null
     }
   }
 
@@ -115,7 +117,6 @@ export default class Main extends Component {
             multiline={false}
             numberOfLines = {1}
             editable={false}
-            placeholder={'Select your token'}
             onChangeText={() => {
 
             }}
@@ -131,28 +132,30 @@ export default class Main extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles1.row2}>
-          <TextInput style={[styles1.inputbox2, {marginRight: 5}]}
-            underlineColorAndroid='transparent'
-            autoCorrect={false}
-            multiline={true}
-            numberOfLines = {2}
-            editable={false}
-            onChangeText={() => {
+          <TouchableOpacity activeOpacity={1} onPress={this.handleDatePickerMainFunctionCall.bind(this, 'start')}>
+            <TextInput style={[styles1.inputbox2, {marginRight: 0}]}
+              underlineColorAndroid='transparent'
+              autoCorrect={false}
+              multiline={true}
+              numberOfLines = {2}
+              editable={false}
+              onChangeText={() => {
 
-            }}
-            value={'Begin\n09-12-2017'}
-          />
-          <TextInput style={[styles1.inputbox2, {marginLeft: 5}]}
-            underlineColorAndroid='transparent'
-            autoCorrect={false}
-            multiline={true}
-            numberOfLines = {2}
-            editable={false}
-            onChangeText={() => {
+              }}
+              value={'Begin\n' + this.state.startDate} />
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={1} onPress={this.handleDatePickerMainFunctionCall.bind(this, 'end')}>
+            <TextInput style={[styles1.inputbox2, {marginLeft: 0}]}
+              underlineColorAndroid='transparent'
+              autoCorrect={false}
+              multiline={true}
+              numberOfLines = {2}
+              editable={false}
+              onChangeText={() => {
 
-            }}
-            value={'End\n10-12-2017'}
-          />
+              }}
+              value={'End\n' + this.state.endDate} />
+          </TouchableOpacity>
         </View>
         <View style={[styles1.row1, {height: 80}]}>
           <Text style={styles1.description}>threshold prices</Text>
@@ -160,13 +163,13 @@ export default class Main extends Component {
 
           </View>
         </View>
-        <View style={[styles1.row1, {height: 80}]}>
-          <View style={[styles1.whiteFrame, {height: 70}]}>
-            <Text style={[styles1.item, {color: '#999'}]}>Equal per     0.25</Text>
+        <View style={[styles1.row1, {height: 85}]}>
+          <View style={[styles1.whiteFrame, {height: 78}]}>
+            <Text style={[styles1.item, {color: '#999'}]}>Frequence     5 mins</Text>
             <View style={{backgroundColor: '#ddd', position: 'absolute', right: width*0.35, top: 20, width: 1, height: 30}}/>
-            <Text style={[styles1.item, {}]}>Equal per   0.1</Text>
+            <Text style={[styles1.item, {color: '#999'}]}>Every per   10%</Text>
             <View style={{backgroundColor: '#ddd', position: 'absolute', left: width*0.30, top: 20, width: 1, height: 30}}/>
-            <Text style={[styles1.item, {}]}>Every time     50%</Text>
+            <Text style={[styles1.item, {color: '#999'}]}>Holds own     25%</Text>
           </View>
         </View>
         <View style={styles1.row2}>
@@ -237,9 +240,52 @@ export default class Main extends Component {
             {this.renderMask()}
             {this.renderConfirmation()}
           <Spinner visible={this.state.loading} />
+          <DatePickerDialog ref="DatePickerDialogStart" onDatePicked={this.handleDatePickedFunctionStart.bind(this)} />
+          <DatePickerDialog ref="DatePickerDialogEnd" onDatePicked={this.handleDatePickedFunctionEnd.bind(this)} />
         </View>
       </Drawer>
     );
+  }
+
+  handleDatePickerMainFunctionCall = (category) => {
+    let StartDateHolder = this.state.startDateHolder;
+    if (!StartDateHolder || StartDateHolder == null) {
+      StartDateHolder = new Date();
+      this.setState({
+        startDateHolder: StartDateHolder
+      });
+    }
+    let EndDateHolder = this.state.endDateHolder;
+    if (!EndDateHolder || EndDateHolder == null) {
+      EndDateHolder = new Date();
+      this.setState({
+        endDateHolder: EndDateHolder
+      });
+    }
+    //To open the dialog
+    if (category === 'start') {
+      this.refs.DatePickerDialogStart.open({
+        date: StartDateHolder,
+        minDate: StartDateHolder
+      });
+    } else {
+      this.refs.DatePickerDialogEnd.open({
+        date: EndDateHolder,
+        minDate: StartDateHolder
+      });
+    }
+  }
+
+  handleDatePickedFunctionStart = (date) => {
+    this.setState({
+      startDate: moment(date).format('DD-MM-YYYY')
+    });
+  }
+
+  handleDatePickedFunctionEnd = (date) => {
+    this.setState({
+      endDate: moment(date).format('DD-MM-YYYY')
+    });
   }
 }
 
@@ -260,7 +306,7 @@ const styles1 = StyleSheet.create({
     marginBottom: 10,
     paddingTop: 10,
     width: width,
-    height: 400,
+    height: 420,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start'
@@ -274,9 +320,9 @@ const styles1 = StyleSheet.create({
   },
   row2: {
     backgroundColor: 'transparent',
-    height: 60,
+    height: 70,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 
@@ -335,7 +381,7 @@ const styles1 = StyleSheet.create({
     fontSize: 16,
     color: '#999',
     flex: 1,
-    width: width / 2.0 - 10,
+    width: width / 2.0 - 15,
     height: 50,
     margin: 10,
     marginTop: 2.5,
