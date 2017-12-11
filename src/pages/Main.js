@@ -17,6 +17,9 @@ import {
 import {
   DatePickerDialog
 } from 'react-native-datepicker-dialog';
+import {
+  Dropdown
+} from 'react-native-material-dropdown';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -76,7 +79,32 @@ export default class Main extends Component {
       startDate: moment(new Date()).format('DD-MM-YYYY'),
       endDate: moment(new Date()).format('DD-MM-YYYY'),
       startDateHolder: null,
-      endDateHolder: null
+      endDateHolder: null,
+      dropdownMenu1: [{
+        value: 'sell',
+      }, {
+        value: 'bids',
+      }, {
+        value: 'all',
+      }],
+      dropdownMenu2: [{
+        value: '1 mins',
+      }, {
+        value: '2 mins',
+      }, {
+        value: '3 mins',
+      }, {
+        value: '5 mins',
+      }],
+      dropdownMenu3: [{
+        value: '10%',
+      }, {
+        value: '25%',
+      }, {
+        value: '50%',
+      }, {
+        value: '100%',
+      }]
     }
   }
 
@@ -157,19 +185,35 @@ export default class Main extends Component {
               value={'End\n' + this.state.endDate} />
           </TouchableOpacity>
         </View>
-        <View style={[styles1.row1, {height: 80}]}>
+        <View style={[styles1.row1, {height: 100}]}>
           <Text style={styles1.description}>threshold prices</Text>
-          <View style={[styles1.whiteFrame, {height: 50}]}>
+          <View style={[styles1.whiteFrame, {height: 75}]}>
 
           </View>
         </View>
-        <View style={[styles1.row1, {height: 85}]}>
-          <View style={[styles1.whiteFrame, {height: 78}]}>
-            <Text style={[styles1.item, {color: '#999'}]}>Frequence     5 mins</Text>
-            <View style={{backgroundColor: '#ddd', position: 'absolute', right: width*0.35, top: 20, width: 1, height: 30}}/>
-            <Text style={[styles1.item, {color: '#999'}]}>Every per   10%</Text>
-            <View style={{backgroundColor: '#ddd', position: 'absolute', left: width*0.30, top: 20, width: 1, height: 30}}/>
-            <Text style={[styles1.item, {color: '#999'}]}>Holds own     25%</Text>
+        <View style={[styles1.row1, {height: 75}]}>
+          <View style={[styles1.whiteFrame, {height: 68}]}>
+            <View style={[styles1.itemView, {backgroundColor: 'transparent'}]}>
+              <Dropdown
+                label='Exchange for'
+                animationDuration={0}
+                value={'all'}
+                data={this.state.dropdownMenu1} />
+            </View>
+            <View style={[styles1.itemView, {backgroundColor: 'transparent'}]}>
+              <Dropdown
+                label='Execute Rate'
+                animationDuration={0}
+                value={'1 mins'}
+                data={this.state.dropdownMenu2} />
+            </View>
+            <View style={[styles1.itemView, {backgroundColor: 'transparent'}]}>
+              <Dropdown
+                label='Each Piece'
+                animationDuration={0}
+                value={'10%'}
+                data={this.state.dropdownMenu3} />
+            </View>
           </View>
         </View>
         <View style={styles1.row2}>
@@ -306,7 +350,7 @@ const styles1 = StyleSheet.create({
     marginBottom: 10,
     paddingTop: 10,
     width: width,
-    height: 420,
+    height: 428,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start'
@@ -325,7 +369,6 @@ const styles1 = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-
   title: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -350,6 +393,14 @@ const styles1 = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 0.5,
     borderRadius: 4.0
+  },
+  itemView: {
+    backgroundColor: 'transparent',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    paddingTop: -10,
+    marginRight: 5,
   },
   item: {
     backgroundColor: 'transparent',
