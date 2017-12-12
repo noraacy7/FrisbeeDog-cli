@@ -24,17 +24,38 @@ react-native run-ios/run-android
 ##iOS
 1. Add `node_modules/react-native-material-kit/iOS/RCTMaterialKit.xcodeproj` to your xcode project, usually under the `Libraries` group
 2. Add `libRCTMaterialKit.a` (from `Products` under `RCTMaterialKit.xcodeproj`) to build target's `Linked Frameworks and Libraries` list
-	compile project(':react-native-code-push')
-    compile project(':react-native-camera')
-    compile project(':react-native-device-info')
-    compile project(':react-native-material-kit')
-    compile project(':react-native-orientation')
-    compile project(':lottie-react-native')
+3. Go to node_modules ➜ react-native-camera and add RCTCamera.xcodeproj
+4. In XCode, in the project navigator, select your project. Add libRCTCamera.a to your project's Build Phases ➜ Link Binary With Libraries
+5. Click RCTCamera.xcodeproj in the project navigator and go the Build Settings tab. Make sure 'All' is toggled on (instead of 'Basic'). In the Search Paths section, look for Header Search Paths and make sure it contains both $(SRCROOT)/../../react-native/React and $(SRCROOT)/../../../React - mark both as recursive.
+6. Run your project (`Cmd+R`)
 
-##Android (or you can simplly download [here](https://github.com/rnpm/rnpm)
+##Android (or you can simplly download here [https://github.com/rnpm/rnpm](https://github.com/rnpm/rnpm))
 1. JDK 7+ is required
 2. Add the following snippet to your `android/settings.gradle`:
   ```gradle
   include ':RNMaterialKit'
   project(':RNMaterialKit').projectDir = file('../node_modules/react-native-material-kit/android')
+3. Open up `android/app/src/main/java/[...]/MainApplication.java
+  - Add `import com.lwansbrough.RCTCamera.RCTCameraPackage;` to the imports at the top of the file
+  - Add `new RCTCameraPackage()` to the list returned by the `getPackages()` method. Add a comma to the previous item if there's already something there.
+
+4. Append the following lines to `android/settings.gradle`:
+
+	```gradle
+	include ':react-native-camera'
+	project(':react-native-camera').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-camera/android')
+	```
+
+5. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
+
+	```gradle
+    compile project(':react-native-camera')
+	```
+6. Declare the permissions in your Android Manifest (required for `video recording` feature)
+
+  ```java
+  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  ```
 
