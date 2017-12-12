@@ -35,6 +35,7 @@ react-native run-ios/run-android
   ```gradle
   include ':RNMaterialKit'
   project(':RNMaterialKit').projectDir = file('../node_modules/react-native-material-kit/android')
+  ```
 3. Open up `android/app/src/main/java/[...]/MainApplication.java
   - Add `import com.lwansbrough.RCTCamera.RCTCameraPackage;` to the imports at the top of the file
   - Add `new RCTCameraPackage()` to the list returned by the `getPackages()` method. Add a comma to the previous item if there's already something there.
