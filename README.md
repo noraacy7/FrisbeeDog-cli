@@ -1,4 +1,3 @@
-![logo](https://github.com/silravend/FrisbeeDog-cli/blob/ui/doc/logo.png)
 FrisbeeDog
 =========================
 
@@ -7,11 +6,11 @@ FrisbeeDog is a blockchain based APIs integration tool for people control exchan
 
 The risk of the each token exchange initiatives seeking to be listed in our App is computed through the historical price variance.
 
-![formula](https://github.com/silravend/FrisbeeDog-cli/blob/ui/doc/formula.jpg)
+![formula](https://github.com/silravend/FrisbeeDog-cli/blob/master/doc/formula.jpg)
 
 The weights of the the new cryptocurrencies are inversely correlated with the distance described above, so the currencies with more distance get less weight in the script.
 
-![graph](https://github.com/silravend/FrisbeeDog-cli/blob/ui/doc/graph.jpg)
+![graph](https://github.com/silravend/FrisbeeDog-cli/blob/master/doc/graph.jpg)
 
 
 
