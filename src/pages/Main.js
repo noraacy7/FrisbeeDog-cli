@@ -216,7 +216,7 @@ export default class Main extends Component {
         <View style={[styles1.row1, {height: 100}]}>
           <Text style={styles1.description}>current price: 16,542.000</Text>
           <View style={[styles1.whiteFrame, {height: 75, flexDirection: 'column'}]}>
-            <SliderValuedText ref="rangeValueText" initial="minimize: 20.1847, and maximize: 80.2847" rangeText="" />
+            <SliderValuedText ref="rangeValueText" initial="bids: 20.1847, and sell: 80.2847" rangeText="" />
             <MKRangeSlider
               ref="rangeSlider"
               min={0}
@@ -224,7 +224,7 @@ export default class Main extends Component {
               minValue={200000}
               maxValue={500000}
               style={styles1.slider}
-              onChange={(curValue) => this.refs.rangeValueText.onChange('minimize: ' + (curValue.min/10000.0).toFixed(3) + ', and maximize: ' + (curValue.max/10000.0).toFixed(3))}
+              onChange={(curValue) => this.refs.rangeValueText.onChange('bids: ' + (curValue.min/10000.0).toFixed(3) + ', and sell: ' + (curValue.max/10000.0).toFixed(3))}
               />
           </View>
         </View>
@@ -246,7 +246,7 @@ export default class Main extends Component {
             </View>
             <View style={[styles1.itemView, {backgroundColor: 'transparent'}]}>
               <Dropdown
-                label='Each Piece'
+                label='Each Trade'
                 animationDuration={0}
                 value={'10%'}
                 data={this.state.dropdownMenu3} />
