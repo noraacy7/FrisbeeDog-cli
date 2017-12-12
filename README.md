@@ -1,4 +1,4 @@
-FrisbeeDog
+FrisbeeDog (both iOS and Android)
 =========================
 
 # Introduction
@@ -12,5 +12,29 @@ The weights of the the new cryptocurrencies are inversely correlated with the di
 
 ![graph](https://github.com/silravend/FrisbeeDog-cli/blob/master/doc/graph.jpg)
 
+# How to build
+FrisbeeDog is based on hybrid framework produced by facebook called React Native, and used bitcoinjs-lib as blockchain toolset.
 
+```bash
+git clone https://github.com/silravend/FrisbeeDog-cli.git
+cd FrisbeeDog-cli
+react-native run-ios/run-android
+```
+
+##iOS
+1. Add `node_modules/react-native-material-kit/iOS/RCTMaterialKit.xcodeproj` to your xcode project, usually under the `Libraries` group
+2. Add `libRCTMaterialKit.a` (from `Products` under `RCTMaterialKit.xcodeproj`) to build target's `Linked Frameworks and Libraries` list
+	compile project(':react-native-code-push')
+    compile project(':react-native-camera')
+    compile project(':react-native-device-info')
+    compile project(':react-native-material-kit')
+    compile project(':react-native-orientation')
+    compile project(':lottie-react-native')
+
+##Android (or you can simplly download [here](https://github.com/rnpm/rnpm)
+1. JDK 7+ is required
+2. Add the following snippet to your `android/settings.gradle`:
+  ```gradle
+  include ':RNMaterialKit'
+  project(':RNMaterialKit').projectDir = file('../node_modules/react-native-material-kit/android')
 
