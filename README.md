@@ -21,7 +21,7 @@ cd FrisbeeDog-cli
 react-native run-ios/run-android
 ```
 
-##iOS
+### iOS
 1. Add `node_modules/react-native-material-kit/iOS/RCTMaterialKit.xcodeproj` to your xcode project, usually under the `Libraries` group
 2. Add `libRCTMaterialKit.a` (from `Products` under `RCTMaterialKit.xcodeproj`) to build target's `Linked Frameworks and Libraries` list
 3. Go to node_modules ➜ react-native-camera and add RCTCamera.xcodeproj
@@ -29,7 +29,7 @@ react-native run-ios/run-android
 5. Click RCTCamera.xcodeproj in the project navigator and go the Build Settings tab. Make sure 'All' is toggled on (instead of 'Basic'). In the Search Paths section, look for Header Search Paths and make sure it contains both $(SRCROOT)/../../react-native/React and $(SRCROOT)/../../../React - mark both as recursive.
 6. Run your project (`Cmd+R`)
 
-##Android (or you can simplly download here [https://github.com/rnpm/rnpm](https://github.com/rnpm/rnpm))
+### Android (or you can simplly download here [https://github.com/rnpm/rnpm](https://github.com/rnpm/rnpm))
 1. JDK 7+ is required
 2. Add the following snippet to your `android/settings.gradle`:
   ```gradle
