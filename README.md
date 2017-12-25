@@ -4,7 +4,7 @@ FrisbeeDog (both iOS and Android)
 # Introduction
 FrisbeeDog is a blockchain based APIs integration tool for people control exchange account automatically sell and buy tokens. There are several main functions apart from other fundraising mechanisms. First, no fiat client can be directly applied as a mean of tool. Second, trading is an unregulated area and there is no regulatory limitations set on the qualification of inverstors and parameters need to trade Bitcoin, Ethereum or other cryptocurrencies to participate in exchange. Third, due to the decentralized nature of blockchain technology, trading issue can be both entity based (centralized) and non-entity (decentralize) based. Last but not least, except involved (such as investment banks, VCs, etc) enabling direct and fast distribution of the funds to the startups.
 
-The risk of the each token exchange initiatives seeking to be listed in our App is computed through the historical price variance.
+In the furture, we helps people to decrease the risk of the each token exchange initiatives seeking to be listed in our App is computed through the historical price variance.
 
 ![formula](https://github.com/silravend/FrisbeeDog-cli/blob/master/doc/formula.jpg)
 

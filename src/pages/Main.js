@@ -109,11 +109,25 @@ export default class Main extends Component {
       startDateHolder: null,
       endDateHolder: null,
       dropdownMenu1: [{
-        value: 'sell',
+        value: '1',
       }, {
-        value: 'bids',
+        value: '2',
       }, {
-        value: 'all',
+        value: '3',
+      }, {
+        value: '4',
+      }, {
+        value: '5',
+      }, {
+        value: '6',
+      }, {
+        value: '7',
+      }, {
+        value: '8',
+      }, {
+        value: '9',
+      }, {
+        value: '10',
       }],
       dropdownMenu2: [{
         value: '1 mins',
@@ -232,9 +246,9 @@ export default class Main extends Component {
           <View style={[styles1.whiteFrame, {height: 68}]}>
             <View style={[styles1.itemView, {backgroundColor: 'transparent'}]}>
               <Dropdown
-                label='Exchange for'
+                label='Exchange Times'
                 animationDuration={0}
-                value={'all'}
+                value={'1'}
                 data={this.state.dropdownMenu1} />
             </View>
             <View style={[styles1.itemView, {backgroundColor: 'transparent'}]}>
@@ -246,7 +260,7 @@ export default class Main extends Component {
             </View>
             <View style={[styles1.itemView, {backgroundColor: 'transparent'}]}>
               <Dropdown
-                label='Each Trade'
+                label='Each Piece'
                 animationDuration={0}
                 value={'10%'}
                 data={this.state.dropdownMenu3} />
