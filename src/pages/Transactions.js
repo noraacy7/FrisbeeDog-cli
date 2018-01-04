@@ -16,7 +16,7 @@ import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ActionSheet from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
-import NavigationBar from '../container/NavigationBar.js';
+import NavigationBar from '../component/NavigationBar.js';
 import ScrollViewItem from './ScrollViewItem.js';
 import styles from '../../stylesheet.js';
 

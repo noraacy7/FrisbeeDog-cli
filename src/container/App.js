@@ -94,8 +94,8 @@ export default class FrisbeedogApp extends Component {
       return(
         <View style={styles.bg}>
           <Navigator
-            initialRoute={{name: 'Main', component: Main}}
             //initialRoute={{name: 'TestPage', component: TestPage}}
+            initialRoute={{name: 'FrontPage', component: FrontPage}}
             configureScene={(route) => {
               if (route.sceneConfig) {
                 return route.sceneConfig;

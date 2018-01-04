@@ -30,7 +30,7 @@ import Drawer from 'react-native-drawer';
 import ActionSheet from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
 import moment from 'moment';
-import NavigationBar from '../container/NavigationBar.js';
+import NavigationBar from '../component/NavigationBar.js';
 import Gesture from './Gesture.js';
 import GestureLocker from '../pages/GestureLocker.js';
 import ControlPanel from './ControlPanel.js';
@@ -98,11 +98,10 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      l0calsettings: {},
-      tokenName: 'BTCUSD',
-      coin: 'Bitcoin',
       loading: false,
       showConfirmation: false,
+      l0calsettings: {},
+      tokenName: 'BTCUSD',
       bottom: -250,
       startDate: moment(new Date()).format('DD-MM-YYYY'),
       endDate: moment(new Date()).format('DD-MM-YYYY'),
@@ -171,6 +170,16 @@ export default class Main extends Component {
       }
       this.setState({l0calsettings: settings});
     }).catch((err) => {});
+  }
+
+  renderMask() {
+    if (this.state.showConfirmation) {
+      return(
+        <View style={styles1.mask}></View>
+      )
+    } else {
+      return null
+    }
   }
 
   renderTaskBox() {
@@ -287,16 +296,6 @@ export default class Main extends Component {
         <Animatable.View ref='confirmationbox' style={styles.confirmWnd}>
 
         </Animatable.View>
-      )
-    } else {
-      return null
-    }
-  }
-
-  renderMask() {
-    if (this.state.showConfirmation) {
-      return(
-        <View style={styles1.mask}></View>
       )
     } else {
       return null

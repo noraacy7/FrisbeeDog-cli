@@ -15,7 +15,7 @@ import {
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
-import NavigationBar from '../container/NavigationBar.js';
+import NavigationBar from '../component/NavigationBar.js';
 import styles from '../../stylesheet.js';
 import * as Theme from '../config/Theme.js';
 

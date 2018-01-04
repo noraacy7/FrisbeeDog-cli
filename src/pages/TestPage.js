@@ -7,77 +7,52 @@ import {
   TouchableOpacity,
   Dimensions
 } from 'react-native';
-import {
-  MKButton,
-  MKColor,
-  MKSlider,
-  MKRangeSlider,
-  setTheme
-} from 'react-native-material-kit';
-import NavigationBar from '../container/NavigationBar.js';
+import NavigationBar from '../component/NavigationBar.js';
 import styles from '../../stylesheet.js';
 import * as Theme from '../config/Theme.js';
-import moment from 'moment';
+import {
+  connect
+} from 'react-redux';
+import * as createNewAccount from '../actions/createNewAccount.js';
+import * as counter from '../actions/counter.js';
+import Counter from '../component/Counter.js';
+import FrontPage from './FrontPage.js';
 
-
-setTheme({
-  primaryColor: '#3c97e9',
-});
-
-class ValueText extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      curValue: props.initial,
-    };
-  }
-
-  onChange(curValue) {
-    this.setState({curValue});
-  }
-
-  render() {
-    return (
-      <Text>
-        {this.state.curValue} ({this.props.rangeText})
-      </Text>
-    );
-  }
-}
-
-export default class TestPage extends Component {
+class TestPage extends Component {
 
   constructor(props) {
     super(props);
 
   }
 
-  componentDidMount() {
-
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.status === 'done' && nextProps.result) {
+      this.props.navigator.push({
+        name: 'FrontPage',
+        component: FrontPage
+      });
+    }
   }
 
   render() {
-
     return(
       <View style={{flex: 1}}>
         <NavigationBar title={'Test Page'}
           lItemImage='md-arrow-back'
           lItemTappedCallback={this.handleNavBack.bind(this)}/>
-        <MKRangeSlider
-          ref="rangeSlider"
-          min={0}
-          max={1000000}
-          minValue={200000}
-          maxValue={500000}
-          style={styles1.slider}
-          onChange={(curValue) => this.refs.rangeValueText.onChange((curValue.min/10000.0).toFixed(4) + '-' + (curValue.max/10000.0).toFixed(4))}
-          />
-        <ValueText ref="rangeValueText" initial="20.00-75.00" rangeText="10~100" />
+          <Text>Status: {this.props.status}</Text>
+          <TouchableOpacity style={styles1.loginBtn} onPress={() => this.props.action1()}>
+            <Text>Create New Account</Text>
+          </TouchableOpacity>
+          <Counter incrementFn={this.props.incrementFn} decrementFn={this.props.decrementFn} count={this.props.count} />
       </View>
     )
   }
 
   handleNavBack() {
+    this.setState({
+      visible: false
+    });
     if (this.props.navigator) {
       this.props.navigator.pop();
     }
@@ -86,7 +61,22 @@ export default class TestPage extends Component {
 
 const {width, height} = Dimensions.get('window');
 const styles1 = StyleSheet.create({
-  slider: {
-    width: width,
-  },
+  loginBtn: {
+    borderWidth: 1,
+    padding: 5,
+  }
 });
+
+export default connect(
+  (state) => ({
+    status: state.createNewAccount.status,
+    result: state.createNewAccount.result,
+    user: state.createNewAccount.user,
+    count: state.counter.count,
+  }),
+  (dispatch) => ({
+    action1: () => dispatch(createNewAccount.exec()),
+    incrementFn: () => dispatch(counter.increment()),
+    decrementFn: () => dispatch(counter.decrement())
+  })
+)(TestPage);

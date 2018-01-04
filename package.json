@@ -25,12 +25,12 @@
 		"react-native-deprecated-custom-components": "^0.1.1",
 		"react-native-device-info": "^0.11.0",
 		"react-native-drawer": "^2.5.0",
+		"react-native-easy-loading": "^1.0.4",
 		"react-native-easy-toast": "^1.0.6",
 		"react-native-encryption-library": "^1.0.9",
 		"react-native-gesture-password": "^0.2.1",
 		"react-native-html-render": "^1.0.5",
 		"react-native-keyboard-aware-scrollview": "^1.1.7",
-		"react-native-loading-spinner-overlay": "^0.5.2",
 		"react-native-material-dropdown": "^0.6.1",
 		"react-native-material-kit": "^0.4.1",
 		"react-native-message-bar": "^2.0.4",
@@ -39,7 +39,10 @@
 		"react-native-qrcode": "^0.2.6",
 		"react-native-storage": "^0.2.2",
 		"react-native-tab-navigator": "^0.3.4",
-		"react-native-vector-icons": "^4.3.0"
+		"react-native-vector-icons": "^4.3.0",
+		"react-redux": "^5.0.6",
+		"redux": "^3.7.2",
+		"redux-thunk": "^2.2.0"
 	},
 	"devDependencies": {
 		"babel-jest": "21.0.2",
