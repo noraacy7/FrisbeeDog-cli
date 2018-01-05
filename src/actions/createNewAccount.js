@@ -1,37 +1,42 @@
 import * as types from '../constants/actionTypes.js';
-import * as uri from '../config/config.js';
+import * as config from '../config/config.js';
+import * as validators from '../helpers/validatorHelper.js';
 
 export function exec() {
   return dispatch => {
-    dispatch(isCreateNewAccount()); // processing
+    dispatch(execProcessing()); // processing
     // 模拟用户登录
-    let retval = fetch(`${uri.BASE_URL}/v1.0/create_mnemonic`).then((res) => {
-      dispatch(execSuccess(res)); // done
+    let retval = fetch(`${config.BASE_URL}/v1.0/create_mnemonic`).then((res) => {
+      dispatch(execDone(res)); // done
     }).catch(e => {
       dispatch(execError(e)); // error
     });
   }
 }
 
-function isCreateNewAccount() {
+function execProcessing() {
   return {
     type: types.CREATE_NEW_ACCOUNT_PROCESSING
   }
 }
 
-function execSuccess(data) {
+function execDone(data) {
   var dataJson = JSON.parse(data._bodyText);
-  console.log(dataJson['data']);
-  var result = JSON.parse(dataJson['data']);
   // check validation
-
-  return {
-    type: types.CREATE_NEW_ACCOUNT_DONE,
-    result: result
+  var data = dataJson['data'];
+  var signature = dataJson['signature'];
+  if (validators.checkSignature(data, config.SERVER_ADDRESS, signature) === 'OK') {
+    return {
+      type: types.CREATE_NEW_ACCOUNT_DONE,
+      result: data
+    }
+  } else {
+    dispatch(execError(e)); // error
   }
 }
 
 function execError(error) {
+  console.log(error);
   return {
     type: types.CREATE_NEW_ACCOUNT_ERROR,
     errors: error
