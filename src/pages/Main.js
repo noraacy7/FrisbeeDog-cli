@@ -23,7 +23,6 @@ import {
 import {
   Dropdown
 } from 'react-native-material-dropdown';
-import Spinner from 'react-native-loading-spinner-overlay';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Drawer from 'react-native-drawer';

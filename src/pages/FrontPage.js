@@ -82,8 +82,11 @@ class FrontPage extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.status === 'done' && nextProps.result) {
-      EasyLoading.dismis('createNewAccount');
+    if (nextProps.status === 'processing') {
+      EasyLoading.show('Loading...', 3000); // show loading
+      return true;
+    } else if (nextProps.status === 'done' && nextProps.result) {
+      EasyLoading.dismis(); // dismis loading
       this.props.navigator.push({
         name: 'CreateNewAccount',
         component: CreateNewAccount
@@ -136,7 +139,6 @@ class FrontPage extends Component {
   }
 
   handleRaisedButtonSend3() {
-    EasyLoading.show('Loading...', 3000, 'createNewAccount'); // show loading
     this.props.createNewAccount();
   }
 }

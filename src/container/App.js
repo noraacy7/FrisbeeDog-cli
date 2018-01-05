@@ -84,10 +84,10 @@ export default class FrisbeedogApp extends Component {
     }
 
     componentDidMount() {
-      codePush.sync();
-      AppState.addEventListener("change", (newState) => {
-        newState === "active" && codePush.sync();
-      });
+      // codePush.sync();
+      // AppState.addEventListener("change", (newState) => {
+      //   newState === "active" && codePush.sync();
+      // });
     }
 
     render() {

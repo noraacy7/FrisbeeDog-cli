@@ -4,6 +4,7 @@ import * as types from '../constants/actionTypes.js';
 const initialState = {
   status: '',
   result: null,
+  errors: null
 }
 
 export default function createNewAccount(state=initialState, action) {
@@ -12,7 +13,8 @@ export default function createNewAccount(state=initialState, action) {
       return {
         ...state,
         status: 'processing',
-        result: null
+        result: null,
+        errors: null
       }
       break;
     case types.CREATE_NEW_ACCOUNT_DONE:
@@ -20,6 +22,7 @@ export default function createNewAccount(state=initialState, action) {
         ...state,
         status: 'done',
         result: action.result,
+        errors: null
       }
       break;
     case types.CREATE_NEW_ACCOUNT_ERROR:
@@ -27,6 +30,7 @@ export default function createNewAccount(state=initialState, action) {
         ...state,
         status: 'error',
         result: null,
+        errors: action.errors
       }
       break;
     default:
