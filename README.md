@@ -61,4 +61,4 @@ react-native run-ios/run-android
   ```
 
 #donate
-![graph](https://github.com/silravend/FrisbeeDog-cli/blob/master/doc/btc_address.jpg)
+![btc](https://github.com/silravend/FrisbeeDog-cli/blob/master/doc/btc_address.jpg)
