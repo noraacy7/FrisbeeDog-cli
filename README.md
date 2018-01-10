@@ -60,3 +60,5 @@ react-native run-ios/run-android
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   ```
 
+#donate
+![graph](https://github.com/silravend/FrisbeeDog-cli/blob/master/doc/btc_address.jpg)
