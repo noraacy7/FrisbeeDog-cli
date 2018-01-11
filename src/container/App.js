@@ -15,11 +15,7 @@ import {
 import codePush from 'react-native-code-push';
 import Storage from 'react-native-storage';
 import DeviceInfo from 'react-native-device-info';
-import FrontPage from '../pages/FrontPage.js';
-import TestPage from '../pages/TestPage.js';
-import CreateNewAccount from '../pages/CreateNewAccount.js';
-import RestoreMyAccount from '../pages/RestoreMyAccount.js';
-import Main from '../pages/Main.js';
+import Launcher from '../pages/Launcher.js';
 
 var storage = new Storage({
   // maximum capcity, default 1000
@@ -50,19 +46,12 @@ storage.load({
   key: 'l0calsettings'
 }).then((settings) => {
   console.log(settings);
-
+  // set default
   if (settings['unique_id'] == undefined) {
     saveL0calsettingsAsDefault();
   }
 }).catch((err) => {
-  saveL0calsettingsAsDefault();
-});
-// setup default value for variables
-storage.save({
-  key: 'user',
-  data: {
-    verify_login: false
-  }
+  console.log(err);
 });
 
 function saveL0calsettingsAsDefault() {
@@ -73,6 +62,14 @@ function saveL0calsettingsAsDefault() {
       suggestion_of_gesture_hide: false,
       gesture: '',
       unique_id: DeviceInfo.getUniqueID(),
+    }
+  });
+  // setup default value for variables
+  storage.save({
+    key: 'user',
+    data: {
+      verify_login: false,
+      mnemonic: ''
     }
   });
 }
@@ -94,8 +91,8 @@ export default class FrisbeedogApp extends Component {
       return(
         <View style={styles.bg}>
           <Navigator
-            //initialRoute={{name: 'TestPage', component: TestPage}}
-            initialRoute={{name: 'FrontPage', component: FrontPage}}
+            // initialRoute={{name: 'TestPage', component: TestPage}}
+            initialRoute={{name: 'Launcher', component: Launcher}}
             configureScene={(route) => {
               if (route.sceneConfig) {
                 return route.sceneConfig;
@@ -110,13 +107,12 @@ export default class FrisbeedogApp extends Component {
             }}
           />
         </View>
-      );
+      )
     }
 }
 
 const {width, height} = Dimensions.get('window');
 const styles=StyleSheet.create({
-
   bg: {
     backgroundColor: 'transparent',
     flex: 1,

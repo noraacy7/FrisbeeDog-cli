@@ -109,6 +109,8 @@ export default class ControlPanel extends Component {
           </Text>
         </View>
         <ListView style={styles1.listview}
+          ref='listview'
+          enableEmptySections={true}
           dataSource={this.state.dataSource.cloneWithRows(this.data)}
           renderRow={this.renderRow.bind(this)}
           removeClippedSubviews={false}
@@ -118,19 +120,19 @@ export default class ControlPanel extends Component {
   }
 
   renderRow(rowData, sectioID, rowID, highlightRow) {
-    var uri = '';
-    switch(rowData.text) {
-      case 'Bitcoin':
-        uri = require('../../assets/images/icon-48_Bitcoin.png'); break;
-      case 'Ethereum':
-        uri = require('../../assets/images/icon-48_Ethereum.png'); break;
-      case 'Dash':
-        uri = require('../../assets/images/icon-48_Dash.png'); break;
-      case 'Zcash':
-        uri = require('../../assets/images/icon-48_Zcash.png'); break;
-      case 'Monero':
-        uri = require('../../assets/images/icon-48_Monero.png'); break;
-    }
+    var uri = require('../../assets/images/logo_bitfinex.png');
+    // switch(rowData.text) {
+    //   case 'Bitcoin':
+    //     uri = require('../../assets/images/icon-48_Bitcoin.png'); break;
+    //   case 'Ethereum':
+    //     uri = require('../../assets/images/icon-48_Ethereum.png'); break;
+    //   case 'Dash':
+    //     uri = require('../../assets/images/icon-48_Dash.png'); break;
+    //   case 'Zcash':
+    //     uri = require('../../assets/images/icon-48_Zcash.png'); break;
+    //   case 'Monero':
+    //     uri = require('../../assets/images/icon-48_Monero.png'); break;
+    // }
     return(
       <TouchableOpacity style={styles1.row} key={rowID} activeOpacity={1} onPress={e => {
         this.handleRowHasChanged(e, rowData)

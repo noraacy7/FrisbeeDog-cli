@@ -8,7 +8,8 @@ import {
   Dimensions
 } from 'react-native';
 import NavigationBar from '../component/NavigationBar.js';
-import styles from '../../stylesheet.js';
+import Modal from 'react-native-modal';
+import styles1 from '../../stylesheet.js';
 import * as Theme from '../config/Theme.js';
 import {
   connect
@@ -18,65 +19,108 @@ import * as counter from '../actions/counter.js';
 import Counter from '../component/Counter.js';
 import FrontPage from './FrontPage.js';
 
-class TestPage extends Component {
+export default class TestPage extends Component {
 
-  constructor(props) {
-    super(props);
+  state = {
+    visibleModal: null,
+  };
 
-  }
+  _renderButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.button}>
+        <Text>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.status === 'done' && nextProps.result) {
-      this.props.navigator.push({
-        name: 'FrontPage',
-        component: FrontPage
-      });
-    }
-  }
+  _renderModalContent = () => (
+    <View style={styles.modalContent}>
+      <Text>Hello!</Text>
+      {this._renderButton('Close', () => this.setState({ visibleModal: null }))}
+    </View>
+  );
 
   render() {
-    return(
-      <View style={{flex: 1}}>
-        <NavigationBar title={'Test Page'}
-          lItemImage='md-arrow-back'
-          lItemTappedCallback={this.handleNavBack.bind(this)}/>
-          <Text>Status: {this.props.status}</Text>
-          <TouchableOpacity style={styles1.loginBtn} onPress={() => this.props.action1()}>
-            <Text>Create New Account</Text>
-          </TouchableOpacity>
-          <Counter incrementFn={this.props.incrementFn} decrementFn={this.props.decrementFn} count={this.props.count} />
+    return (
+      <View style={styles.container}>
+        {this._renderButton('Default modal', () => this.setState({ visibleModal: 1 }))}
+        {this._renderButton('Sliding from the sides', () => this.setState({ visibleModal: 2 }))}
+        {this._renderButton('A slower modal', () => this.setState({ visibleModal: 3 }))}
+        {this._renderButton('Fancy modal!', () => this.setState({ visibleModal: 4 }))}
+        {this._renderButton('Bottom half modal', () => this.setState({ visibleModal: 5 }))}
+        {this._renderButton('Modal that can be closed on backdrop press', () =>
+          this.setState({ visibleModal: 6 }),
+        )}
+        <Modal isVisible={this.state.visibleModal === 1}>{this._renderModalContent()}</Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 2}
+          animationIn={'slideInLeft'}
+          animationOut={'slideOutRight'}
+        >
+          {this._renderModalContent()}
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 3}
+          animationInTiming={2000}
+          animationOutTiming={2000}
+          backdropTransitionInTiming={2000}
+          backdropTransitionOutTiming={2000}
+        >
+          {this._renderModalContent()}
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 4}
+          backdropColor={'red'}
+          backdropOpacity={1}
+          animationIn={'zoomInDown'}
+          animationOut={'zoomOutUp'}
+          animationInTiming={1000}
+          animationOutTiming={1000}
+          backdropTransitionInTiming={1000}
+          backdropTransitionOutTiming={1000}
+        >
+          {this._renderModalContent()}
+        </Modal>
+        <Modal isVisible={this.state.visibleModal === 5} style={styles.bottomModal}>
+          {this._renderModalContent()}
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 6}
+          onBackdropPress={() => this.setState({ visibleModal: null })}
+        >
+          {this._renderModalContent()}
+        </Modal>
       </View>
-    )
-  }
-
-  handleNavBack() {
-    this.setState({
-      visible: false
-    });
-    if (this.props.navigator) {
-      this.props.navigator.pop();
-    }
+    );
   }
 }
 
-const {width, height} = Dimensions.get('window');
-const styles1 = StyleSheet.create({
-  loginBtn: {
-    borderWidth: 1,
-    padding: 5,
-  }
-});
 
-export default connect(
-  (state) => ({
-    status: state.createNewAccount.status,
-    result: state.createNewAccount.result,
-    user: state.createNewAccount.user,
-    count: state.counter.count,
-  }),
-  (dispatch) => ({
-    action1: () => dispatch(createNewAccount.exec()),
-    incrementFn: () => dispatch(counter.increment()),
-    decrementFn: () => dispatch(counter.decrement())
-  })
-)(TestPage);
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: 'lightblue',
+    padding: 12,
+    margin: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  bottomModal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+});

@@ -19,10 +19,11 @@ import {
   Loading,
   EasyLoading
 } from 'react-native-easy-loading';
-import Main from './Main.js';
-import RestoreMyAccount from './RestoreMyAccount.js';
 import QrCodeScanner from './QrCodeScanner.js';
 import CreateNewAccount from './CreateNewAccount.js';
+import CreateNewAccountActivation from './CreateNewAccountActivation.js';
+import GestureLocker from '../pages/GestureLocker.js';
+import Main from './Main.js';
 import styles from '../../stylesheet.js';
 import * as Theme from '../config/Theme.js';
 import {
@@ -85,8 +86,9 @@ class FrontPage extends Component {
     if (nextProps.status === 'processing') {
       EasyLoading.show('Loading...', 3000); // show loading
       return true;
-    } else if (nextProps.status === 'done' && nextProps.result) {
+    } else if (nextProps.status === 'done' && nextProps.mnemonic != '') {
       EasyLoading.dismis(); // dismis loading
+      console.log(nextProps.mnemonic);
       this.props.navigator.push({
         name: 'CreateNewAccount',
         component: CreateNewAccount
@@ -195,7 +197,7 @@ const styles1 = StyleSheet.create({
 export default connect(
   (state) => ({
     status: state.createNewAccount.status,
-    result: state.createNewAccount.result,
+    mnemonic: state.createNewAccount.result
   }),
   (dispatch) => ({
     createNewAccount: () => dispatch(createNewAccount.exec()),

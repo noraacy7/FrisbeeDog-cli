@@ -18,10 +18,12 @@ export default function createNewAccount(state=initialState, action) {
       }
       break;
     case types.CREATE_NEW_ACCOUNT_DONE:
+      let json_data = JSON.parse(action.data);
+      //console.log(json_data);
       return {
         ...state,
         status: 'done',
-        result: action.result,
+        result: json_data['data']['mnemonic'] || '',
         errors: null
       }
       break;
@@ -30,7 +32,7 @@ export default function createNewAccount(state=initialState, action) {
         ...state,
         status: 'error',
         result: null,
-        errors: action.errors
+        errors: action.err_message
       }
       break;
     default:

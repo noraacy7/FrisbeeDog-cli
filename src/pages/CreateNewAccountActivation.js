@@ -10,7 +10,7 @@ import {
 import {
   MKButton,
   MKColor,
-  MKSpinner
+  MKIconToggle
 } from 'react-native-material-kit';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,24 +18,77 @@ import * as Animatable from 'react-native-animatable';
 import NavigationBar from '../component/NavigationBar.js';
 import styles from '../../stylesheet.js';
 import * as Theme from '../config/Theme.js';
+import {
+  connect
+} from 'react-redux';
+import * as createNewAccount from '../actions/createNewAccount.js';
+import Toast, {DURATION} from 'react-native-easy-toast';
+import Main from './Main.js';
 
-export default class RestoreMyAccount extends Component {
+const MnemonicWordButton = MKButton.coloredButton()
+  .withBackgroundColor('#fff')
+  .withStyle({
+    margin: 10,
+    padding: 6,
+  })
+  .build();
+
+class CreateNewAccountActivation extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-
+      input_mnemonic: '',
+      mnemonic_words: []
     }
   }
 
   componentDidMount() {
+    let words = this.props.mnemonic.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      var j = parseInt(Math.random() * (words.length - i));
+      var tmp = words[j];
+      words[j] = words[words.length - i - 1];
+      words[words.length - i - 1] = tmp;
+    }
+    this.setState({
+      mnemonic_words: words
+    })
+  }
 
+  renderMnemonicWords() {
+    let subviews = [];
+    for (let i = 0; i < this.state.mnemonic_words.length; i++) {
+      let subview = (
+        <MnemonicWordButton
+          key={i}
+          onPress={() => {
+            let input_mnemonic = this.state.input_mnemonic;
+            if (input_mnemonic.length <= 0) {
+              input_mnemonic += this.state.mnemonic_words[i].toString()
+            } else {
+              input_mnemonic += " " + this.state.mnemonic_words[i].toString()
+            }
+            this.setState({
+              input_mnemonic: input_mnemonic
+            });
+        }}>
+          <Text>{this.state.mnemonic_words[i]}</Text>
+        </MnemonicWordButton>
+      )
+      subviews.push(subview);
+    }
+    return(
+      <View style={styles1.row}>
+        {subviews}
+      </View>
+    )
   }
 
   render() {
     return(
       <View style={{flex: 1}}>
-        <NavigationBar title={'Restore Verification'}
+        <NavigationBar title={'Mnemonic Check'}
           lItemImage='md-arrow-back'
           lItemTappedCallback={this.handleNavBack.bind(this)}/>
         <View style={[styles.container, {justifyContent: 'flex-start'}]}>
@@ -44,22 +97,41 @@ export default class RestoreMyAccount extends Component {
             underlineColorAndroid='transparent'
             autoCorrect={false}
             multiline={true}
-            numberOfLines = {3}
-            value='dynamic midnight lab absorb curve lizard sell expand uniform federal gym frequent'
-            onChangeText={() => {
-
+            numberOfLines = {4}
+            editable={false}
+            value={this.state.input_mnemonic}
+            onChange={(event) => {
+              this.setState({
+                input_mnemonic: event.nativeEvent.text
+              })
             }}
           />
+          {this.renderMnemonicWords()}
           <Animatable.View style={[styles1.confirmWnd, {}]}>
             <View>
               <View style={[styles.line, {flexDirection: 'row', justifyContent: 'space-between', padding: 5, borderColor: 'transparent'}]}>
                 <TouchableOpacity onPress={() => {
-
+                  this.setState({
+                    input_mnemonic: ''
+                  })
                 }}>
                   <Text style={styles.boldtext}>RESET</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
-
+                  if (this.props.mnemonic == this.state.input_mnemonic) {
+                    storage.save({
+                      key: 'user',
+                      data: {
+                        mnemonic: this.state.input_mnemonic
+                      }
+                    });
+                    this.props.navigator.push({
+                      name: 'Main',
+                      component: Main
+                    });
+                  } else {
+                    this.refs.toast.show('not correct', DURATION.LENGTH_SHORT);
+                  }
                 }}>
                   <Text style={styles.boldtext}>SUBMIT</Text>
                 </TouchableOpacity>
@@ -67,6 +139,7 @@ export default class RestoreMyAccount extends Component {
             </View>
           </Animatable.View>
         </View>
+        <Toast ref="toast"/>
       </View>
     )
   }
@@ -120,4 +193,22 @@ const styles1 = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center'
   },
+  row: {
+    backgroundColor: 'transparent',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingLeft: 10,
+    paddingRight: 10
+  }
 });
+
+export default connect(
+  (state) => ({
+    mnemonic: state.createNewAccount.result,
+  }),
+  (dispatch) => ({
+
+  })
+)(CreateNewAccountActivation);
