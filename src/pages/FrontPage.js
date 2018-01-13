@@ -88,7 +88,6 @@ class FrontPage extends Component {
       return true;
     } else if (nextProps.status === 'done' && nextProps.mnemonic != '') {
       EasyLoading.dismis(); // dismis loading
-      console.log(nextProps.mnemonic);
       this.props.navigator.push({
         name: 'CreateNewAccount',
         component: CreateNewAccount
@@ -197,7 +196,7 @@ const styles1 = StyleSheet.create({
 export default connect(
   (state) => ({
     status: state.createNewAccount.status,
-    mnemonic: state.createNewAccount.result
+    mnemonic: state.createNewAccount.mnemonic, 
   }),
   (dispatch) => ({
     createNewAccount: () => dispatch(createNewAccount.exec()),

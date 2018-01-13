@@ -113,7 +113,7 @@ const styles1 = StyleSheet.create({
 
 export default connect(
   (state) => ({
-    mnemonic: state.createNewAccount.result,
+    mnemonic: state.createNewAccount.mnemonic,
   }),
   (dispatch) => ({
 

@@ -1,0 +1,74 @@
+[
+  {
+    "name": "BTC",
+    "city": [
+      {
+        "name": "BTC",
+        "area": [
+          "ltcbtc",
+          "ethbtc",
+          "etcbtc",
+          "rrtbtc",
+          "zecbtc",
+          "xmrbtc",
+          "dshbtc",
+          "xrpbtc",
+          "iotbtc",
+          "eosbtc",
+          "sanbtc",
+          "omgbtc",
+          "bchbtc",
+          "neobtc",
+          "etpbtc",
+          "qtmbtc"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ETH",
+    "city": [
+      {
+        "name": "ETH",
+        "area": [
+          "ioteth",
+          "eoseth",
+          "saneth",
+          "omgeth",
+          "bcheth",
+          "neoeth",
+          "etpeth",
+          "qtmeth",
+          "avteth",
+          "edoeth",
+          "dateth",
+          "qsheth",
+          "yyweth"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "USDT",
+    "city": [
+      {
+        "name": "USDT",
+        "area": [
+          "btcusd",
+          "ltcusd",
+          "ethusd",
+          "etcusd",
+          "rrtusd",
+          "zecusd",
+          "xmrusd",
+          "dshusd",
+          "bchusd",
+          "neousd",
+          "etpusd",
+          "qtmusd",
+          "avtusd"
+        ]
+      }
+    ]
+  }
+]

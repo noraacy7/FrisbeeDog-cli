@@ -3,7 +3,8 @@ import * as types from '../constants/actionTypes.js';
 // 初始状态
 const initialState = {
   status: '',
-  result: null,
+  mnemonic: '',
+  wid: '',
   errors: null
 }
 
@@ -13,17 +14,17 @@ export default function createNewAccount(state=initialState, action) {
       return {
         ...state,
         status: 'processing',
-        result: null,
+        mnemonic: '',
+        wid: '',
         errors: null
       }
       break;
     case types.CREATE_NEW_ACCOUNT_DONE:
-      let json_data = JSON.parse(action.data);
-      //console.log(json_data);
       return {
         ...state,
         status: 'done',
-        result: json_data['data']['mnemonic'] || '',
+        mnemonic: action.data['mnemonic'] || '',
+        wid: action.data['mnemonic'] || '',
         errors: null
       }
       break;
@@ -31,7 +32,8 @@ export default function createNewAccount(state=initialState, action) {
       return {
         ...state,
         status: 'error',
-        result: null,
+        mnemonic: '',
+        wid: '',
         errors: action.err_message
       }
       break;

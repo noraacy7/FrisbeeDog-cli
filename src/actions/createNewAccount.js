@@ -5,7 +5,7 @@ import * as validators from '../helpers/validatorHelper.js';
 export function exec() {
   return dispatch => {
     dispatch(execProcessing()); // processing
-    // 模拟用户登录
+    // create mnemonic
     let retval = fetch(`${config.BASE_URL}/v1.0/create_mnemonic`).then((res) => {
       dispatch(execDone(res)); // done
     }).catch(e => {
@@ -25,18 +25,29 @@ function execDone(data) {
   // check validation
   let message = dataJson['data'];
   let signature = dataJson['signature'];
-  if (validators.checkSignature(message, config.SERVER_ADDRESS, signature) === 'OK') {
-    return {
-      type: types.CREATE_NEW_ACCOUNT_DONE,
-      data: message
+  let ret = validators.verify(message, config.SERVER_ADDRESS, signature);
+  if (ret == 'OK') {
+    let d = JSON.parse(message);
+    if (d['code'] == 200) {
+      return {
+        type: types.CREATE_NEW_ACCOUNT_DONE,
+        data: d
+      }
+    } else {
+      return {
+        type: types.CREATE_NEW_ACCOUNT_ERROR,
+        err_message: d['message']
+      }
     }
   } else {
-    dispatch(execError(e)); // error
+    return {
+      type: types.CREATE_NEW_ACCOUNT_ERROR,
+      err_message: ret
+    }
   }
 }
 
 function execError(error) {
-  console.log(error);
   return {
     type: types.CREATE_NEW_ACCOUNT_ERROR,
     err_message: error

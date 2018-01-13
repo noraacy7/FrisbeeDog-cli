@@ -12,16 +12,22 @@ import {
   MKColor,
   MKIconToggle
 } from 'react-native-material-kit';
+import {
+  Loading,
+  EasyLoading
+} from 'react-native-easy-loading';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import NavigationBar from '../component/NavigationBar.js';
 import styles from '../../stylesheet.js';
 import * as Theme from '../config/Theme.js';
+import DeviceInfo from 'react-native-device-info';
 import {
   connect
 } from 'react-redux';
 import * as createNewAccount from '../actions/createNewAccount.js';
+import * as createNewAccountActivation from '../actions/createNewAccountActivation.js';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Main from './Main.js';
 
@@ -54,6 +60,27 @@ class CreateNewAccountActivation extends Component {
     this.setState({
       mnemonic_words: words
     })
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.status === 'processing') {
+      EasyLoading.show('Loading...', 3000); // show loading
+      return true;
+    } else if (nextProps.status === 'done') {
+      EasyLoading.dismis(); // dismis loading
+      storage.save({
+        key: 'user',
+        data: {
+          mnemonic: this.state.input_mnemonic
+        }
+      });
+      this.props.navigator.push({
+        name: 'Main',
+        component: Main
+      });
+      return false;
+    }
+    return true;
   }
 
   renderMnemonicWords() {
@@ -114,21 +141,16 @@ class CreateNewAccountActivation extends Component {
                   this.setState({
                     input_mnemonic: ''
                   })
+                  let dataJson = JSON.parse('{"data":"{\"code\":200,\"message\":\"Job Success\",\"time\":1515863962602,\"data\":\"\"}","signature":"1fb43d0d6d92328f7310a61d1aae053260078d5c1384c2d188c4cba9f507889d1428fda6c480c89592a03c3cbb0b3a6141728fd1ba2a3b2ab192a261b7cd0c824b"}');
+                  if (dataJson['data']['code'] == 200) {
+                    console.log('200');
+                  }
                 }}>
                   <Text style={styles.boldtext}>RESET</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                   if (this.props.mnemonic == this.state.input_mnemonic) {
-                    storage.save({
-                      key: 'user',
-                      data: {
-                        mnemonic: this.state.input_mnemonic
-                      }
-                    });
-                    this.props.navigator.push({
-                      name: 'Main',
-                      component: Main
-                    });
+                    this.props.createNewAccountActivation(this.props.mnemonic, this.props.wid, DeviceInfo.getUniqueID());
                   } else {
                     this.refs.toast.show('not correct', DURATION.LENGTH_SHORT);
                   }
@@ -206,9 +228,11 @@ const styles1 = StyleSheet.create({
 
 export default connect(
   (state) => ({
-    mnemonic: state.createNewAccount.result,
+    mnemonic: 'labor maze tip include illegal solve renew crack truth wage chest walk', //state.createNewAccount.mnemonic,
+    wid: 'cd3e90b8-3574-4c68-8891-443e4bc5dac4', //state.createNewAccount.wid,
+    status: state.createNewAccountActivation.status
   }),
   (dispatch) => ({
-
+    createNewAccountActivation: (mnemonic, wid, deviceno) => dispatch(createNewAccountActivation.exec(mnemonic, wid, deviceno)),
   })
 )(CreateNewAccountActivation);
