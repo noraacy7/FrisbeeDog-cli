@@ -21,7 +21,6 @@ import {
 } from 'react-native-easy-loading';
 import QrCodeScanner from './QrCodeScanner.js';
 import CreateNewAccount from './CreateNewAccount.js';
-import CreateNewAccountActivation from './CreateNewAccountActivation.js';
 import GestureLocker from '../pages/GestureLocker.js';
 import Main from './Main.js';
 import styles from '../../stylesheet.js';
@@ -196,7 +195,7 @@ const styles1 = StyleSheet.create({
 export default connect(
   (state) => ({
     status: state.createNewAccount.status,
-    mnemonic: state.createNewAccount.mnemonic, 
+    mnemonic: state.createNewAccount.mnemonic,
   }),
   (dispatch) => ({
     createNewAccount: () => dispatch(createNewAccount.exec()),

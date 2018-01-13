@@ -32,7 +32,7 @@ export function exec(mnemonic, wid, deviceno) {
 
 function execProcessing() {
   return {
-    type: types.CREATE_NEW_ACCOUNT_ACTIVATION_PROCESSING
+    type: types.CREATE_NEW_ACCOUNT_ACTIVE_PROCESSING
   }
 }
 
@@ -47,18 +47,18 @@ function execDone(data) {
     let d = JSON.parse(message);
     if (d['code'] == 200) {
       return {
-        type: types.CREATE_NEW_ACCOUNT_ACTIVATION_DONE,
+        type: types.CREATE_NEW_ACCOUNT_ACTIVE_DONE,
         data: message
       }
     } else {
       return {
-        type: types.CREATE_NEW_ACCOUNT_ACTIVATION_ERROR,
+        type: types.CREATE_NEW_ACCOUNT_ACTIVE_ERROR,
         err_message: d['message']
       }
     }
   } else {
     return {
-      type: types.CREATE_NEW_ACCOUNT_ACTIVATION_ERROR,
+      type: types.CREATE_NEW_ACCOUNT_ACTIVE_ERROR,
       err_message: ret
     }
   }
@@ -66,7 +66,7 @@ function execDone(data) {
 
 function execError(error) {
   return {
-    type: types.CREATE_NEW_ACCOUNT_ACTIVATION_ERROR,
+    type: types.CREATE_NEW_ACCOUNT_ACTIVE_ERROR,
     err_message: error
   }
 }

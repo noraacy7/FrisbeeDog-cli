@@ -27,7 +27,7 @@ import {
   connect
 } from 'react-redux';
 import * as createNewAccount from '../actions/createNewAccount.js';
-import * as createNewAccountActivation from '../actions/createNewAccountActivation.js';
+import * as createNewAccountActive from '../actions/createNewAccountActive.js';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Main from './Main.js';
 
@@ -39,7 +39,7 @@ const MnemonicWordButton = MKButton.coloredButton()
   })
   .build();
 
-class CreateNewAccountActivation extends Component {
+class CreateNewAccountActive extends Component {
 
   constructor(props) {
     super(props);
@@ -141,16 +141,12 @@ class CreateNewAccountActivation extends Component {
                   this.setState({
                     input_mnemonic: ''
                   })
-                  let dataJson = JSON.parse('{"data":"{\"code\":200,\"message\":\"Job Success\",\"time\":1515863962602,\"data\":\"\"}","signature":"1fb43d0d6d92328f7310a61d1aae053260078d5c1384c2d188c4cba9f507889d1428fda6c480c89592a03c3cbb0b3a6141728fd1ba2a3b2ab192a261b7cd0c824b"}');
-                  if (dataJson['data']['code'] == 200) {
-                    console.log('200');
-                  }
                 }}>
                   <Text style={styles.boldtext}>RESET</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                   if (this.props.mnemonic == this.state.input_mnemonic) {
-                    this.props.createNewAccountActivation(this.props.mnemonic, this.props.wid, DeviceInfo.getUniqueID());
+                    this.props.createNewAccountActive(this.props.mnemonic, this.props.wid, DeviceInfo.getUniqueID());
                   } else {
                     this.refs.toast.show('not correct', DURATION.LENGTH_SHORT);
                   }
@@ -230,9 +226,9 @@ export default connect(
   (state) => ({
     mnemonic: 'labor maze tip include illegal solve renew crack truth wage chest walk', //state.createNewAccount.mnemonic,
     wid: 'cd3e90b8-3574-4c68-8891-443e4bc5dac4', //state.createNewAccount.wid,
-    status: state.createNewAccountActivation.status
+    status: state.createNewAccountActive.status
   }),
   (dispatch) => ({
-    createNewAccountActivation: (mnemonic, wid, deviceno) => dispatch(createNewAccountActivation.exec(mnemonic, wid, deviceno)),
+    createNewAccountActive: (mnemonic, wid, deviceno) => dispatch(createNewAccountActive.exec(mnemonic, wid, deviceno)),
   })
-)(CreateNewAccountActivation);
+)(CreateNewAccountActive);

@@ -21,7 +21,7 @@ import {
   connect
 } from 'react-redux';
 import * as createNewAccount from '../actions/createNewAccount.js';
-import CreateNewAccountActivation from './CreateNewAccountActivation.js';
+import CreateNewAccountActive from './CreateNewAccountActive.js';
 
 class CreateNewAccount extends Component {
 
@@ -47,8 +47,8 @@ class CreateNewAccount extends Component {
                 <TouchableOpacity onPress={() => {
                   if (this.props.navigator) {
                     this.props.navigator.push({
-                      name: 'CreateNewAccountActivation',
-                      component: CreateNewAccountActivation
+                      name: 'CreateNewAccountActive',
+                      component: CreateNewAccountActive
                     });
                   }
                 }}>

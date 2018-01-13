@@ -7,9 +7,9 @@ const initialState = {
   errors: null
 }
 
-export default function createNewAccountActivation(state=initialState, action) {
+export default function createNewAccountActive(state=initialState, action) {
   switch(action.type) {
-    case types.CREATE_NEW_ACCOUNT_ACTIVATION_PROCESSING:
+    case types.CREATE_NEW_ACCOUNT_ACTIVE_PROCESSING:
       return {
         ...state,
         status: 'processing',
@@ -17,7 +17,7 @@ export default function createNewAccountActivation(state=initialState, action) {
         errors: null
       }
       break;
-    case types.CREATE_NEW_ACCOUNT_ACTIVATION_DONE:
+    case types.CREATE_NEW_ACCOUNT_ACTIVE_DONE:
       return {
         ...state,
         status: 'done',
@@ -25,7 +25,7 @@ export default function createNewAccountActivation(state=initialState, action) {
         errors: null
       }
       break;
-    case types.CREATE_NEW_ACCOUNT_ACTIVATION_ERROR:
+    case types.CREATE_NEW_ACCOUNT_ACTIVE_ERROR:
       return {
         ...state,
         status: 'error',

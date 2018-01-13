@@ -9,7 +9,7 @@ import {
 import GestureLocker from '../pages/GestureLocker.js';
 import Main from './Main.js';
 import FrontPage from './FrontPage.js';
-import CreateNewAccountActivation from './CreateNewAccountActivation.js';
+import CreateNewAccountActive from './CreateNewAccountActive.js';
 
 export default class Launcher extends Component {
 
@@ -29,8 +29,8 @@ export default class Launcher extends Component {
         });
       } else if (user['mnemonic'] != '') {
         this.props.navigator.resetTo({
-          name: 'CreateNewAccountActivation',
-          component: CreateNewAccountActivation,
+          name: 'CreateNewAccountActive',
+          component: CreateNewAccountActive,
           // params: {
           //   mnemonic: 'labor maze tip include illegal solve renew crack truth wage chest walk',
           // }
