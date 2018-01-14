@@ -5,7 +5,7 @@ const initialState = {
   status: '',
   mnemonic: '',
   wid: '',
-  errors: null
+  error: null
 }
 
 export default function createNewAccount(state=initialState, action) {
@@ -16,7 +16,7 @@ export default function createNewAccount(state=initialState, action) {
         status: 'processing',
         mnemonic: '',
         wid: '',
-        errors: null
+        error: null
       }
       break;
     case types.CREATE_NEW_ACCOUNT_DONE:
@@ -25,7 +25,7 @@ export default function createNewAccount(state=initialState, action) {
         status: 'done',
         mnemonic: action.data['mnemonic'] || '',
         wid: action.data['mnemonic'] || '',
-        errors: null
+        error: null
       }
       break;
     case types.CREATE_NEW_ACCOUNT_ERROR:
@@ -34,7 +34,7 @@ export default function createNewAccount(state=initialState, action) {
         status: 'error',
         mnemonic: '',
         wid: '',
-        errors: action.err_message
+        error: action.err_message
       }
       break;
     default:

@@ -15,6 +15,7 @@ import {
 } from 'react-native-material-kit';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Toast, {DURATION} from 'react-native-easy-toast';
 import {
   Loading,
   EasyLoading
@@ -84,14 +85,16 @@ class FrontPage extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.status === 'processing') {
       EasyLoading.show('Loading...', 3000); // show loading
-      return true;
     } else if (nextProps.status === 'done' && nextProps.mnemonic != '') {
       EasyLoading.dismis(); // dismis loading
       this.props.navigator.push({
         name: 'CreateNewAccount',
         component: CreateNewAccount
       });
-      return false;
+    } else {
+      if (nextProps.error) {
+        this.refs.toast.show(nextProps.error, DURATION.LENGTH_SHORT);
+      }
     }
     return true;
   }
@@ -196,6 +199,7 @@ export default connect(
   (state) => ({
     status: state.createNewAccount.status,
     mnemonic: state.createNewAccount.mnemonic,
+    error: state.createNewAccount.error,
   }),
   (dispatch) => ({
     createNewAccount: () => dispatch(createNewAccount.exec()),

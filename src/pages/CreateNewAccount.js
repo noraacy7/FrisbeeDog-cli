@@ -13,6 +13,7 @@ import {
 } from 'react-native-material-kit';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Toast, {DURATION} from 'react-native-easy-toast';
 import * as Animatable from 'react-native-animatable';
 import NavigationBar from '../component/NavigationBar.js';
 import styles from '../../stylesheet.js';

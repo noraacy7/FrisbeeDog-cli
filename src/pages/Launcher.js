@@ -9,7 +9,6 @@ import {
 import GestureLocker from '../pages/GestureLocker.js';
 import Main from './Main.js';
 import FrontPage from './FrontPage.js';
-import CreateNewAccountActive from './CreateNewAccountActive.js';
 
 export default class Launcher extends Component {
 
@@ -29,8 +28,8 @@ export default class Launcher extends Component {
         });
       } else if (user['mnemonic'] != '') {
         this.props.navigator.resetTo({
-          name: 'CreateNewAccountActive',
-          component: CreateNewAccountActive,
+          name: 'Main',
+          component: Main,
           // params: {
           //   mnemonic: 'labor maze tip include illegal solve renew crack truth wage chest walk',
           // }

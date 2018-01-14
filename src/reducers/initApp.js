@@ -3,8 +3,8 @@ import * as types from '../constants/actionTypes.js';
 // 初始状态
 const initialState = {
   status: '',
-  result: null,
-  errors: null
+  data: null,
+  data: null
 }
 
 export default function initApp(state=initialState, action) {
@@ -13,24 +13,24 @@ export default function initApp(state=initialState, action) {
       return {
         ...state,
         status: 'processing',
-        result: null,
-        errors: null
+        data: null,
+        data: null
       }
       break;
     case types.INIT_APP_DONE:
       return {
         ...state,
         status: 'done',
-        result: action.data || '',
-        errors: null
+        data: action.data || '',
+        data: null
       }
       break;
     case types.INIT_APP_ERROR:
       return {
         ...state,
         status: 'error',
-        result: null,
-        errors: action.err_message
+        data: null,
+        data: action.err_message
       }
       break;
     default:

@@ -1559,7 +1559,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.mvs.TokenMaster;
+				PRODUCT_BUNDLE_IDENTIFIER = org.memodreams.Frisbeedog;
 				PRODUCT_NAME = Frisbeedog;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1589,7 +1589,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.mvs.TokenMaster;
+				PRODUCT_BUNDLE_IDENTIFIER = org.memodreams.Frisbeedog;
 				PRODUCT_NAME = Frisbeedog;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1781,7 +1781,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.mvs.TokenMaster;
+				PRODUCT_BUNDLE_IDENTIFIER = org.memodreams.Frisbeedog;
 				PRODUCT_NAME = Frisbeedog;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

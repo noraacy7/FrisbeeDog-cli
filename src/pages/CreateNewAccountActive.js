@@ -18,6 +18,7 @@ import {
 } from 'react-native-easy-loading';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Toast, {DURATION} from 'react-native-easy-toast';
 import * as Animatable from 'react-native-animatable';
 import NavigationBar from '../component/NavigationBar.js';
 import styles from '../../stylesheet.js';
@@ -28,7 +29,6 @@ import {
 } from 'react-redux';
 import * as createNewAccount from '../actions/createNewAccount.js';
 import * as createNewAccountActive from '../actions/createNewAccountActive.js';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import Main from './Main.js';
 
 const MnemonicWordButton = MKButton.coloredButton()
@@ -79,6 +79,10 @@ class CreateNewAccountActive extends Component {
         component: Main
       });
       return false;
+    } else {
+      if (nextProps.error) {
+        this.refs.toast.show(nextProps.error, DURATION.LENGTH_SHORT);
+      }
     }
     return true;
   }
@@ -224,9 +228,10 @@ const styles1 = StyleSheet.create({
 
 export default connect(
   (state) => ({
-    mnemonic: 'labor maze tip include illegal solve renew crack truth wage chest walk', //state.createNewAccount.mnemonic,
-    wid: 'cd3e90b8-3574-4c68-8891-443e4bc5dac4', //state.createNewAccount.wid,
-    status: state.createNewAccountActive.status
+    mnemonic: state.createNewAccount.mnemonic, // 'labor maze tip include illegal solve renew crack truth wage chest walk'
+    wid: state.createNewAccount.wid, // 'cd3e90b8-3574-4c68-8891-443e4bc5dac4'
+    status: state.createNewAccountActive.status,
+    error: state.createNewAccountActive.error,
   }),
   (dispatch) => ({
     createNewAccountActive: (mnemonic, wid, deviceno) => dispatch(createNewAccountActive.exec(mnemonic, wid, deviceno)),

@@ -23,6 +23,7 @@ import {
 } from 'react-native-easy-loading';
 import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Toast, {DURATION} from 'react-native-easy-toast';
 import moment from 'moment';
 import Drawer from 'react-native-drawer';
 import Modal from 'react-native-modal';
@@ -71,7 +72,7 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    //this.props.startInitApp();
+    this.props.startInitApp();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -80,6 +81,10 @@ class Main extends Component {
       EasyLoading.show('Loading...', 3000); // show loading
     } else if (nextProps.init_status === 'done') {
       EasyLoading.dismis(); // dismis loading
+    } else {
+      if (nextProps.error) {
+        this.refs.toast.show(nextProps.error, DURATION.LENGTH_SHORT);
+      }
     }
     return true;
   }
@@ -297,6 +302,7 @@ const styles1 = StyleSheet.create({
 export default connect(
   (state) => ({
     init_status: state.initApp.status,
+    error: state.initApp.error,
     title: state.inputTaskBox.title,
     description: state.inputTaskBox.description,
     exchangePair: state.inputTaskBox.exchangePair,
