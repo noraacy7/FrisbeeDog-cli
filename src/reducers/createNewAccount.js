@@ -23,8 +23,8 @@ export default function createNewAccount(state=initialState, action) {
       return {
         ...state,
         status: 'done',
-        mnemonic: action.data['mnemonic'] || '',
-        wid: action.data['mnemonic'] || '',
+        mnemonic: action.data['data']['mnemonic'] || '',
+        wid: action.data['data']['wid'] || '',
         error: null
       }
       break;

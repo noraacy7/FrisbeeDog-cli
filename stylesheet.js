@@ -3,7 +3,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import * as Theme from './src/config/Theme.js';
+import * as Theme from './src/component/Theme.js';
 
 const {width, height} = Dimensions.get('window');
 export default styles=StyleSheet.create({

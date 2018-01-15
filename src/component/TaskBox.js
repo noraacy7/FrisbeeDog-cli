@@ -5,8 +5,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  Dimensions,
-  DeviceEventEmitter
+  Dimensions
 } from 'react-native';
 import {
   MKButton,
@@ -23,7 +22,7 @@ import Awesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import styles from '../../stylesheet.js';
-import * as Theme from '../config/Theme.js';
+import * as Theme from './Theme.js';
 import {
   connect
 } from 'react-redux';
@@ -45,28 +44,6 @@ setTheme({
 });
 
 class TaskBox extends Component {
-
-  static defaultProps = {
-    chooseExchangePairCallback() {
-
-    },
-    chooseBeginDateCallback() {
-
-    },
-    chooseEndDateCallback() {
-
-    },
-    sendCallback() {
-
-    }
-  };
-
-  static propTypes = {
-    chooseExchangePairCallback: PropTypes.func,
-    chooseBeginDateCallback: PropTypes.func,
-    chooseEndDateCallback: PropTypes.func,
-    sendCallback: PropTypes.func
-  };
 
   constructor(props) {
     super(props);
@@ -208,7 +185,7 @@ class TaskBox extends Component {
             </Text>
           </RaisedButtonSend>
         </View>
-        </View>
+      </View>
     )
   }
 }
@@ -327,6 +304,28 @@ const styles1 = StyleSheet.create({
     borderBottomWidth: 0.5,
   }
 });
+
+TaskBox.propTypes = {
+  chooseExchangePairCallback: PropTypes.func,
+  chooseBeginDateCallback: PropTypes.func,
+  chooseEndDateCallback: PropTypes.func,
+  sendCallback: PropTypes.func
+};
+
+TaskBox.defaultProps = {
+  chooseExchangePairCallback() {
+
+  },
+  chooseBeginDateCallback() {
+
+  },
+  chooseEndDateCallback() {
+
+  },
+  sendCallback() {
+
+  }
+};
 
 export default connect(
   (state) => ({

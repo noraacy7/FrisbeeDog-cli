@@ -10,57 +10,12 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
-import * as Theme from '../config/Theme.js';
+import * as Theme from './Theme.js';
 
 const HEIGHT_STATUSBAR = 20;
 const HEIGHT_NAVIGATIONBAR = 50;
 
 export default class NavigationBar extends Component {
-
-  static defaultProps = {
-    title: '',
-    titleColor: '#fff',
-    titleTappedCallback() {
-
-    },
-    navbarBackgroundColor: Theme.defaultTheme.themeColor,
-    navbarOpacity: 1,
-    navbarStyle: 0,
-    navbarBorderBottomColor: Theme.defaultTheme.borderColor,
-    navbarBorderBottomWidth: 0.8,
-
-    lItemTitle: '',
-    lItemTitleColor: 'transparent',
-    lItemTappedCallabck() {
-
-    },
-
-    rItemTitle: '',
-    rItemTitleColor: 'transparent',
-    rItemTappedCallback() {
-
-    }
-  };
-
-  static propTypes = {
-    title: PropTypes.string,
-    titleColor: PropTypes.string,
-    titleView: PropTypes.node,
-    titleTappedCallback: PropTypes.func,
-    navbarBackgroundColor: PropTypes.string,
-    navbarOpacity: PropTypes.number,
-    navbarStyle: PropTypes.number,
-    navbarBorderBottomColor: PropTypes.string,
-    navbarBorderBottomWidth: PropTypes.number,
-    lItemTitle: PropTypes.string,
-    lItemTitleColor: PropTypes.string,
-    lItemImage: PropTypes.node,
-    lItemTappedCallabck: PropTypes.func,
-    rItemTitle: PropTypes.string,
-    rItemTitleColor: PropTypes.string,
-    rItemImage: PropTypes.node,
-    rItemTappedCallback: PropTypes.func,
-  };
 
   render() {
     var isLImageDisplayed = false;
@@ -227,3 +182,48 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   }
 });
+
+NavigationBar.propTypes = {
+  title: PropTypes.string,
+  titleColor: PropTypes.string,
+  titleView: PropTypes.node,
+  titleTappedCallback: PropTypes.func,
+  navbarBackgroundColor: PropTypes.string,
+  navbarOpacity: PropTypes.number,
+  navbarStyle: PropTypes.number,
+  navbarBorderBottomColor: PropTypes.string,
+  navbarBorderBottomWidth: PropTypes.number,
+  lItemTitle: PropTypes.string,
+  lItemTitleColor: PropTypes.string,
+  lItemImage: PropTypes.node,
+  lItemTappedCallabck: PropTypes.func,
+  rItemTitle: PropTypes.string,
+  rItemTitleColor: PropTypes.string,
+  rItemImage: PropTypes.node,
+  rItemTappedCallback: PropTypes.func,
+};
+
+NavigationBar.defaultProps = {
+  title: '',
+  titleColor: '#fff',
+  titleTappedCallback() {
+
+  },
+  navbarBackgroundColor: Theme.defaultTheme.themeColor,
+  navbarOpacity: 1,
+  navbarStyle: 0,
+  navbarBorderBottomColor: Theme.defaultTheme.borderColor,
+  navbarBorderBottomWidth: 0.8,
+
+  lItemTitle: '',
+  lItemTitleColor: 'transparent',
+  lItemTappedCallabck() {
+
+  },
+
+  rItemTitle: '',
+  rItemTitleColor: 'transparent',
+  rItemTappedCallback() {
+
+  }
+};

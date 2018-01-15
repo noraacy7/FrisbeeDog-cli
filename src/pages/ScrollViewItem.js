@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import QRCode from 'react-native-qrcode';
-import * as Theme from '../config/Theme.js';
+import * as Theme from '../component/Theme.js';
 
 export default class ScrollViewItem extends Component {
 

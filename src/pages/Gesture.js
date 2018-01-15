@@ -7,7 +7,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import PasswordGesture from 'react-native-gesture-password';
-import * as Theme from '../config/Theme.js';
+import * as Theme from '../component/Theme.js';
 
 var Password1 = '';
 
@@ -64,21 +64,26 @@ export default class Gesture extends Component {
             message: '\n\n\n\ncorrect! your gesture is settled',
             status: 'right'
           });
-          storage.load({
-            key: 'l0calsettings'
-          }).then( (settings) => {
-            settings['suggestion_of_gesture_hide'] = true;
-            settings['gesture'] = password;
-            storage.save({
-              key: 'l0calsettings',
-              data: settings
-            });
-          }).catch((err) => {});
           setTimeout(() => {
             if (this.props.navigator) {
               this.props.navigator.pop();
             }
           }, 100);
+          storage.load({
+            key: 'user'
+          }).then( (l0calsettings) => {
+            storage.save({
+              key: 'user',
+              data: {
+                ...l0calsettings,
+                suggestion_of_gesture_hide: true,
+                gesture: password
+              }
+            });
+          }).catch((err) => {
+            console.log(err.toString());
+          });
+
         } else {
           this.setState({
             message: '\n\n\n\ntoo short',

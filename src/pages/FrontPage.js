@@ -25,7 +25,7 @@ import CreateNewAccount from './CreateNewAccount.js';
 import GestureLocker from '../pages/GestureLocker.js';
 import Main from './Main.js';
 import styles from '../../stylesheet.js';
-import * as Theme from '../config/Theme.js';
+import * as Theme from '../component/Theme.js';
 import {
   connect
 } from 'react-redux';
@@ -84,17 +84,15 @@ class FrontPage extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.status === 'processing') {
-      EasyLoading.show('Loading...', 3000); // show loading
+      EasyLoading.show('Loading...', 5000); // show loading
     } else if (nextProps.status === 'done' && nextProps.mnemonic != '') {
       EasyLoading.dismis(); // dismis loading
       this.props.navigator.push({
         name: 'CreateNewAccount',
         component: CreateNewAccount
       });
-    } else {
-      if (nextProps.error) {
-        this.refs.toast.show(nextProps.error, DURATION.LENGTH_SHORT);
-      }
+    } else if (nextProps.status === 'error') {
+      this.refs.toast.show(nextProps.error, DURATION.LENGTH_SHORT);
     }
     return true;
   }
@@ -129,6 +127,7 @@ class FrontPage extends Component {
           <Text style={styles1.agreement}>By creating or restoring an account, you are agreening with our Terms & Conditions and Privacy Statement.</Text>
         </View>
         <Loading />
+        <Toast ref="toast"/>
       </View>
     )
   }

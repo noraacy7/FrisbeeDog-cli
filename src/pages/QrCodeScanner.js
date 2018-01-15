@@ -10,7 +10,7 @@ import {
   DeviceEventEmitter
 } from 'react-native';
 import Camera from 'react-native-camera';
-import * as Theme from '../config/Theme.js';
+import * as Theme from '../component/Theme.js';
 
 export default class QrCodeScanner extends Component {
 

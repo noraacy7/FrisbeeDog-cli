@@ -7,7 +7,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import PasswordGesture from 'react-native-gesture-password';
-import * as Theme from '../config/Theme.js';
+import * as Theme from '../component/Theme.js';
 import Main from './Main.js';
 
 var Password1 = '';
@@ -63,12 +63,6 @@ export default class GestureLocker extends Component {
       this.setState({
         message: '\n\n\n\ncorrect!',
         status: 'right'
-      });
-      storage.save({
-        key: 'user',
-        data: {
-          verify_login: true
-        }
       });
       setTimeout(() => {
         if (this.props.navigator) {

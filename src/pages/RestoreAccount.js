@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import NavigationBar from '../component/NavigationBar.js';
 import styles from '../../stylesheet.js';
-import * as Theme from '../config/Theme.js';
+import * as Theme from '../component/Theme.js';
 import {
   connect
 } from 'react-redux';

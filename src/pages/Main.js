@@ -32,11 +32,12 @@ import * as Animatable from 'react-native-animatable';
 import NavigationBar from '../component/NavigationBar.js';
 import TaskBox from '../component/TaskBox.js';
 import ControlPanel from '../component/ControlPanel.js';
+import ModalNotification from '../component/ModalNotification.js';
 import Gesture from './Gesture.js';
 import ScrollViewItem from './ScrollViewItem.js';
 import Transactions from './Transactions.js';
 import styles from '../../stylesheet.js';
-import * as Theme from '../config/Theme.js';
+import * as Theme from '../component/Theme.js';
 import {
   connect
 } from 'react-redux';
@@ -66,6 +67,8 @@ class Main extends Component {
     super(props);
     this.state = {
       showExchangePairSelection: false,
+      showNotification: false,
+      showReceiptConfirmation: false,
       startDateHolder: null,
       endDateHolder: null,
     };
@@ -76,77 +79,19 @@ class Main extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('Main init_status: ' + nextProps.init_status);
     if (nextProps.init_status === 'processing') {
-      EasyLoading.show('Loading...', 3000); // show loading
+      EasyLoading.show('Loading...', 5000); // show loading
     } else if (nextProps.init_status === 'done') {
       EasyLoading.dismis(); // dismis loading
-    } else {
-      if (nextProps.error) {
-        this.refs.toast.show(nextProps.error, DURATION.LENGTH_SHORT);
-      }
+      // this.refs.notification1.show('Hello', 'This is a test message');
+      // this.setState({
+      //   showNotification: true
+      // });
+      console.log(this.props.notifications);
+    } else if (nextProps.init_status === 'error') {
+      this.refs.toast.show(nextProps.error, DURATION.LENGTH_SHORT);
     }
     return true;
-  }
-
-  renderExchangePairSelection() {
-    return (
-      <View style={styles1.modalContainer}>
-        <View style={styles1.row3}>
-          <Text>Please select exchange pair</Text>
-          <TouchableOpacity onPress={() => {
-
-          }}>
-            <Text style={{color: 'red'}}>Done</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles1.row4}>
-          <Swiper
-            ref='swiper'
-            loadMinimal loadMinimalSize={1}
-            loop={false}
-            showButtons={true}
-            height={270}
-            showsPagination={true}
-          >
-            <ScrollView>
-              <View style={styles1.row5}>
-                <TouchableOpacity style={styles1.item} onPress={() => {
-                  this.setState({
-                    showExchangePairSelection: false
-                  })
-                  this.props.setExchangePair('ETHBTC')
-                }}>
-                  <Text>ETHBTC</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-            <ScrollView>
-              <View style={styles1.row5}>
-                <TouchableOpacity style={styles1.item} onPress={() => {
-                  this.setState({
-                    showExchangePairSelection: false
-                  })
-                }}>
-                  <Text>BTCETH</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-            <ScrollView>
-              <View style={styles1.row5}>
-                <TouchableOpacity style={styles1.item} onPress={() => {
-                  this.setState({
-                    showExchangePairSelection: false
-                  })
-                }}>
-                  <Text>BTCUSD</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </Swiper>
-        </View>
-      </View>
-    )
   }
 
   render() {
@@ -196,18 +141,27 @@ class Main extends Component {
                 }
               } />
           </ScrollView>
-          <Modal isVisible={this.state.showExchangePairSelection}
-            style={styles1.bottomModal}
+          <Modal isVisible={this.state.showExchangePairSelection} style={styles1.bottomModal}
             onBackdropPress={
               () => this.setState({
                 showExchangePairSelection: false
               })
             }>
-            {this.renderExchangePairSelection()}
+            <Text>Temp Text</Text>
+          </Modal>
+          <Modal isVisible={this.state.showNotification}>
+            <ModalNotification ref="notification1" okCallback={
+              () => {
+                this.setState({
+                  showNotification: false
+                })
+              }
+            }/>
           </Modal>
           <DatePickerDialog ref="DatePickerDialogStart" onDatePicked={this.handleDatePickedFunctionStart.bind(this)} />
           <DatePickerDialog ref="DatePickerDialogEnd" onDatePicked={this.handleDatePickedFunctionEnd.bind(this)} />
           <Loading />
+          <Toast ref="toast"/>
         </View>
       </Drawer>
     );
@@ -302,6 +256,8 @@ const styles1 = StyleSheet.create({
 export default connect(
   (state) => ({
     init_status: state.initApp.status,
+    history: state.initApp.history,
+    notifications: state.initApp.notifications,
     error: state.initApp.error,
     title: state.inputTaskBox.title,
     description: state.inputTaskBox.description,

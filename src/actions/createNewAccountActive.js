@@ -25,7 +25,7 @@ export function exec(mnemonic, wid, deviceno) {
     let retval = fetch(`${config.BASE_URL}/v1.0/update_user`, params).then((res) => {
       dispatch(execDone(res)); // done
     }).catch(e => {
-      dispatch(execError(e)); // error
+      dispatch(execError(e.toString())); // error
     });
   }
 }

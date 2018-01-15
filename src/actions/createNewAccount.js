@@ -9,7 +9,7 @@ export function exec() {
     let retval = fetch(`${config.BASE_URL}/v1.0/create_mnemonic`).then((res) => {
       dispatch(execDone(res)); // done
     }).catch(e => {
-      dispatch(execError(e)); // error
+      dispatch(execError(e.toString())); // error
     });
   }
 }

@@ -10,7 +10,7 @@ import {
 import NavigationBar from '../component/NavigationBar.js';
 import Modal from 'react-native-modal';
 import styles1 from '../../stylesheet.js';
-import * as Theme from '../config/Theme.js';
+import * as Theme from '../component/Theme.js';
 import {
   connect
 } from 'react-redux';

@@ -16,7 +16,7 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from '../../stylesheet.js';
-import * as Theme from '../config/Theme.js';
+import * as Theme from './Theme.js';
 import _ from 'lodash';
 
 const FlatButton = MKButton.flatButton()

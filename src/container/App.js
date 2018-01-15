@@ -15,6 +15,7 @@ import {
 import codePush from 'react-native-code-push';
 import Storage from 'react-native-storage';
 import DeviceInfo from 'react-native-device-info';
+import Toast, {DURATION} from 'react-native-easy-toast';
 import Launcher from '../pages/Launcher.js';
 import Test from '../pages/Test.js';
 
@@ -42,37 +43,6 @@ var storage = new Storage({
 });
 
 global.storage = storage;
-
-storage.load({
-  key: 'l0calsettings'
-}).then((settings) => {
-  console.log(settings);
-  // set default
-  if (settings['unique_id'] == undefined) {
-    saveL0calsettingsAsDefault();
-  }
-}).catch((err) => {
-  console.log(err);
-});
-
-function saveL0calsettingsAsDefault() {
-  storage.save({
-    key: 'l0calsettings',
-    data: {
-      suggestion_of_gesture_hide: false,
-      gesture: '',
-      unique_id: DeviceInfo.getUniqueID(),
-    }
-  });
-  // setup default value for variables
-  storage.save({
-    key: 'user',
-    data: {
-      verify_login: false,
-      mnemonic: ''
-    }
-  });
-}
 
 export default class FrisbeedogApp extends Component {
 
@@ -106,6 +76,7 @@ export default class FrisbeedogApp extends Component {
               );
             }}
           />
+          <Toast ref="toast"/>
         </View>
       )
     }

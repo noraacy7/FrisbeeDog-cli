@@ -22,7 +22,7 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 import * as Animatable from 'react-native-animatable';
 import NavigationBar from '../component/NavigationBar.js';
 import styles from '../../stylesheet.js';
-import * as Theme from '../config/Theme.js';
+import * as Theme from '../component/Theme.js';
 import DeviceInfo from 'react-native-device-info';
 import {
   connect
@@ -64,25 +64,31 @@ class CreateNewAccountActive extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.status === 'processing') {
-      EasyLoading.show('Loading...', 3000); // show loading
+      EasyLoading.show('Loading...', 5000); // show loading
       return true;
     } else if (nextProps.status === 'done') {
       EasyLoading.dismis(); // dismis loading
-      storage.save({
-        key: 'user',
-        data: {
-          mnemonic: this.state.input_mnemonic
-        }
+      storage.load({
+        key: 'user'
+      }).then( (l0calsettings) => {
+        storage.save({
+          key: 'user',
+          data: {
+            ...l0calsettings,
+            mnemonic: this.props.mnemonic,
+            wid: this.props.wid
+          }
+        });
+      }).catch((err) => {
+        console.log(err.toString());
       });
       this.props.navigator.push({
         name: 'Main',
         component: Main
       });
       return false;
-    } else {
-      if (nextProps.error) {
-        this.refs.toast.show(nextProps.error, DURATION.LENGTH_SHORT);
-      }
+    } else if (nextProps.status === 'error') {
+      this.refs.toast.show(nextProps.error, DURATION.LENGTH_SHORT);
     }
     return true;
   }

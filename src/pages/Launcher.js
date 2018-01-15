@@ -19,20 +19,17 @@ export default class Launcher extends Component {
   componentDidMount() {
     storage.load({
       key: 'user'
-    }).then((user) => {
-      console.log(user);
-      if (user['verify_login']) {
+    }).then((l0calsettings) => {
+      console.log(l0calsettings);
+      if (l0calsettings['verify_login']) {
         this.props.navigator.resetTo({
           name: 'GestureLocker',
           component: GestureLocker
         });
-      } else if (user['mnemonic'] != '') {
+      } else if (l0calsettings['mnemonic'] != '') {
         this.props.navigator.resetTo({
           name: 'Main',
-          component: Main,
-          // params: {
-          //   mnemonic: 'labor maze tip include illegal solve renew crack truth wage chest walk',
-          // }
+          component: Main
         });
       } else {
         this.props.navigator.resetTo({
@@ -41,7 +38,24 @@ export default class Launcher extends Component {
         });
       }
     }).catch((err) => {
-      console.log(err);
+      storage.save({
+        key: 'user',
+        data: {
+          suggestion_of_gesture_hide: false,
+          gesture: '',
+          verify_login: false,
+          mnemonic: '',
+          wid: '',
+          notifications: []
+        }
+      });
+      this.props.navigator.resetTo({
+        name: 'FrontPage',
+        component: FrontPage,
+        // params: {
+        //   mnemonic: 'labor maze tip include illegal solve renew crack truth wage chest walk',
+        // }
+      });
     });
   }
 

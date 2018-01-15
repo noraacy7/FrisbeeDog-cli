@@ -19,6 +19,7 @@ import * as Animatable from 'react-native-animatable';
 import NavigationBar from '../component/NavigationBar.js';
 import ScrollViewItem from './ScrollViewItem.js';
 import styles from '../../stylesheet.js';
+import * as Theme from '../component/Theme.js';
 
 var addresses = [
   {address: '2N1vKCFx3gF4jYVKfuD9ViuQaHB2ujcbmV9', balance: '0.00000000', updated_time: '2017-09-18 14:28:00'},
